@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://bqc4l7e44c01l"]
+
+[ext_resource type="Texture2D" uid="uid://c211daqbhqofq" path="res://Assets/gun.png" id="1_pthgk"]
+[ext_resource type="Script" path="res://Scripts/tower.gd" id="1_vp4qx"]
+[ext_resource type="PackedScene" uid="uid://c1a5iqwdmkfb2" path="res://Scenes/hitbox_component.tscn" id="2_shjhw"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7qb7e"]
+size = Vector2(19, 18)
+
+[node name="Tower" type="Node2D"]
+script = ExtResource("1_vp4qx")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-3, 0)
+scale = Vector2(0.0325, 0.0333333)
+texture = ExtResource("1_pthgk")
+flip_h = true
+
+[node name="HitboxComponent" parent="." instance=ExtResource("2_shjhw")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent"]
+position = Vector2(-0.5, 1)
+shape = SubResource("RectangleShape2D_7qb7e")
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

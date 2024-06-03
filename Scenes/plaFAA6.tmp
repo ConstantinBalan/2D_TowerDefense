@@ -1,0 +1,40 @@
+[gd_scene load_steps=5 format=3 uid="uid://csdpsnunwww4q"]
+
+[ext_resource type="Texture2D" uid="uid://cd7sn1b7gicn6" path="res://Assets/ang.png" id="1_m8pxw"]
+[ext_resource type="Script" path="res://Scripts/player.gd" id="1_qqlgn"]
+[ext_resource type="FontFile" uid="uid://bijycjedvvqrg" path="res://Assets/PixelOperator8.ttf" id="3_03cvx"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xbs8g"]
+
+[node name="CharacterBody2D" type="CharacterBody2D"]
+script = ExtResource("1_qqlgn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_xbs8g")
+debug_color = Color(0.927846, 3.5328e-05, 0.66697, 0.42)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-0.499997, 0)
+scale = Vector2(0.0739437, 0.0930233)
+texture = ExtResource("1_m8pxw")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(6, 6)
+
+[node name="Label" type="Label" parent="Camera2D"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -95.0
+offset_top = -53.0
+offset_right = -22.0
+offset_bottom = -29.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_vertical = 0
+theme_override_fonts/font = ExtResource("3_03cvx")
+theme_override_font_sizes/font_size = 8
+text = "Placeholder"
+horizontal_alignment = 1
