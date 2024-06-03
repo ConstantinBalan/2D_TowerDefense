@@ -1,13 +1,17 @@
-[gd_scene load_steps=4 format=3 uid="uid://3g0mw4hod0qs"]
+[gd_scene load_steps=5 format=3 uid="uid://3g0mw4hod0qs"]
 
 [ext_resource type="Script" path="res://Scripts/enemy.gd" id="1_kph8i"]
 [ext_resource type="Texture2D" uid="uid://cyt5rexl33dii" path="res://Assets/gerb.png" id="1_w8ltu"]
+[ext_resource type="FontFile" uid="uid://bijycjedvvqrg" path="res://Assets/PixelOperator8.ttf" id="3_44hjw"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_bu8mu"]
 
-[node name="Enemy" type="CharacterBody2D"]
+[node name="Enemy" type="CharacterBody2D" groups=["enemy"]]
+collision_mask = 2
 script = ExtResource("1_kph8i")
-speed = 25.0
+speed = 15.0
+health = 15.0
+impact_damage = 5.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(1, 0)
@@ -16,3 +20,20 @@ texture = ExtResource("1_w8ltu")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_bu8mu")
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+unique_name_in_owner = true
+modulate = Color(1, 0, 0, 1)
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -22.0
+offset_top = -16.0
+offset_right = 22.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("3_44hjw")
+theme_override_font_sizes/font_size = 8

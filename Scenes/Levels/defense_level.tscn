@@ -1,9 +1,14 @@
-[gd_scene load_steps=9 format=3 uid="uid://didfb68gd710c"]
+[gd_scene load_steps=14 format=3 uid="uid://didfb68gd710c"]
 
 [ext_resource type="Texture2D" uid="uid://brfip5pr3myj5" path="res://Assets/grass_spritesheet.png" id="1_kyryt"]
 [ext_resource type="PackedScene" uid="uid://csdpsnunwww4q" path="res://Scenes/player.tscn" id="1_pjtm7"]
+[ext_resource type="Script" path="res://Scripts/game.gd" id="1_wlflx"]
 [ext_resource type="PackedScene" uid="uid://3g0mw4hod0qs" path="res://Scenes/enemy.tscn" id="3_8gehr"]
+[ext_resource type="Script" path="res://Scripts/PathFollow2D.gd" id="4_m2q1o"]
 [ext_resource type="PackedScene" uid="uid://bqc4l7e44c01l" path="res://Scenes/tower.tscn" id="4_mu4hu"]
+[ext_resource type="Script" path="res://Scripts/Spawner.gd" id="5_x0fob"]
+[ext_resource type="PackedScene" uid="uid://btjc5o0j64is3" path="res://Scenes/strong_enemy.tscn" id="6_1d0uj"]
+[ext_resource type="PackedScene" uid="uid://cqrbxh3rh0crp" path="res://Scenes/home_base.tscn" id="7_fjm51"]
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_fjmtb"]
 tile_data = PackedInt32Array(0, 393216, 2, 65536, 262144, 1, 1, 262144, 1, 65537, 327680, 0, 2, 327680, 0, 65538, 393216, 2)
@@ -78,11 +83,12 @@ pattern_0 = SubResource("TileMapPattern_fjmtb")
 
 [sub_resource type="Curve2D" id="Curve2D_tjt71"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 220, -8, 0, 0, 0, 0, 24.7192, -10.2286, 0, 0, 0, 0, -172, -8)
+"points": PackedVector2Array(0, 0, 0, 0, 220, -8, 0, 0, 0, 0, 40, -48, 0, 0, 0, 0, -172, -8)
 }
 point_count = 3
 
 [node name="DefenseLevel" type="Node2D"]
+script = ExtResource("1_wlflx")
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_6lydd")
@@ -103,11 +109,45 @@ Health = 50
 [node name="Path" type="Path2D" parent="."]
 curve = SubResource("Curve2D_tjt71")
 
-[node name="Enemy" parent="." instance=ExtResource("3_8gehr")]
-position = Vector2(227, -8)
+[node name="PathFollow2D" type="PathFollow2D" parent="Path"]
+position = Vector2(220, -8)
+rotation = -2.92292
+rotates = false
+script = ExtResource("4_m2q1o")
+speed = 0.1
+
+[node name="Spawner" type="Marker2D" parent="Path/PathFollow2D"]
+position = Vector2(-1.99986, 0.0228233)
+rotation = 3.13018
+script = ExtResource("5_x0fob")
+spawn_interval_min = 1.0
+spawn_interval_max = 3.0
+enemies_to_spawn = Array[PackedScene]([ExtResource("3_8gehr"), ExtResource("6_1d0uj")])
 
 [node name="Tower" parent="." instance=ExtResource("4_mu4hu")]
-position = Vector2(63, -36)
+position = Vector2(-59, -16)
 
 [node name="Tower2" parent="." instance=ExtResource("4_mu4hu")]
 position = Vector2(63, -5)
+
+[node name="HomeBase" parent="." instance=ExtResource("7_fjm51")]
+position = Vector2(-276, -87)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="BaseLifeLabel" type="Label" parent="CanvasLayer"]
+offset_right = 312.0
+offset_bottom = 106.0
+text = "Base Life"
+
+[node name="ScoreLabel" type="Label" parent="CanvasLayer"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 23.0
+grow_horizontal = 0
+text = "Score"
+
+[connection signal="enemy_died" from="Path/PathFollow2D/Spawner" to="." method="on_fish_died"]
+[connection signal="enemy_died" from="Path/PathFollow2D/Spawner" to="." method="_on_spawner_enemy_died"]

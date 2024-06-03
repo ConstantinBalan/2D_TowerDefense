@@ -1,0 +1,42 @@
+[gd_scene load_steps=5 format=3 uid="uid://btjc5o0j64is3"]
+
+[ext_resource type="Script" path="res://Scripts/enemy.gd" id="1_g4rdd"]
+[ext_resource type="Texture2D" uid="uid://c87xskx06266j" path="res://Assets/monkaCat.png" id="2_20cnq"]
+[ext_resource type="FontFile" uid="uid://bijycjedvvqrg" path="res://Assets/PixelOperator8.ttf" id="3_583ij"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bu8mu"]
+radius = 18.1108
+
+[node name="Enemy" type="CharacterBody2D" groups=["enemy"]]
+collision_mask = 2
+script = ExtResource("1_g4rdd")
+speed = 5.0
+health = 30.0
+impact_damage = 5.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-0.5, 2.98023e-08)
+scale = Vector2(0.128205, 0.13617)
+texture = ExtResource("2_20cnq")
+flip_h = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1, 0)
+shape = SubResource("CircleShape2D_bu8mu")
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+unique_name_in_owner = true
+modulate = Color(1, 0, 0, 1)
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -22.0
+offset_top = -28.0
+offset_right = 22.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("3_583ij")
+theme_override_font_sizes/font_size = 8

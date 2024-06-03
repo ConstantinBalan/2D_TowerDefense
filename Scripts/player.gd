@@ -2,7 +2,7 @@ class_name PlayerCharacter
 extends CharacterBody2D
 
 @export var Health : int
-@onready var label = $Camera2D/Label
+
 
 
 @export var speed = 150.0
@@ -10,8 +10,7 @@ extends CharacterBody2D
 
 
 func _ready():
-	label.text = str("Heatlh:" + str(Health))
-
+	pass
 
 func _physics_process(delta):
 

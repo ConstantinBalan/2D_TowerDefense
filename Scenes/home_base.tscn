@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://cqrbxh3rh0crp"]
+
+[ext_resource type="Script" path="res://Scripts/home_base.gd" id="1_k2cwu"]
+[ext_resource type="Texture2D" uid="uid://c4nskvfa1n6yl" path="res://Assets/elmo.png" id="1_rgoxv"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1v1ri"]
+size = Vector2(97.5, 96)
+
+[node name="HomeBase" type="StaticBody2D" groups=["friendly"]]
+position = Vector2(-67, -75)
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("1_k2cwu")
+health = 100.0
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+unique_name_in_owner = true
+offset_left = -1.0
+offset_right = 139.0
+offset_bottom = 27.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(65.75, 76)
+shape = SubResource("RectangleShape2D_1v1ri")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(67, 75)
+texture = ExtResource("1_rgoxv")
