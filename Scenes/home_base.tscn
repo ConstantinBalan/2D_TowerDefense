@@ -6,23 +6,22 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1v1ri"]
 size = Vector2(97.5, 96)
 
-[node name="HomeBase" type="StaticBody2D" groups=["friendly"]]
-position = Vector2(-67, -75)
-collision_layer = 2
-collision_mask = 2
+[node name="HomeBase" type="Area2D" groups=["friendly"]]
 script = ExtResource("1_k2cwu")
-health = 100.0
-
-[node name="HealthBar" type="ProgressBar" parent="."]
-unique_name_in_owner = true
-offset_left = -1.0
-offset_right = 139.0
-offset_bottom = 27.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(65.75, 76)
+position = Vector2(-1, 0)
 shape = SubResource("RectangleShape2D_1v1ri")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(67, 75)
 texture = ExtResource("1_rgoxv")
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+unique_name_in_owner = true
+offset_left = -68.0
+offset_top = -75.0
+offset_right = 72.0
+offset_bottom = -48.0
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_shape_entered" from="." to="." method="_on_body_shape_entered"]

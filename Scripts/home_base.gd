@@ -1,4 +1,4 @@
-extends StaticBody2D
+extends Area2D
 
 
 @export var health : float
@@ -19,3 +19,7 @@ func take_damage(damage: float):
 	if health <= 0:
 		print("you died")
 
+func _on_body_entered(body):
+	if body.is_in_group("enemy"):
+		take_damage(5.0)
+		body.queue_free()

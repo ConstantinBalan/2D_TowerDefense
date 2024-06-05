@@ -1,14 +1,15 @@
 extends Node2D
-@onready var timer = $Timer
-
+@onready var shoot_cooldown_timer = $ShootCooldownTimer
+@export var projectile : PackedScene
+var targets = []
 
 func _ready():
-	timer.start()
+	shoot_cooldown_timer.start()
 
 
 func _on_timer_timeout():
-	const BULLET = preload("res://Scenes/bullet.tscn")
-	var bullet = BULLET.instantiate()
+	var projectile = projectile
+	var bullet = projectile.instantiate()
 	bullet.speed = 25.0
 	bullet.damage = 5.0
 	

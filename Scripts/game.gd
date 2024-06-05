@@ -18,7 +18,6 @@ func _process(delta):
 		print("game over")
 		get_tree().reload_current_scene()
 		
-func on_fish_died():
+func on_enemy_died():
 	points += 1
 	score_label.text = "Score: " + str(points)
-

@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://cmk53exapcrso"]
+
+[ext_resource type="Script" path="res://Scripts/enemy_move_on_path.gd" id="1_8r7cb"]
+[ext_resource type="PackedScene" uid="uid://btjc5o0j64is3" path="res://Scenes/Enemy_Types/strong_enemy.tscn" id="2_co4dw"]
+
+[node name="StrongEnemyPath" type="PathFollow2D"]
+rotates = false
+script = ExtResource("1_8r7cb")
+speed = 1.0
+
+[node name="Enemy" parent="." instance=ExtResource("2_co4dw")]
