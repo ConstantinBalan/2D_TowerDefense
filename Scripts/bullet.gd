@@ -8,6 +8,9 @@ func _physics_process(delta):
 	if is_instance_valid(target):
 		var direction = (target.global_position - global_position).normalized()
 		global_position += direction * speed * delta
+	else:
+		print("bullet was still in air when enemy died")
+		queue_free()
 	
 
 

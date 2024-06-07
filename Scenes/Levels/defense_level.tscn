@@ -138,6 +138,20 @@ offset_bottom = 23.0
 grow_horizontal = 0
 text = "Score"
 
+[node name="WaveLabel" type="Label" parent="CanvasLayer"]
+offset_left = 1818.0
+offset_top = 59.0
+offset_right = 1868.0
+offset_bottom = 82.0
+text = "Waves"
+
+[node name="EnemiesLeftLabel" type="Label" parent="CanvasLayer"]
+offset_left = 1772.0
+offset_top = 101.0
+offset_right = 1838.0
+offset_bottom = 124.0
+text = "Enemies"
+
 [node name="Paths" type="Node" parent="."]
 
 [node name="TopPath" type="Path2D" parent="Paths"]
@@ -176,5 +190,8 @@ position = Vector2(50, 47)
 projectile = ExtResource("10_qacyh")
 
 [connection signal="enemy_died" from="Paths/TopPath" to="." method="on_enemy_died"]
+[connection signal="enemy_spawned" from="Paths/TopPath" to="." method="add_to_spawned_wave"]
 [connection signal="enemy_died" from="Paths/BottomPath" to="." method="on_enemy_died"]
+[connection signal="enemy_spawned" from="Paths/BottomPath" to="." method="add_to_spawned_wave"]
 [connection signal="enemy_died" from="Paths/MiddlePath" to="." method="on_enemy_died"]
+[connection signal="enemy_spawned" from="Paths/MiddlePath" to="." method="add_to_spawned_wave"]

@@ -6,10 +6,12 @@ extends CharacterBody2D
 @onready var health_bar = %ProgressBar
 
 signal died()
+signal spawned()
 
 func _ready():
 	health_bar.max_value = health
 	health_bar.value = health
+	spawned.emit()
 	
 func _physics_process(delta):
 	#velocity.x = -speed
