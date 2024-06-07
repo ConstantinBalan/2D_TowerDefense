@@ -143,36 +143,36 @@ text = "Score"
 [node name="TopPath" type="Path2D" parent="Paths"]
 curve = SubResource("Curve2D_7plqc")
 script = ExtResource("5_1mm45")
-spawn_interval_min = 1.0
-spawn_interval_max = 3.0
+spawn_interval_min = 3.0
+spawn_interval_max = 5.0
 enemy_paths_to_spawn = Array[PackedScene]([ExtResource("6_vhy6x"), ExtResource("7_c0sdi")])
 
 [node name="BottomPath" type="Path2D" parent="Paths"]
 curve = SubResource("Curve2D_yidmv")
 script = ExtResource("5_1mm45")
-spawn_interval_min = 1.0
-spawn_interval_max = 3.0
+spawn_interval_min = 3.0
+spawn_interval_max = 5.0
 enemy_paths_to_spawn = Array[PackedScene]([ExtResource("6_vhy6x"), ExtResource("7_c0sdi")])
 
 [node name="MiddlePath" type="Path2D" parent="Paths"]
 curve = SubResource("Curve2D_tjt71")
 script = ExtResource("5_1mm45")
-spawn_interval_min = 1.0
-spawn_interval_max = 3.0
+spawn_interval_min = 3.0
+spawn_interval_max = 5.0
 enemy_paths_to_spawn = Array[PackedScene]([ExtResource("6_vhy6x"), ExtResource("7_c0sdi")])
 
 [node name="Towers" type="Node" parent="."]
 
 [node name="Tower" parent="Towers" instance=ExtResource("4_mu4hu")]
-position = Vector2(-10, -90)
+position = Vector2(48, -64)
 projectile = ExtResource("10_qacyh")
 
 [node name="Tower2" parent="Towers" instance=ExtResource("4_mu4hu")]
-position = Vector2(-13, -8)
+position = Vector2(111, -32)
 projectile = ExtResource("10_qacyh")
 
 [node name="Tower3" parent="Towers" instance=ExtResource("4_mu4hu")]
-position = Vector2(-12, 72)
+position = Vector2(50, 47)
 projectile = ExtResource("10_qacyh")
 
 [connection signal="enemy_died" from="Paths/TopPath" to="." method="on_enemy_died"]

@@ -2,10 +2,13 @@ extends Node2D
 
 @export var speed : float
 @export var damage : float
+var target = null
 
 func _physics_process(delta):
-	global_position += Vector2(speed * delta, 0)
-
+	if is_instance_valid(target):
+		var direction = (target.global_position - global_position).normalized()
+		global_position += direction * speed * delta
+	
 
 
 func _on_area_2d_body_entered(body):

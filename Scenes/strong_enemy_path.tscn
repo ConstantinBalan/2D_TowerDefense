@@ -6,6 +6,6 @@
 [node name="StrongEnemyPath" type="PathFollow2D"]
 rotates = false
 script = ExtResource("1_8r7cb")
-speed = 1.0
+speed = 3.0
 
 [node name="Enemy" parent="." instance=ExtResource("2_co4dw")]
