@@ -27,7 +27,7 @@ func spawn_enemy():
 	
 		var timer = get_tree().create_timer(randf_range(spawn_interval_min, spawn_interval_max))
 		timer.timeout.connect(spawn_enemy)
-		active_timers.append(timer)
+		#active_timers.append(timer)
 
 func on_enemy_died():
 	#print("Enemy died emitter should run")

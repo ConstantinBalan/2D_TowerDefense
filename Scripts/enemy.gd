@@ -5,8 +5,8 @@ extends CharacterBody2D
 @export var impact_damage : float
 @onready var health_bar = %ProgressBar
 
-signal died()
-signal spawned()
+signal died
+signal spawned
 
 func _ready():
 	health_bar.max_value = health

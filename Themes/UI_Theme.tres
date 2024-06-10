@@ -1,0 +1,61 @@
+[gd_resource type="Theme" load_steps=9 format=3 uid="uid://eo2yt6tnyxbn"]
+
+[ext_resource type="FontFile" uid="uid://bijycjedvvqrg" path="res://Assets/PixelOperator8.ttf" id="1_0k0wy"]
+[ext_resource type="Texture2D" uid="uid://c2y84kcer4dml" path="res://Assets/stone-brick-frame-border-ancient-medieval-in-cartoon-game-ui-png.png" id="2_rqtkj"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_luy6b"]
+texture = ExtResource("2_rqtkj")
+texture_margin_left = 48.0
+texture_margin_top = 48.0
+texture_margin_right = 48.0
+texture_margin_bottom = 48.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1tsys"]
+texture = ExtResource("2_rqtkj")
+texture_margin_left = 40.0
+texture_margin_top = 40.0
+texture_margin_right = 40.0
+texture_margin_bottom = 40.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_iu3b3"]
+texture = ExtResource("2_rqtkj")
+texture_margin_left = 44.0
+texture_margin_top = 44.0
+texture_margin_right = 44.0
+texture_margin_bottom = 44.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_d8ld2"]
+texture = ExtResource("2_rqtkj")
+texture_margin_left = 48.0
+texture_margin_top = 48.0
+texture_margin_right = 48.0
+texture_margin_bottom = 48.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5x7a5"]
+texture = ExtResource("2_rqtkj")
+texture_margin_left = 32.0
+texture_margin_top = 32.0
+texture_margin_right = 32.0
+texture_margin_bottom = 32.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_yqp5u"]
+texture = ExtResource("2_rqtkj")
+texture_margin_left = 48.0
+texture_margin_top = 48.0
+texture_margin_right = 48.0
+texture_margin_bottom = 48.0
+
+[resource]
+BigPanelContainer/base_type = &"PanelContainer"
+Button/font_sizes/font_size = 24
+Button/fonts/font = ExtResource("1_0k0wy")
+Button/styles/disabled = SubResource("StyleBoxTexture_luy6b")
+Button/styles/focus = SubResource("StyleBoxTexture_1tsys")
+Button/styles/hover = SubResource("StyleBoxTexture_iu3b3")
+Button/styles/normal = SubResource("StyleBoxTexture_d8ld2")
+Button/styles/pressed = SubResource("StyleBoxTexture_5x7a5")
+HeaderLarge/base_type = &"Label"
+HeaderLarge/font_sizes/font_size = 48
+Label/font_sizes/font_size = 24
+Label/fonts/font = ExtResource("1_0k0wy")
+PanelContainer/styles/panel = SubResource("StyleBoxTexture_yqp5u")

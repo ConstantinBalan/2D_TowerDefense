@@ -1,10 +1,10 @@
 extends Node2D
 
 @onready var home_base = $HomeBase
-@onready var base_life_label = $CanvasLayer/BaseLifeLabel
-@onready var score_label = $CanvasLayer/ScoreLabel
-@onready var wave_label = $CanvasLayer/WaveLabel
-@onready var enemies_left_label = $CanvasLayer/EnemiesLeftLabel
+@onready var base_life_label = $CanvasLayer/GameInfoContainer/MarginContainer/GridContainer/BaseLifeLabel
+@onready var score_label = $CanvasLayer/GameInfoContainer/MarginContainer/GridContainer/ScoreLabel
+@onready var wave_label = $CanvasLayer/GameInfoContainer/MarginContainer/GridContainer/WaveLabel
+@onready var enemies_left_label = $CanvasLayer/GameInfoContainer/MarginContainer/GridContainer/EnemiesLeftLabel
 
 var points : int
 var waves = {1: 10, 2: 20, 3: 30}
@@ -21,7 +21,7 @@ func _ready():
 
 
 func _process(delta):
-	base_life_label.text = str(home_base.health)
+	base_life_label.text = "Health left: " + str(home_base.health)
 	
 	if home_base.health == 0:
 		print("game over")
@@ -52,7 +52,6 @@ func add_to_spawned_wave():
 	if enemies_spawned_for_wave >= waves[current_wave]:
 		print("All enemies for this wave have been spawned")
 		GlobalSignals.emit_signal("stop_spawning_enemies")
-		pass
 
 
 func next_wave_setup():
