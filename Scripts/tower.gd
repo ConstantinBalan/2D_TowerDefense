@@ -11,7 +11,7 @@ func _ready():
 
 func _process(delta):
 	if cur_target and cur_target.is_inside_tree() and can_attack:
-		shoot_bullet()
+		shoot_bullet(35.0,5.0)
 		can_attack = false
 		await get_tree().create_timer(attack_rate).timeout
 		can_attack = true
@@ -20,11 +20,11 @@ func _process(delta):
 
 
 
-func shoot_bullet():
+func shoot_bullet(speed: float, damage: float):
 	var projectile = projectile
 	var bullet = projectile.instantiate()
-	bullet.speed = 35.0
-	bullet.damage = 5.0
+	bullet.speed = speed
+	bullet.damage = damage
 	bullet.target = cur_target
 	
 	bullet.global_position = global_position

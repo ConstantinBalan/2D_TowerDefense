@@ -105,7 +105,6 @@ point_count = 2
 script = ExtResource("1_wlflx")
 
 [node name="TileMap" type="TileMap" parent="."]
-modulate = Color(0, 1, 0.0666667, 1)
 tile_set = SubResource("TileSet_6lydd")
 format = 2
 layer_0/name = "Ground"
@@ -116,6 +115,7 @@ layer_2/name = "Rocks"
 layer_2/modulate = Color(0.0980392, 0.109804, 0.109804, 0.917647)
 layer_2/tile_data = PackedInt32Array()
 layer_3/name = "TowerPlacement"
+layer_3/modulate = Color(0.545098, 1, 1, 1)
 layer_3/tile_data = PackedInt32Array(131075, 0, 1, 65539, 0, 1, 65540, 0, 1, 131076, 0, 1, 131077, 0, 1, 65541, 0, 1, 65542, 0, 1, 131078, 0, 1, 131079, 0, 1, 131080, 0, 1, 131081, 0, 1, 131082, 0, 1, 131083, 0, 1, 131084, 0, 1, 131085, 0, 1, 65549, 0, 1, 65548, 0, 1, 65547, 0, 1, 65546, 0, 1, 65545, 0, 1, 65544, 0, 1, 65543, 0, 1, -262141, 0, 1, -196605, 0, 1, -196604, 0, 1, -196603, 0, 1, -262139, 0, 1, -262140, 0, 1, -262138, 0, 1, -196602, 0, 1, -196601, 0, 1, -196600, 0, 1, -196599, 0, 1, -196598, 0, 1, -196597, 0, 1, -196596, 0, 1, -196595, 0, 1, -262131, 0, 1, -262132, 0, 1, -262133, 0, 1, -262134, 0, 1, -262135, 0, 1, -262136, 0, 1, -262137, 0, 1, -327681, 0, 1, -262145, 0, 1, -196609, 0, 1, -131073, 0, 1, -131074, 0, 1, -131075, 0, 1, -131076, 0, 1, -131077, 0, 1, -131078, 0, 1, -131079, 0, 1, -131080, 0, 1, -131081, 0, 1, 327679, 0, 1, 262143, 0, 1, 196607, 0, 1, 131071, 0, 1, 131070, 0, 1, 131069, 0, 1, 131068, 0, 1, 131067, 0, 1, 131066, 0, 1, 131065, 0, 1, 131064, 0, 1, 131063, 0, 1, 196599, 0, 1, 196600, 0, 1, 196601, 0, 1, 196602, 0, 1, 196603, 0, 1, 196604, 0, 1, 196605, 0, 1, 196606, 0, 1, 262142, 0, 1, 327678, 0, 1, -327682, 0, 1, -262146, 0, 1, -196610, 0, 1, -196611, 0, 1, -196612, 0, 1, -196613, 0, 1, -196614, 0, 1, -196615, 0, 1, -196616, 0, 1, -196617, 0, 1)
 
 [node name="Player" parent="." instance=ExtResource("1_pjtm7")]
@@ -154,22 +154,27 @@ size_flags_vertical = 4
 tooltip_text = "This is the UI for all of the level related info"
 
 [node name="BaseLifeLabel" type="Label" parent="CanvasLayer/GameInfoContainer/MarginContainer/GridContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Base Life"
 
 [node name="ScoreLabel" type="Label" parent="CanvasLayer/GameInfoContainer/MarginContainer/GridContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Score"
 
 [node name="WaveLabel" type="Label" parent="CanvasLayer/GameInfoContainer/MarginContainer/GridContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Waves"
 
 [node name="EnemiesLeftLabel" type="Label" parent="CanvasLayer/GameInfoContainer/MarginContainer/GridContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Enemies"
 
 [node name="QuestPanelContainer" type="PanelContainer" parent="CanvasLayer"]
+unique_name_in_owner = true
 visible = false
 anchors_preset = 8
 anchor_left = 0.5
@@ -285,17 +290,18 @@ enemy_paths_to_spawn = Array[PackedScene]([ExtResource("6_vhy6x"), ExtResource("
 [node name="Towers" type="Node" parent="."]
 
 [node name="Tower" parent="Towers" instance=ExtResource("4_mu4hu")]
-position = Vector2(48, -64)
+position = Vector2(51, -63)
 projectile = ExtResource("10_qacyh")
 
 [node name="Tower2" parent="Towers" instance=ExtResource("4_mu4hu")]
-position = Vector2(111, -32)
+position = Vector2(41, -28)
 projectile = ExtResource("10_qacyh")
 
 [node name="Tower3" parent="Towers" instance=ExtResource("4_mu4hu")]
-position = Vector2(50, 47)
+position = Vector2(50, 44)
 projectile = ExtResource("10_qacyh")
 
+[connection signal="body_exited" from="HomeBase" to="HomeBase" method="_on_body_exited"]
 [connection signal="enemy_died" from="Paths/TopPath" to="." method="on_enemy_died"]
 [connection signal="enemy_died" from="Paths/TopPath" to="." method="decrement_enemies_left"]
 [connection signal="enemy_spawned" from="Paths/TopPath" to="." method="add_to_spawned_wave"]

@@ -24,8 +24,7 @@ flip_h = true
 position = Vector2(1, 0)
 shape = SubResource("CircleShape2D_bu8mu")
 
-[node name="ProgressBar" type="ProgressBar" parent="."]
-unique_name_in_owner = true
+[node name="HealthBar" type="ProgressBar" parent="."]
 modulate = Color(1, 0, 0, 1)
 anchors_preset = 7
 anchor_left = 0.5

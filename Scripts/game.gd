@@ -1,10 +1,10 @@
 extends Node2D
 
 @onready var home_base = $HomeBase
-@onready var base_life_label = $CanvasLayer/GameInfoContainer/MarginContainer/GridContainer/BaseLifeLabel
-@onready var score_label = $CanvasLayer/GameInfoContainer/MarginContainer/GridContainer/ScoreLabel
-@onready var wave_label = $CanvasLayer/GameInfoContainer/MarginContainer/GridContainer/WaveLabel
-@onready var enemies_left_label = $CanvasLayer/GameInfoContainer/MarginContainer/GridContainer/EnemiesLeftLabel
+@onready var base_life_label = %BaseLifeLabel
+@onready var score_label = %ScoreLabel
+@onready var wave_label = %WaveLabel
+@onready var enemies_left_label = %EnemiesLeftLabel
 
 var points : int
 var waves = {1: 10, 2: 20, 3: 30}
