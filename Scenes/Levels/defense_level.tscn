@@ -190,8 +190,11 @@ position = Vector2(50, 47)
 projectile = ExtResource("10_qacyh")
 
 [connection signal="enemy_died" from="Paths/TopPath" to="." method="on_enemy_died"]
+[connection signal="enemy_died" from="Paths/TopPath" to="." method="decrement_enemies_left"]
 [connection signal="enemy_spawned" from="Paths/TopPath" to="." method="add_to_spawned_wave"]
 [connection signal="enemy_died" from="Paths/BottomPath" to="." method="on_enemy_died"]
+[connection signal="enemy_died" from="Paths/BottomPath" to="." method="decrement_enemies_left"]
 [connection signal="enemy_spawned" from="Paths/BottomPath" to="." method="add_to_spawned_wave"]
 [connection signal="enemy_died" from="Paths/MiddlePath" to="." method="on_enemy_died"]
+[connection signal="enemy_died" from="Paths/MiddlePath" to="." method="decrement_enemies_left"]
 [connection signal="enemy_spawned" from="Paths/MiddlePath" to="." method="add_to_spawned_wave"]

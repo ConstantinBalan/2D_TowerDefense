@@ -4,7 +4,7 @@ extends Marker2D
 @export var spawn_interval_max : float
 @export var enemies_to_spawn : Array[PackedScene]
 
-signal enemy_died()
+signal enemy_died
 
 func _ready():
 	spawn_enemy()
