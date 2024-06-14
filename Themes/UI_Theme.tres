@@ -5,10 +5,10 @@
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_luy6b"]
 texture = ExtResource("2_rqtkj")
-texture_margin_left = 48.0
-texture_margin_top = 48.0
-texture_margin_right = 48.0
-texture_margin_bottom = 48.0
+texture_margin_left = 96.0
+texture_margin_top = 96.0
+texture_margin_right = 96.0
+texture_margin_bottom = 96.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1tsys"]
 texture = ExtResource("2_rqtkj")
@@ -26,10 +26,10 @@ texture_margin_bottom = 44.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_d8ld2"]
 texture = ExtResource("2_rqtkj")
-texture_margin_left = 48.0
-texture_margin_top = 48.0
-texture_margin_right = 48.0
-texture_margin_bottom = 48.0
+texture_margin_left = 64.0
+texture_margin_top = 64.0
+texture_margin_right = 64.0
+texture_margin_bottom = 64.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5x7a5"]
 texture = ExtResource("2_rqtkj")

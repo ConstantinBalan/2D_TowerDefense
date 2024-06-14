@@ -12,13 +12,22 @@ var current_wave = 1
 var enemies_spawned_for_wave = 0
 var enemies_left_for_wave : int
 
+var map_node
+var is_valid_position = false
+var build_mode= false
+var build_valid = false 
+var build_location
+var tower_to_build 
+
 func _ready():
 	score_label.text = "Score: 0"
 	wave_label.text = "Wave: " + str(waves.keys()[0])
 	enemies_left_label.text = "Enemies Left: " + str(waves.values()[0])
 	enemies_left_for_wave = waves[1]
+	map_node = get_node("DefenseLevel")
+	for i in get_tree().get_nodes_in_group("BuildTowerButtons"):
+		i.pressed.connect(initiate_build_mode.bind(i.name))
 	#This subscribes to the point_counted signal
-
 
 func _process(delta):
 	base_life_label.text = "Health left: " + str(home_base.health)
@@ -27,6 +36,25 @@ func _process(delta):
 		print("game over")
 		get_tree().reload_current_scene()
 		
+
+func initiate_build_mode(tower_type):
+	tower_to_build = tower_type
+	build_mode = true 
+	get_node("BuildTowerButtons").set_tower_preview(tower_to_build, get_global_mouse_position())
+
+func update_tower_preview():
+	var mouse_position = get_global_mouse_position()
+	var current_tile = map_node.get_node("TileMap").local_to_map(mouse_position)
+	var tile_pos = map_node.get_node("TowerExclusion").map_to_local(current_tile)
+	
+	if map_node.get_node("TowerExclusion").get_cell_source_id(0, current_tile):
+		get_node("UI").update_tower_preview(tile_pos, "fff")
+		build_valid = true 
+		build_location = tile_pos
+	
+	else:
+		get_node("UI").update_tower_preview(tile_pos, "000")
+		build_valid = false
 
 func on_enemy_died():
 	points += 1
@@ -48,7 +76,6 @@ func decrement_enemies_left():
 #the max for the wave is hit, the paths stop spawning enemies.
 func add_to_spawned_wave():
 	enemies_spawned_for_wave += 1
-	
 	if enemies_spawned_for_wave >= waves[current_wave]:
 		print("All enemies for this wave have been spawned")
 		GlobalSignals.emit_signal("stop_spawning_enemies")
