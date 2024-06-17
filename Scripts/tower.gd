@@ -2,13 +2,22 @@ extends Node2D
 @export var projectile : PackedScene
 @export var attack_rate : float
 @export var placed = false
+@export var tower_type_name : String
 var targets : Array
 var cur_target = null
 var can_attack = true
-
-
+const PIXEL_OPERATOR_8 = preload("res://Assets/PixelOperator8.ttf")
 func _ready():
-	pass
+	var label_pos = Vector2(-50, -30)
+	var name_label : Label = Label.new()
+	name_label.uppercase = true
+	name_label.position = label_pos
+	name_label.add_theme_font_override("PixelFont",PIXEL_OPERATOR_8)
+	name_label.add_theme_font_size_override("PixelFont", 8)
+	name_label.text = self.name
+	name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	name_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	add_child(name_label)
 	
 func _process(delta):
 	if cur_target and cur_target.is_inside_tree() and can_attack:
@@ -48,3 +57,17 @@ func _on_area_2d_body_exited(body):
 				cur_target = null
 				if targets.size() > 0:
 					cur_target = targets[0]
+
+
+func _on_tower_space_body_entered(body):
+	print("body entered")
+	if body.is_in_group("tower"):
+		print("towers are overlapping, can't place")
+		GlobalSignals.towers_are_overlapping.emit()
+
+
+
+func _on_tower_space_body_exited(body):
+	if body.is_in_group("tower"):
+		print("towers no longer overlapping")
+		GlobalSignals.towers_not_overlapping.emit()

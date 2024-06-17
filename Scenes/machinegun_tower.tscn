@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://bi1nbyv8ohnpw"]
+[gd_scene load_steps=6 format=3 uid="uid://bi1nbyv8ohnpw"]
 
 [ext_resource type="Script" path="res://Scripts/tower.gd" id="1_xgyg8"]
 [ext_resource type="PackedScene" uid="uid://dvlt5b7vvgqrk" path="res://Scenes/bullet.tscn" id="2_gt883"]
@@ -7,14 +7,16 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_qbl6d"]
 radius = 39.5127
 
-[node name="Tower" type="Node2D" groups=["friendly"]]
+[sub_resource type="CircleShape2D" id="CircleShape2D_idsao"]
+
+[node name="MachineGunTower" type="Node2D" groups=["friendly", "tower"]]
 script = ExtResource("1_xgyg8")
 projectile = ExtResource("2_gt883")
 attack_rate = 0.3
+tower_type_name = "MachineGunTower"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-modulate = Color(1, 0, 1, 1)
-self_modulate = Color(0.555656, 0.676641, 0.279971, 1)
+modulate = Color(0.482353, 1, 1, 1)
 position = Vector2(-3, 0)
 scale = Vector2(0.0325, 0.0333333)
 texture = ExtResource("3_hn4cs")
@@ -26,5 +28,15 @@ flip_h = true
 position = Vector2(-0.5, 1)
 shape = SubResource("CircleShape2D_qbl6d")
 
+[node name="TowerSpace" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TowerSpace"]
+position = Vector2(0, 1)
+shape = SubResource("CircleShape2D_idsao")
+
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
+[connection signal="body_entered" from="TowerSpace" to="." method="_on_tower_space_body_entered"]
+[connection signal="body_exited" from="TowerSpace" to="." method="_on_tower_space_body_exited"]

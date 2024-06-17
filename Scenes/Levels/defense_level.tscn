@@ -2,7 +2,6 @@
 
 [ext_resource type="Texture2D" uid="uid://brfip5pr3myj5" path="res://Assets/grass_spritesheet.png" id="1_kyryt"]
 [ext_resource type="Script" path="res://Scripts/game.gd" id="1_wlflx"]
-[ext_resource type="Script" path="res://Scripts/CanvasLayer.gd" id="3_7t4va"]
 [ext_resource type="PackedScene" uid="uid://bqc4l7e44c01l" path="res://Scenes/tower.tscn" id="4_mu4hu"]
 [ext_resource type="Theme" uid="uid://eo2yt6tnyxbn" path="res://Themes/UI_Theme.tres" id="5_0s54i"]
 [ext_resource type="Script" path="res://Scripts/SpawnOnPath.gd" id="5_1mm45"]
@@ -13,6 +12,31 @@
 [ext_resource type="PackedScene" uid="uid://cqrbxh3rh0crp" path="res://Scenes/home_base.tscn" id="7_fjm51"]
 [ext_resource type="PackedScene" uid="uid://ckxn2tdxyx78e" path="res://Scenes/shotgun_tower.tscn" id="7_wbtf1"]
 [ext_resource type="PackedScene" uid="uid://bi1nbyv8ohnpw" path="res://Scenes/machinegun_tower.tscn" id="8_7k614"]
+
+[sub_resource type="GDScript" id="GDScript_aem85"]
+script/source = "extends CanvasLayer
+
+@export var canvas_layer: CanvasLayer
+var local_pos = Vector2(10, 20)
+func set_tower_preview(tower: PackedScene, mouse_pos):
+	var dragable_tower = tower.instantiate()
+	dragable_tower.set_name(\"DragTower\")
+	#dragable_tower.modulate = Color(\"ad54ff3c\")
+	dragable_tower.scale = Vector2(4.0, 4.0)
+	var control = Control.new()
+	control.add_child(dragable_tower, true)
+	#control.position = get_viewport_transform() * (get_global_transform() * local_pos)
+	control.set_name(\"TowerPreview\")
+	add_child(control, true)
+	return dragable_tower
+	
+func update_tower_preview(new_position, color):
+	var preview = get_node(\"DragTower\")
+	if preview:
+		preview.position = new_position
+		if preview.modulate != Color(color):
+			preview.modulate = Color(color)
+"
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_fjmtb"]
 tile_data = PackedInt32Array(0, 393216, 2, 65536, 262144, 1, 1, 262144, 1, 65537, 327680, 0, 2, 327680, 0, 65538, 393216, 2)
@@ -111,7 +135,7 @@ script = ExtResource("1_wlflx")
 canvas_layer = NodePath("GameUI")
 
 [node name="GameUI" type="CanvasLayer" parent="." node_paths=PackedStringArray("canvas_layer")]
-script = ExtResource("3_7t4va")
+script = SubResource("GDScript_aem85")
 canvas_layer = NodePath(".")
 
 [node name="GameInfoContainer" type="PanelContainer" parent="GameUI"]

@@ -10,12 +10,13 @@ extends Node2D
 
 @export var canvas_layer: CanvasLayer
 var TowerScene: PackedScene
+var TowerSceneName : String
 var points : int
 var waves = {1: 10, 2: 20, 3: 30}
 var current_wave = 1
 var enemies_spawned_for_wave = 0
 var enemies_left_for_wave : int
-var mouse_pos 
+var mouse_pos
 var map_node
 var towers
 var is_valid_position = false
@@ -24,11 +25,13 @@ var build_valid = false
 var build_location
 var tower_to_build
 var tower_preview
-var num_towers_placed : int
+var towers_overlapping = false
+var types_of_towers_placed : Dictionary = {"RegularTower": 1, "ShotgunTower": 1, "MachineGunTower": 1}
 
 func _ready():
-	num_towers_placed = 1
 	GlobalSignals.place_tower.connect(initiate_build_mode)
+	GlobalSignals.towers_are_overlapping.connect(towers_are_overlapping)
+	GlobalSignals.towers_not_overlapping.connect(towers_not_overlapping)
 	score_label.text = "Score: 0"
 	wave_label.text = "Wave: " + str(waves.keys()[0])
 	enemies_left_label.text = "Enemies Left: " + str(waves.values()[0])
@@ -67,7 +70,7 @@ func update_tower_preview(mouse_pos: Vector2):
 	if build_mode and tower_preview:
 		tower_preview.position = get_global_mouse_position()
 		check_valid_spot()
-		if is_valid_position:
+		if is_valid_position and towers_overlapping == false:
 			tower_preview.modulate = Color(0, 1, 0, 0.5)  # Green for valid
 		else:
 			tower_preview.modulate = Color(1, 0, 0, 0.5)  # Red for invalid
@@ -92,21 +95,28 @@ func check_valid_spot():
 	if tile_data:
 		can_place_tower = tile_data.get_custom_data("can_place_tower")
 		
-	if can_place_tower:
+	if can_place_tower and towers_overlapping == false:
 		build_valid = true
 		is_valid_position = true
-		print("Tower can be placed")
+		#print("Tower can be placed")
 	else:
 		build_valid = false
 		is_valid_position = false
-		print("NO PLACING")
+		#print("NO PLACING")
+
+func towers_are_overlapping():
+	towers_overlapping = true
+
+func towers_not_overlapping():
+	towers_overlapping = false
 
 func place_tower():
 	if build_valid:
 		var tower_instance = TowerScene.instantiate()
 		tower_instance.position = tower_preview.position
-		tower_instance.name = "Bombasstower" + str(num_towers_placed)
-		num_towers_placed += 1
+		TowerSceneName = tower_instance.tower_type_name
+		tower_instance.name = TowerSceneName + str(types_of_towers_placed[TowerSceneName])
+		types_of_towers_placed[TowerSceneName] += 1
 		towers.add_child(tower_instance)
 		tower_instance.placed = true
 		cancel_build_mode()
