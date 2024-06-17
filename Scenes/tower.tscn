@@ -7,7 +7,7 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_qbl6d"]
 radius = 39.5127
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_gm7qf"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_d57ni"]
 
 [node name="RegularTower" type="Node2D" groups=["friendly", "tower"]]
 script = ExtResource("1_vp4qx")
@@ -27,16 +27,16 @@ flip_h = true
 position = Vector2(-0.5, 1)
 shape = SubResource("CircleShape2D_qbl6d")
 
-[node name="TowerSpace" type="Area2D" parent="."]
+[node name="TowerSpace" type="Area2D" parent="." groups=["tower_hitbox"]]
 modulate = Color(1, 0, 1, 1)
 collision_layer = 2
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TowerSpace"]
 position = Vector2(-1, 1)
-shape = SubResource("CircleShape2D_gm7qf")
+shape = SubResource("CircleShape2D_d57ni")
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
-[connection signal="body_entered" from="TowerSpace" to="." method="_on_tower_space_body_entered"]
-[connection signal="body_exited" from="TowerSpace" to="." method="_on_tower_space_body_exited"]
+[connection signal="area_entered" from="TowerSpace" to="." method="_on_tower_space_area_entered"]
+[connection signal="area_exited" from="TowerSpace" to="." method="_on_tower_space_area_exited"]

@@ -3,6 +3,12 @@ extends Node2D
 @export var attack_rate : float
 @export var placed = false
 @export var tower_type_name : String
+
+#var towers_overlapping = false
+
+#signal towers_are_overlapping
+#signal towers_not_overlapping
+
 var targets : Array
 var cur_target = null
 var can_attack = true
@@ -18,7 +24,7 @@ func _ready():
 	name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	name_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	add_child(name_label)
-	
+
 func _process(delta):
 	if cur_target and cur_target.is_inside_tree() and can_attack:
 		shoot_bullet(38.0,5.0)
@@ -27,8 +33,6 @@ func _process(delta):
 		can_attack = true
 	#if cur_target:
 	#	_on_timer_timeout(cur_target)
-
-
 
 func shoot_bullet(speed: float, damage: float):
 	if placed:
@@ -39,7 +43,6 @@ func shoot_bullet(speed: float, damage: float):
 		bullet.target = cur_target
 		bullet.global_position = get_parent().position
 		self.add_child(bullet)
-	
 
 func _on_area_2d_body_entered(body):
 	if body.is_in_group("enemy"):
@@ -47,7 +50,6 @@ func _on_area_2d_body_entered(body):
 			targets.append(body)
 			if not cur_target:
 				cur_target = body
-				
 
 func _on_area_2d_body_exited(body):
 	if body.is_in_group("enemy"):
@@ -58,16 +60,13 @@ func _on_area_2d_body_exited(body):
 				if targets.size() > 0:
 					cur_target = targets[0]
 
-
-func _on_tower_space_body_entered(body):
+func _on_tower_space_area_entered(area):
 	print("body entered")
-	if body.is_in_group("tower"):
+	if area.is_in_group("tower_hitbox"):
 		print("towers are overlapping, can't place")
 		GlobalSignals.towers_are_overlapping.emit()
 
-
-
-func _on_tower_space_body_exited(body):
-	if body.is_in_group("tower"):
+func _on_tower_space_area_exited(area):
+	if area.is_in_group("tower_hitbox"):
 		print("towers no longer overlapping")
 		GlobalSignals.towers_not_overlapping.emit()

@@ -12,7 +12,7 @@ extends Node2D
 var TowerScene: PackedScene
 var TowerSceneName : String
 var points : int
-var waves = {1: 10, 2: 20, 3: 30}
+var waves = {1: 10, 2: 20, 3: 30, 4: 40, 5: 50}
 var current_wave = 1
 var enemies_spawned_for_wave = 0
 var enemies_left_for_wave : int
@@ -27,11 +27,14 @@ var tower_to_build
 var tower_preview
 var towers_overlapping = false
 var types_of_towers_placed : Dictionary = {"RegularTower": 1, "ShotgunTower": 1, "MachineGunTower": 1}
+var towers_cur_overlapping : int = 0
 
 func _ready():
 	GlobalSignals.place_tower.connect(initiate_build_mode)
-	GlobalSignals.towers_are_overlapping.connect(towers_are_overlapping)
-	GlobalSignals.towers_not_overlapping.connect(towers_not_overlapping)
+	#GlobalSignals.towers_are_overlapping.connect(towers_are_overlapping)
+	#GlobalSignals.towers_not_overlapping.connect(towers_not_overlapping)
+	GlobalSignals.towers_are_overlapping.connect(add_tower_overlapping)
+	GlobalSignals.towers_not_overlapping.connect(remove_tower_overlapping)
 	score_label.text = "Score: 0"
 	wave_label.text = "Wave: " + str(waves.keys()[0])
 	enemies_left_label.text = "Enemies Left: " + str(waves.values()[0])
@@ -48,6 +51,10 @@ func _process(delta):
 		get_tree().reload_current_scene()
 		
 	if build_mode:
+		if towers_cur_overlapping < 1:
+			towers_overlapping = false
+		else:
+			towers_overlapping = true
 		update_tower_preview(get_global_mouse_position())
 
 func initiate_build_mode(tower_type: PackedScene):
@@ -109,6 +116,15 @@ func towers_are_overlapping():
 
 func towers_not_overlapping():
 	towers_overlapping = false
+
+func add_tower_overlapping():
+	towers_cur_overlapping += 1
+	print("num of towers overlapping: " + str(towers_cur_overlapping))
+
+func remove_tower_overlapping():
+	towers_cur_overlapping -= 1
+	print("num of towers overlapping: " + str(towers_cur_overlapping))
+
 
 func place_tower():
 	if build_valid:
