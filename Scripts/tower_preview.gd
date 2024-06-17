@@ -1,6 +1,5 @@
 extends Button
 
-@export var TowerScene: PackedScene
 @export var canvas_layer: CanvasLayer
 
 func _process(delta):
@@ -27,11 +26,6 @@ func set_tower_preview(tower: PackedScene, mouse_pos):
 	#add_child(control, true)
 	
 func update_tower_preview(new_position, color):
-	get_node("TowerPreview").set_position(new_position)
+	get_node("TowerPreview/DragTower").set_position(new_position)
 	if get_node("TowerPreview/DragTower").modulate != Color(color):
 		get_node("TowerPreview/DragTower").modulate = Color(color)
-
-func _on_pressed():
-	print("Button was pressed")
-	GlobalSignals.place_tower.emit()
-	set_tower_preview(TowerScene, get_global_mouse_position())

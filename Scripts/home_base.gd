@@ -4,6 +4,7 @@ extends Area2D
 @export var health : float
 @onready var health_bar = %HealthBar
 
+signal died_to_base
 
 func _ready():
 	health_bar.max_value = health
@@ -22,6 +23,7 @@ func take_damage(damage: float):
 func _on_body_entered(body):
 	if body.is_in_group("enemy"):
 		take_damage(5.0)
+		died_to_base.emit()
 		body.queue_free()
 
 

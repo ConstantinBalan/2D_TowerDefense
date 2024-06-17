@@ -1,22 +1,23 @@
-[gd_scene load_steps=4 format=3 uid="uid://bi57g013vqiq6"]
+[gd_scene load_steps=5 format=3 uid="uid://ckxn2tdxyx78e"]
 
-[ext_resource type="Script" path="res://Scripts/tower_preview.gd" id="1_jrvsd"]
-[ext_resource type="Texture2D" uid="uid://c211daqbhqofq" path="res://Assets/gun.png" id="2_fe2yn"]
+[ext_resource type="Script" path="res://Scripts/tower.gd" id="1_jsi7c"]
+[ext_resource type="PackedScene" uid="uid://dvlt5b7vvgqrk" path="res://Scenes/bullet.tscn" id="2_gpc37"]
+[ext_resource type="Texture2D" uid="uid://c211daqbhqofq" path="res://Assets/gun.png" id="3_s8rj6"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_qbl6d"]
 radius = 39.5127
 
 [node name="Tower" type="Node2D" groups=["friendly"]]
-script = ExtResource("1_jrvsd")
+script = ExtResource("1_jsi7c")
+projectile = ExtResource("2_gpc37")
+attack_rate = 0.7
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.695704, 0.988631, 0, 1)
 position = Vector2(-3, 0)
 scale = Vector2(0.0325, 0.0333333)
-texture = ExtResource("2_fe2yn")
+texture = ExtResource("3_s8rj6")
 flip_h = true
-
-[node name="ShootCooldownTimer" type="Timer" parent="."]
-wait_time = 0.5
 
 [node name="Area2D" type="Area2D" parent="."]
 
@@ -24,6 +25,5 @@ wait_time = 0.5
 position = Vector2(-0.5, 1)
 shape = SubResource("CircleShape2D_qbl6d")
 
-[connection signal="timeout" from="ShootCooldownTimer" to="." method="_on_timer_timeout"]
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

@@ -1,17 +1,18 @@
 extends Node2D
-@onready var shoot_cooldown_timer = $ShootCooldownTimer
 @export var projectile : PackedScene
-@export var attack_rate = 0.5
+@export var attack_rate : float
+@export var placed = false
 var targets : Array
 var cur_target = null
 var can_attack = true
 
-func _ready():
-	shoot_cooldown_timer.start()
 
+func _ready():
+	pass
+	
 func _process(delta):
 	if cur_target and cur_target.is_inside_tree() and can_attack:
-		shoot_bullet(35.0,5.0)
+		shoot_bullet(38.0,5.0)
 		can_attack = false
 		await get_tree().create_timer(attack_rate).timeout
 		can_attack = true
@@ -21,15 +22,14 @@ func _process(delta):
 
 
 func shoot_bullet(speed: float, damage: float):
-	var projectile = projectile
-	var bullet = projectile.instantiate()
-	bullet.speed = speed
-	bullet.damage = damage
-	bullet.target = cur_target
-	
-	bullet.global_position = global_position
-	
-	get_parent().add_child(bullet)
+	if placed:
+		var projectile = projectile
+		var bullet = projectile.instantiate()
+		bullet.speed = speed
+		bullet.damage = damage
+		bullet.target = cur_target
+		bullet.global_position = get_parent().position
+		self.add_child(bullet)
 	
 
 func _on_area_2d_body_entered(body):

@@ -5,29 +5,37 @@ extends Node2D
 @onready var score_label = %ScoreLabel
 @onready var wave_label = %WaveLabel
 @onready var enemies_left_label = %EnemiesLeftLabel
+@onready var defense_level = $"."
+@onready var tile_map = $TileMap
 
+@export var canvas_layer: CanvasLayer
+var TowerScene: PackedScene
 var points : int
 var waves = {1: 10, 2: 20, 3: 30}
 var current_wave = 1
 var enemies_spawned_for_wave = 0
 var enemies_left_for_wave : int
-
+var mouse_pos 
 var map_node
+var towers
 var is_valid_position = false
 var build_mode= false
 var build_valid = false 
 var build_location
-var tower_to_build 
+var tower_to_build
+var tower_preview
+var num_towers_placed : int
 
 func _ready():
+	num_towers_placed = 1
+	GlobalSignals.place_tower.connect(initiate_build_mode)
 	score_label.text = "Score: 0"
 	wave_label.text = "Wave: " + str(waves.keys()[0])
 	enemies_left_label.text = "Enemies Left: " + str(waves.values()[0])
 	enemies_left_for_wave = waves[1]
-	map_node = get_node("DefenseLevel")
-	for i in get_tree().get_nodes_in_group("BuildTowerButtons"):
-		i.pressed.connect(initiate_build_mode.bind(i.name))
-	#This subscribes to the point_counted signal
+	map_node = get_node(".")
+	towers = get_node("Towers")
+
 
 func _process(delta):
 	base_life_label.text = "Health left: " + str(home_base.health)
@@ -36,25 +44,79 @@ func _process(delta):
 		print("game over")
 		get_tree().reload_current_scene()
 		
+	if build_mode:
+		update_tower_preview(get_global_mouse_position())
 
-func initiate_build_mode(tower_type):
-	tower_to_build = tower_type
-	build_mode = true 
-	get_node("BuildTowerButtons").set_tower_preview(tower_to_build, get_global_mouse_position())
+func initiate_build_mode(tower_type: PackedScene):
+	build_mode = true
+	TowerScene = tower_type
+	set_tower_preview(tower_type, get_global_mouse_position())
+	
 
-func update_tower_preview():
+func set_tower_preview(tower: PackedScene, mouse_pos):
+	var dragable_tower = tower.instantiate()
+	dragable_tower.set_name("DragTower")
+	var control = Control.new()
+	control.add_child(dragable_tower, true)
+	control.set_name("TowerPreview")
+	control.get_global_transform()
+	towers.add_child(control)
+	tower_preview = control
+	
+func update_tower_preview(mouse_pos: Vector2):
+	if build_mode and tower_preview:
+		tower_preview.position = get_global_mouse_position()
+		check_valid_spot()
+		if is_valid_position:
+			tower_preview.modulate = Color(0, 1, 0, 0.5)  # Green for valid
+		else:
+			tower_preview.modulate = Color(1, 0, 0, 0.5)  # Red for invalid
+			
+		
+func _input(event):
+	if build_mode and event is InputEventMouseButton and event.pressed:
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			if is_valid_position:
+				place_tower()
+			else:
+				print("Invalid position")
+		elif event.button_index == MOUSE_BUTTON_RIGHT:
+			cancel_build_mode()
+
+func check_valid_spot():
 	var mouse_position = get_global_mouse_position()
-	var current_tile = map_node.get_node("TileMap").local_to_map(mouse_position)
-	var tile_pos = map_node.get_node("TowerExclusion").map_to_local(current_tile)
-	
-	if map_node.get_node("TowerExclusion").get_cell_source_id(0, current_tile):
-		get_node("UI").update_tower_preview(tile_pos, "fff")
-		build_valid = true 
-		build_location = tile_pos
-	
+	var can_place_tower
+	#var clicked_cell = tile_map.local_to_map(tile_map.get_local_mouse_position())
+	var tile_position = tile_map.local_to_map(mouse_position)
+	var tile_data : TileData = tile_map.get_cell_tile_data(3, tile_position)
+	if tile_data:
+		can_place_tower = tile_data.get_custom_data("can_place_tower")
+		
+	if can_place_tower:
+		build_valid = true
+		is_valid_position = true
+		print("Tower can be placed")
 	else:
-		get_node("UI").update_tower_preview(tile_pos, "000")
 		build_valid = false
+		is_valid_position = false
+		print("NO PLACING")
+
+func place_tower():
+	if build_valid:
+		var tower_instance = TowerScene.instantiate()
+		tower_instance.position = tower_preview.position
+		tower_instance.name = "Bombasstower" + str(num_towers_placed)
+		num_towers_placed += 1
+		towers.add_child(tower_instance)
+		tower_instance.placed = true
+		cancel_build_mode()
+
+func cancel_build_mode():
+	if tower_preview:
+		tower_preview.queue_free()
+	build_mode = false
+	tower_to_build = null
+	tower_preview = null
 
 func on_enemy_died():
 	points += 1
