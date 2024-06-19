@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://didfb68gd710c"]
+[gd_scene load_steps=21 format=3 uid="uid://didfb68gd710c"]
 
 [ext_resource type="Texture2D" uid="uid://brfip5pr3myj5" path="res://Assets/grass_spritesheet.png" id="1_kyryt"]
 [ext_resource type="Script" path="res://Scripts/game.gd" id="1_wlflx"]
@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://cqrbxh3rh0crp" path="res://Scenes/home_base.tscn" id="7_fjm51"]
 [ext_resource type="PackedScene" uid="uid://ckxn2tdxyx78e" path="res://Scenes/shotgun_tower.tscn" id="7_wbtf1"]
 [ext_resource type="PackedScene" uid="uid://bi1nbyv8ohnpw" path="res://Scenes/machinegun_tower.tscn" id="8_7k614"]
+[ext_resource type="Script" path="res://Scripts/Menu Scripts/MainMenuButton.gd" id="8_hfat4"]
 
 [sub_resource type="GDScript" id="GDScript_aem85"]
 script/source = "extends CanvasLayer
@@ -285,10 +286,19 @@ towerType = ExtResource("8_7k614")
 
 [node name="Button4" type="Button" parent="GameUI/PlaceableTowerContainer/MarginContainer/BuildTowerButtons" groups=["build_buttons"]]
 layout_mode = 2
+disabled = true
 icon = ExtResource("6_88tsj")
 icon_alignment = 1
 expand_icon = true
 script = ExtResource("6_i2pos")
+
+[node name="MainMenuButton" type="Button" parent="GameUI"]
+offset_left = 32.0
+offset_top = 31.0
+offset_right = 128.0
+offset_bottom = 110.0
+text = "Main Menu"
+script = ExtResource("8_hfat4")
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_6lydd")
@@ -337,14 +347,15 @@ enemy_paths_to_spawn = Array[PackedScene]([ExtResource("6_vhy6x"), ExtResource("
 position = Vector2(23, -9)
 zoom = Vector2(3.02, 3.02)
 
+[connection signal="pressed" from="GameUI/MainMenuButton" to="GameUI/MainMenuButton" method="_on_pressed"]
 [connection signal="body_exited" from="HomeBase" to="HomeBase" method="_on_body_exited"]
 [connection signal="died_to_base" from="HomeBase" to="." method="decrement_enemies_left"]
-[connection signal="enemy_died" from="Paths/TopPath" to="." method="on_enemy_died"]
 [connection signal="enemy_died" from="Paths/TopPath" to="." method="decrement_enemies_left"]
+[connection signal="enemy_died" from="Paths/TopPath" to="." method="on_enemy_died"]
 [connection signal="enemy_spawned" from="Paths/TopPath" to="." method="add_to_spawned_wave"]
-[connection signal="enemy_died" from="Paths/BottomPath" to="." method="on_enemy_died"]
 [connection signal="enemy_died" from="Paths/BottomPath" to="." method="decrement_enemies_left"]
+[connection signal="enemy_died" from="Paths/BottomPath" to="." method="on_enemy_died"]
 [connection signal="enemy_spawned" from="Paths/BottomPath" to="." method="add_to_spawned_wave"]
-[connection signal="enemy_died" from="Paths/MiddlePath" to="." method="on_enemy_died"]
 [connection signal="enemy_died" from="Paths/MiddlePath" to="." method="decrement_enemies_left"]
+[connection signal="enemy_died" from="Paths/MiddlePath" to="." method="on_enemy_died"]
 [connection signal="enemy_spawned" from="Paths/MiddlePath" to="." method="add_to_spawned_wave"]

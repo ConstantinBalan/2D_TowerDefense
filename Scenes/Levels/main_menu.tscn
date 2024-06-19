@@ -1,0 +1,71 @@
+[gd_scene load_steps=5 format=3 uid="uid://c53mng1novn1e"]
+
+[ext_resource type="FontFile" uid="uid://bijycjedvvqrg" path="res://Assets/PixelOperator8.ttf" id="1_hl8g5"]
+[ext_resource type="Script" path="res://Scripts/Menu Scripts/Main Menu Scripts/StartGame.gd" id="2_h7ls2"]
+[ext_resource type="Script" path="res://Scripts/Menu Scripts/Main Menu Scripts/Options.gd" id="3_tqj00"]
+[ext_resource type="Script" path="res://Scripts/Menu Scripts/Main Menu Scripts/Quit.gd" id="4_lou3e"]
+
+[node name="MainMenu" type="Node2D"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Main Menu Title" type="CenterContainer" parent="CanvasLayer"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -362.0
+offset_top = 61.0
+offset_right = 362.0
+offset_bottom = 257.0
+grow_horizontal = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Main Menu Title"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_hl8g5")
+theme_override_font_sizes/font_size = 32
+text = "2d tower defense"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -241.0
+offset_top = -167.0
+offset_right = 241.0
+offset_bottom = 167.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="StartGame" type="Button" parent="CanvasLayer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_fonts/font = ExtResource("1_hl8g5")
+theme_override_font_sizes/font_size = 16
+text = "Start Game"
+script = ExtResource("2_h7ls2")
+
+[node name="Options" type="Button" parent="CanvasLayer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_fonts/font = ExtResource("1_hl8g5")
+theme_override_font_sizes/font_size = 16
+text = "Options"
+script = ExtResource("3_tqj00")
+
+[node name="Quit" type="Button" parent="CanvasLayer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_fonts/font = ExtResource("1_hl8g5")
+theme_override_font_sizes/font_size = 16
+text = "Quit"
+script = ExtResource("4_lou3e")
+
+[connection signal="pressed" from="CanvasLayer/VBoxContainer/StartGame" to="CanvasLayer/VBoxContainer/StartGame" method="_on_pressed"]
+[connection signal="pressed" from="CanvasLayer/VBoxContainer/Options" to="CanvasLayer/VBoxContainer/Options" method="_on_pressed"]
+[connection signal="pressed" from="CanvasLayer/VBoxContainer/Quit" to="CanvasLayer/VBoxContainer/Quit" method="_on_pressed"]

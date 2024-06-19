@@ -11,13 +11,13 @@ config_version=5
 [application]
 
 config/name="2D Tower Defense"
-run/main_scene="res://Scenes/Levels/defense_level.tscn"
+run/main_scene="res://Scenes/Levels/main_menu.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
-GlobalSignals="*res://Scripts/Global.gd"
+GlobalSignals="*res://Scripts/Autoloaded Scripts/Global.gd"
 
 [display]
 
