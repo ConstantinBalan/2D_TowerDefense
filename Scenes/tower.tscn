@@ -14,6 +14,7 @@ script = ExtResource("1_vp4qx")
 projectile = ExtResource("2_cem01")
 attack_rate = 0.5
 tower_type_name = "RegularTower"
+tower_cost = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(-3, 0)

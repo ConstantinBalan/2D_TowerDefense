@@ -1,0 +1,129 @@
+[gd_scene load_steps=4 format=3 uid="uid://nimifdsegjbx"]
+
+[ext_resource type="PackedScene" uid="uid://dmygyvtr2x03r" path="res://Scenes/level_icon.tscn" id="1_5tryj"]
+[ext_resource type="Script" path="res://Scripts/Menu Scripts/level_select.gd" id="1_32qln"]
+[ext_resource type="PackedScene" uid="uid://dvlgkt7nf66at" path="res://Scenes/player_icon.tscn" id="4_50i7l"]
+
+[node name="LevelSelect" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_32qln")
+
+[node name="Line2D" type="Line2D" parent="."]
+position = Vector2(192, 352)
+points = PackedVector2Array(0, 0, 128, 0, 128, 64, 192, 64, 224, 64, 224, -32, 224, -128, 256, -128, 384, -128, 384, 64, 448, 64, 480, 64, 480, -128, 608, -128, 608, -256, 672, -256, 736, -256, 736, -128, 960, -128)
+width = 5.0
+default_color = Color(0, 0, 0, 1)
+
+[node name="Line2D2" type="Line2D" parent="."]
+position = Vector2(448, 416)
+points = PackedVector2Array(0, 0, 224, 0, 224, -192, 288, -192, 352, -192, 352, -64, 480, -64, 480, -192)
+width = 5.0
+default_color = Color(0, 0, 0, 1)
+
+[node name="Line2D3" type="Line2D" parent="."]
+self_modulate = Color(1, 1, 0, 1)
+position = Vector2(960, 224)
+points = PackedVector2Array(0, 0, -192, 0)
+width = 5.0
+default_color = Color(0, 0, 0, 1)
+
+[node name="1" parent="." node_paths=PackedStringArray("next_level_right") instance=ExtResource("1_5tryj")]
+offset_left = 128.0
+offset_top = 320.0
+offset_right = 192.0
+offset_bottom = 384.0
+next_scene_path = "res://Scenes/Levels/defense_level.tscn"
+next_level_right = NodePath("../2")
+
+[node name="2" parent="." node_paths=PackedStringArray("next_level_up", "next_level_left", "next_level_right") instance=ExtResource("1_5tryj")]
+offset_left = 384.0
+offset_top = 384.0
+offset_right = 448.0
+offset_bottom = 448.0
+level_index = "2"
+next_scene_path = ""
+next_level_up = NodePath("../2B")
+next_level_left = NodePath("../1")
+next_level_right = NodePath("../3")
+
+[node name="2B" parent="." node_paths=PackedStringArray("next_level_down", "next_level_right") instance=ExtResource("1_5tryj")]
+offset_left = 448.0
+offset_top = 192.0
+offset_right = 512.0
+offset_bottom = 256.0
+level_index = "2B"
+next_scene_path = ""
+next_level_down = NodePath("../2")
+next_level_right = NodePath("../3")
+
+[node name="3" parent="." node_paths=PackedStringArray("next_level_up", "next_level_left") instance=ExtResource("1_5tryj")]
+offset_left = 640.0
+offset_top = 384.0
+offset_right = 704.0
+offset_bottom = 448.0
+level_index = "3"
+next_scene_path = ""
+next_level_up = NodePath("../3B")
+next_level_left = NodePath("../2")
+
+[node name="3B" parent="." node_paths=PackedStringArray("next_level_up", "next_level_down", "next_level_left") instance=ExtResource("1_5tryj")]
+offset_left = 704.0
+offset_top = 192.0
+offset_right = 768.0
+offset_bottom = 256.0
+level_index = "3B"
+next_scene_path = ""
+next_level_up = NodePath("../3C")
+next_level_down = NodePath("../3D")
+next_level_left = NodePath("../3")
+
+[node name="3C" parent="." node_paths=PackedStringArray("next_level_left", "next_level_right") instance=ExtResource("1_5tryj")]
+offset_left = 832.0
+offset_top = 64.0
+offset_right = 896.0
+offset_bottom = 128.0
+level_index = "3C"
+next_scene_path = ""
+next_level_left = NodePath("../3B")
+next_level_right = NodePath("../4")
+
+[node name="3D" parent="." node_paths=PackedStringArray("next_level_left", "next_level_right") instance=ExtResource("1_5tryj")]
+offset_left = 832.0
+offset_top = 320.0
+offset_right = 896.0
+offset_bottom = 384.0
+level_index = "3D"
+next_scene_path = ""
+next_level_left = NodePath("../3B")
+next_level_right = NodePath("../4")
+
+[node name="4" parent="." node_paths=PackedStringArray("next_level_left", "next_level_right") instance=ExtResource("1_5tryj")]
+offset_left = 960.0
+offset_top = 192.0
+offset_right = 1024.0
+offset_bottom = 256.0
+level_index = "4"
+next_scene_path = ""
+next_level_left = NodePath("../3B")
+next_level_right = NodePath("../5")
+
+[node name="5" parent="." node_paths=PackedStringArray("next_level_left") instance=ExtResource("1_5tryj")]
+offset_left = 1152.0
+offset_top = 192.0
+offset_right = 1216.0
+offset_bottom = 256.0
+level_index = "5"
+next_scene_path = ""
+next_level_left = NodePath("../4")
+
+[node name="PlayerIcon" parent="." instance=ExtResource("4_50i7l")]
+layout_mode = 0
+
+[node name="Camera2D" type="Camera2D" parent="PlayerIcon"]
+position = Vector2(32, 32)
+zoom = Vector2(2, 2)

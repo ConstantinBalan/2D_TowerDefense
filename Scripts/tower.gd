@@ -3,6 +3,7 @@ extends Node2D
 @export var attack_rate : float
 @export var placed = false
 @export var tower_type_name : String
+@export var tower_cost : int
 
 #var towers_overlapping = false
 

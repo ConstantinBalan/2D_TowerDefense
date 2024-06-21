@@ -1,0 +1,55 @@
+[gd_scene load_steps=6 format=3 uid="uid://c1mwon8qr4iao"]
+
+[ext_resource type="Script" path="res://Scripts/Menu Scripts/world_select.gd" id="1_jn3wr"]
+[ext_resource type="PackedScene" uid="uid://b8lds5yvplfi1" path="res://Scenes/world_icon.tscn" id="2_jxunp"]
+[ext_resource type="PackedScene" uid="uid://dvlgkt7nf66at" path="res://Scenes/player_icon.tscn" id="3_gcebl"]
+[ext_resource type="PackedScene" uid="uid://nimifdsegjbx" path="res://Scenes/Levels/grass_level_select.tscn" id="3_goxki"]
+[ext_resource type="PackedScene" uid="uid://bo70k0t7co67s" path="res://Scenes/Levels/desert_level_select.tscn" id="4_kmsyu"]
+
+[node name="WorldSelect" type="Control" node_paths=PackedStringArray("worlds")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_jn3wr")
+worlds = [NodePath("WorldIcon"), NodePath("WorldIcon2"), NodePath("WorldIcon3"), NodePath("WorldIcon4"), NodePath("WorldIcon5")]
+
+[node name="WorldIcon" parent="." instance=ExtResource("2_jxunp")]
+level_select_packed = ExtResource("3_goxki")
+
+[node name="WorldIcon2" parent="." instance=ExtResource("2_jxunp")]
+offset_left = 128.0
+offset_top = 128.0
+offset_right = 192.0
+offset_bottom = 192.0
+world_index = 2
+level_select_packed = ExtResource("4_kmsyu")
+
+[node name="WorldIcon3" parent="." instance=ExtResource("2_jxunp")]
+offset_left = 256.0
+offset_right = 320.0
+world_index = 3
+level_select_packed = ExtResource("3_goxki")
+
+[node name="WorldIcon4" parent="." instance=ExtResource("2_jxunp")]
+offset_left = 384.0
+offset_top = 128.0
+offset_right = 448.0
+offset_bottom = 192.0
+world_index = 4
+level_select_packed = ExtResource("3_goxki")
+
+[node name="WorldIcon5" parent="." instance=ExtResource("2_jxunp")]
+offset_left = 512.0
+offset_right = 576.0
+world_index = 5
+level_select_packed = ExtResource("3_goxki")
+
+[node name="PlayerIcon" parent="." instance=ExtResource("3_gcebl")]
+layout_mode = 0
+
+[node name="Camera2D" type="Camera2D" parent="PlayerIcon"]
+position = Vector2(32, 32)
+zoom = Vector2(2, 2)

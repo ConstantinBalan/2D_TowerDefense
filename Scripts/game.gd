@@ -29,13 +29,17 @@ var towers_overlapping = false
 var types_of_towers_placed : Dictionary = {"RegularTower": 1, "ShotgunTower": 1, "MachineGunTower": 1}
 var towers_cur_overlapping : int = 0
 
+#-------------------UI Stuff-------------------
+var insufficient_funds_message : PackedScene = load("res://Scenes/UI/insufficient_funds_message_box.tscn")
+var move_ui_tween : Tween
+
 func _ready():
 	GlobalSignals.place_tower.connect(initiate_build_mode)
 	#GlobalSignals.towers_are_overlapping.connect(towers_are_overlapping)
 	#GlobalSignals.towers_not_overlapping.connect(towers_not_overlapping)
 	GlobalSignals.towers_are_overlapping.connect(add_tower_overlapping)
 	GlobalSignals.towers_not_overlapping.connect(remove_tower_overlapping)
-	score_label.text = "Score: 0"
+	score_label.text = "Score: " + str(PlayerStats.coins)
 	wave_label.text = "Wave: " + str(waves.keys()[0])
 	enemies_left_label.text = "Enemies Left: " + str(waves.values()[0])
 	enemies_left_for_wave = waves[1]
@@ -45,7 +49,7 @@ func _ready():
 
 func _process(delta):
 	base_life_label.text = "Health left: " + str(home_base.health)
-	
+	score_label.text = "Score: " + str(PlayerStats.coins)
 	if home_base.health == 0:
 		print("game over")
 		get_tree().reload_current_scene()
@@ -129,13 +133,22 @@ func remove_tower_overlapping():
 func place_tower():
 	if build_valid:
 		var tower_instance = TowerScene.instantiate()
-		tower_instance.position = tower_preview.position
-		TowerSceneName = tower_instance.tower_type_name
-		tower_instance.name = TowerSceneName + str(types_of_towers_placed[TowerSceneName])
-		types_of_towers_placed[TowerSceneName] += 1
-		towers.add_child(tower_instance)
-		tower_instance.placed = true
-		cancel_build_mode()
+		tower_instance.hide()
+		if PlayerStats.coins >= tower_instance.tower_cost:
+			tower_instance.show()
+			tower_instance.position = tower_preview.position
+			TowerSceneName = tower_instance.tower_type_name
+			tower_instance.name = TowerSceneName + str(types_of_towers_placed[TowerSceneName])
+			types_of_towers_placed[TowerSceneName] += 1
+			towers.add_child(tower_instance)
+			tower_instance.placed = true
+			PlayerStats.coins -= tower_instance.tower_cost
+			cancel_build_mode()
+		else:
+			spawn_ui_element()
+			print("Not enough coins to build")
+			tower_instance.queue_free()
+
 
 func cancel_build_mode():
 	if tower_preview:
@@ -145,8 +158,8 @@ func cancel_build_mode():
 	tower_preview = null
 
 func on_enemy_died():
-	points += 1
-	score_label.text = "Score: " + str(points)
+	PlayerStats.coins += 1
+	score_label.text = "Score: " + str(PlayerStats.coins)
 
 #This is to adjust the UI for the enemies left on a wave
 func decrement_enemies_left():
@@ -181,5 +194,18 @@ func start_next_wave():
 	enemies_left_for_wave = waves[current_wave]
 	enemies_spawned_for_wave = 0
 	GlobalSignals.emit_signal("wave_start")
-
+	
+# Function to spawn the UI element and start the wiggle effect
+func spawn_ui_element():
+	
+	# Instantiate the UI element if necessary (e.g., if you're creating it dynamically)
+	var insuff_funds_mess_instance = insufficient_funds_message.instantiate()
+	add_child(insuff_funds_mess_instance)
+	#var timer = Timer.new()
+	#add_child(timer)
+	#timer.wait_time = 1.5 # Time in seconds before hiding the element
+	#timer.one_shot = true
+	await get_tree().create_timer(1).timeout
+	#timer.start()
+	insuff_funds_mess_instance.queue_free()
 
