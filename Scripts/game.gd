@@ -200,7 +200,7 @@ func spawn_ui_element():
 	
 	# Instantiate the UI element if necessary (e.g., if you're creating it dynamically)
 	var insuff_funds_mess_instance = insufficient_funds_message.instantiate()
-	add_child(insuff_funds_mess_instance)
+	get_node("GameUI").add_child(insuff_funds_mess_instance)
 	#var timer = Timer.new()
 	#add_child(timer)
 	#timer.wait_time = 1.5 # Time in seconds before hiding the element
