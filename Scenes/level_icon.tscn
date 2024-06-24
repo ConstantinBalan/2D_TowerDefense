@@ -17,7 +17,6 @@ offset_right = 64.0
 offset_bottom = 64.0
 pivot_offset = Vector2(32, 32)
 script = ExtResource("1_2hko5")
-next_scene_path = null
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 0

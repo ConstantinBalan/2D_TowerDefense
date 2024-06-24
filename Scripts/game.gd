@@ -11,6 +11,9 @@ extends Node2D
 @export var canvas_layer: CanvasLayer
 var TowerScene: PackedScene
 var TowerSceneName : String
+var TowerUI : PackedScene = preload("res://Scenes/UI/tower_info_popup.tscn")
+var tower_ui
+var tower_ui_is_showing = false
 var points : int
 var waves = {1: 10, 2: 20, 3: 30, 4: 40, 5: 50}
 var current_wave = 1
@@ -26,7 +29,7 @@ var build_location
 var tower_to_build
 var tower_preview
 var towers_overlapping = false
-var types_of_towers_placed : Dictionary = {"RegularTower": 1, "ShotgunTower": 1, "MachineGunTower": 1}
+var types_of_towers_placed : Dictionary = {"Regular Tower": 1, "Shotgun Tower": 1, "MachineGun Tower": 1}
 var towers_cur_overlapping : int = 0
 
 #-------------------UI Stuff-------------------
@@ -35,8 +38,7 @@ var move_ui_tween : Tween
 
 func _ready():
 	GlobalSignals.place_tower.connect(initiate_build_mode)
-	#GlobalSignals.towers_are_overlapping.connect(towers_are_overlapping)
-	#GlobalSignals.towers_not_overlapping.connect(towers_not_overlapping)
+	GlobalSignals.create_tower_ui.connect(spawn_tower_ui)
 	GlobalSignals.towers_are_overlapping.connect(add_tower_overlapping)
 	GlobalSignals.towers_not_overlapping.connect(remove_tower_overlapping)
 	score_label.text = "Score: " + str(PlayerStats.coins)
@@ -66,8 +68,18 @@ func initiate_build_mode(tower_type: PackedScene):
 	TowerScene = tower_type
 	set_tower_preview(tower_type, get_global_mouse_position())
 	
+func spawn_tower_ui():
+	if tower_ui:
+		tower_ui.queue_free()
+	tower_ui = TowerUI.instantiate()
+	tower_ui.name = "TowerUI"
+	get_node("GameUI").add_child(tower_ui)
+
+	
 
 func set_tower_preview(tower: PackedScene, mouse_pos):
+	if tower_preview:
+		tower_preview.queue_free()
 	var dragable_tower = tower.instantiate()
 	dragable_tower.set_name("DragTower")
 	var control = Control.new()
@@ -142,6 +154,7 @@ func place_tower():
 			types_of_towers_placed[TowerSceneName] += 1
 			towers.add_child(tower_instance)
 			tower_instance.placed = true
+			tower_instance.was_recently_placed = true
 			PlayerStats.coins -= tower_instance.tower_cost
 			cancel_build_mode()
 		else:

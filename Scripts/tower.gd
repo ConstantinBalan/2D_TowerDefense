@@ -1,20 +1,27 @@
 extends Node2D
 @export var projectile : PackedScene
 @export var attack_rate : float
+@export var tower_level : int
+@export var tower_damage : float
 @export var placed = false
 @export var tower_type_name : String
 @export var tower_cost : int
 
-#var towers_overlapping = false
-
-#signal towers_are_overlapping
-#signal towers_not_overlapping
 
 var targets : Array
 var cur_target = null
 var can_attack = true
+var was_recently_placed = false
+var can_click_ui = false
 const PIXEL_OPERATOR_8 = preload("res://Assets/PixelOperator8.ttf")
+
 func _ready():
+	if is_in_group("regular_tower"):
+		tower_level = PlayerStats.regular_tower_level
+	if is_in_group("shotgun_tower"):
+		tower_level = PlayerStats.shotgun_tower_level
+	if is_in_group("machinegun_tower"):
+		tower_level = PlayerStats.machinegun_tower_level
 	var label_pos = Vector2(-50, -30)
 	var name_label : Label = Label.new()
 	name_label.uppercase = true
@@ -27,8 +34,10 @@ func _ready():
 	add_child(name_label)
 
 func _process(delta):
+	if was_recently_placed and can_click_ui == false:
+		recently_placed()
 	if cur_target and cur_target.is_inside_tree() and can_attack:
-		shoot_bullet(38.0,5.0)
+		shoot_bullet(38.0,tower_damage)
 		can_attack = false
 		await get_tree().create_timer(attack_rate).timeout
 		can_attack = true
@@ -71,3 +80,14 @@ func _on_tower_space_area_exited(area):
 	if area.is_in_group("tower_hitbox"):
 		print("towers no longer overlapping")
 		GlobalSignals.towers_not_overlapping.emit()
+
+func recently_placed():
+	var long_timer = Timer.new()
+	await get_tree().create_timer(0.1).timeout
+	can_click_ui = true
+
+func _on_tower_ui_input_event(viewport, event, shape_idx):
+	if event is InputEventMouseButton and event.pressed and can_click_ui:
+		print("Tower should fill in info")
+		GlobalSignals.create_tower_ui.emit()
+		GlobalSignals.emit_signal("enable_tower_ui", tower_type_name, tower_cost, tower_level, tower_damage, attack_rate)
