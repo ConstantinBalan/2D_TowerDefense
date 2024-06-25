@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bvred2ov3wq70"]
 
-[ext_resource type="FontFile" uid="uid://bijycjedvvqrg" path="res://Assets/PixelOperator8.ttf" id="1_5us3x"]
-[ext_resource type="Script" path="res://Scripts/Menu Scripts/MainMenuButton.gd" id="2_7nr2q"]
+[ext_resource type="FontFile" uid="uid://bijycjedvvqrg" path="res://Assets/PixelOperator8.ttf" id="1_qp0fq"]
+[ext_resource type="Script" path="res://Scripts/Menu Scripts/MainMenuButton.gd" id="2_jesou"]
 
 [node name="OptionsMenu" type="Node2D"]
 
@@ -30,7 +30,7 @@ offset_right = 69.0
 offset_bottom = 12.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_fonts/font = ExtResource("1_5us3x")
+theme_override_fonts/font = ExtResource("1_qp0fq")
 theme_override_font_sizes/font_size = 24
 text = "Options"
 horizontal_alignment = 1
@@ -154,6 +154,6 @@ offset_top = 43.0
 offset_right = 138.0
 offset_bottom = 122.0
 text = "Main Menu"
-script = ExtResource("2_7nr2q")
+script = ExtResource("2_jesou")
 
 [connection signal="pressed" from="CanvasLayer/MainMenuButton" to="CanvasLayer/MainMenuButton" method="_on_pressed"]
