@@ -4,6 +4,7 @@ extends Node2D
 @export var damage : float
 var target = null
 
+
 func _physics_process(delta):
 	if is_instance_valid(target):
 		var direction = (target.global_position - global_position).normalized()

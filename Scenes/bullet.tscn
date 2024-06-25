@@ -1,23 +1,23 @@
 [gd_scene load_steps=4 format=3 uid="uid://dvlt5b7vvgqrk"]
 
 [ext_resource type="Script" path="res://Scripts/bullet.gd" id="1_ge145"]
-[ext_resource type="Texture2D" uid="uid://bl02t3tbq4fxg" path="res://Assets/sadcat.png" id="1_o3y4s"]
+[ext_resource type="Texture2D" uid="uid://cvvks7v4275s4" path="res://Assets/Bullet.png" id="2_y2lx6"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_umdpw"]
-radius = 4.12311
+[sub_resource type="CircleShape2D" id="CircleShape2D_ffsum"]
+radius = 3.0
 
 [node name="Bullet" type="Node2D"]
 script = ExtResource("1_ge145")
 
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-2.98023e-08, 0)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("2_y2lx6")
+flip_h = true
+
 [node name="Area2D" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-shape = SubResource("CircleShape2D_umdpw")
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(-0.5, 9.23872e-07)
-scale = Vector2(0.0107143, 0.0124688)
-texture = ExtResource("1_o3y4s")
-flip_h = true
+shape = SubResource("CircleShape2D_ffsum")
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

@@ -1,10 +1,72 @@
-[gd_scene load_steps=2 format=3 uid="uid://dvlgkt7nf66at"]
+[gd_scene load_steps=4 format=3 uid="uid://dvlgkt7nf66at"]
 
-[ext_resource type="Texture2D" uid="uid://cd7sn1b7gicn6" path="res://Assets/ang.png" id="1_omsnx"]
+[ext_resource type="Texture2D" uid="uid://rg5k6w78g134" path="res://Scenes/Idle.png" id="1_jgm3n"]
 
-[node name="PlayerIcon" type="TextureRect"]
-offset_right = 64.0
-offset_bottom = 64.0
-pivot_offset = Vector2(32, 32)
-texture = ExtResource("1_omsnx")
-expand_mode = 1
+[sub_resource type="Animation" id="Animation_qaagw"]
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = false
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = false
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_x2gqw"]
+_data = {
+"Idle": SubResource("Animation_qaagw")
+}
+
+[node name="PlayerMapIcon" type="Node2D"]
+position = Vector2(32, 32)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("1_jgm3n")
+centered = false
+hframes = 3
+vframes = 3
+metadata/_aseprite_wizard_config_ = {
+"i_mode": -1,
+"keep_anim_length": false,
+"layer": "Idle",
+"o_ex_p": "",
+"o_folder": "",
+"o_name": "",
+"only_visible": false,
+"player": "AnimationPlayer",
+"slice": "",
+"source": "C:/Users/Dragos/Desktop/Pixel Art/CursorIdleAnimation.aseprite"
+}
+metadata/_aseprite_wizard_interface_config_ = {
+"animation_section": true,
+"layer_section": true,
+"output_section": true,
+"slice_section": true
+}
+metadata/_aseprite_wizard_source_file_hash_ = "f830a6d25285e3b7088fb85df26101f3"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_x2gqw")
+}
+autoplay = "Idle"
+speed_scale = 2.0
