@@ -8,4 +8,5 @@ signal place_tower(tower_type: PackedScene)
 signal towers_are_overlapping
 signal towers_not_overlapping
 signal create_tower_ui
+signal delete_tower_ui
 signal enable_tower_ui(tower_name: String, tower_cost: int, tower_level: int, tower_damage: float, tower_attack_rate: float)

@@ -3,6 +3,12 @@ extends Node2D
 @export var speed : float
 @export var damage : float
 var target = null
+var target_position_on_bullet_spawn : Vector2
+
+func _ready():
+	pass
+	#if is_instance_valid(target):
+	#	target_position_on_bullet_spawn = target.global_position
 
 
 func _physics_process(delta):

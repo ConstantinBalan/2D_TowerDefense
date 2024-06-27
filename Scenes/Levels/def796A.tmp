@@ -2,7 +2,6 @@
 
 [ext_resource type="Texture2D" uid="uid://brfip5pr3myj5" path="res://Assets/grass_spritesheet.png" id="1_kyryt"]
 [ext_resource type="Script" path="res://Scripts/game.gd" id="1_wlflx"]
-[ext_resource type="Texture2D" uid="uid://ctwwi2rat0lag" path="res://Assets/coin.png" id="2_3cwok"]
 [ext_resource type="PackedScene" uid="uid://do1jb8s08qoeo" path="res://Scenes/UI/BuildTowerButton.tscn" id="3_vkmtl"]
 [ext_resource type="Theme" uid="uid://eo2yt6tnyxbn" path="res://Themes/UI_Theme.tres" id="5_0s54i"]
 [ext_resource type="Script" path="res://Scripts/SpawnOnPath.gd" id="5_1mm45"]
@@ -12,6 +11,31 @@
 [ext_resource type="PackedScene" uid="uid://ckxn2tdxyx78e" path="res://Scenes/shotgun_tower.tscn" id="7_wbtf1"]
 [ext_resource type="PackedScene" uid="uid://bi1nbyv8ohnpw" path="res://Scenes/machinegun_tower.tscn" id="8_7k614"]
 [ext_resource type="Script" path="res://Scripts/Menu Scripts/MainMenuButton.gd" id="8_hfat4"]
+
+[sub_resource type="GDScript" id="GDScript_aem85"]
+script/source = "extends CanvasLayer
+
+@export var canvas_layer: CanvasLayer
+var local_pos = Vector2(10, 20)
+func set_tower_preview(tower: PackedScene, mouse_pos):
+	var dragable_tower = tower.instantiate()
+	dragable_tower.set_name(\"DragTower\")
+	#dragable_tower.modulate = Color(\"ad54ff3c\")
+	dragable_tower.scale = Vector2(4.0, 4.0)
+	var control = Control.new()
+	control.add_child(dragable_tower, true)
+	#control.position = get_viewport_transform() * (get_global_transform() * local_pos)
+	control.set_name(\"TowerPreview\")
+	add_child(control, true)
+	return dragable_tower
+	
+func update_tower_preview(new_position, color):
+	var preview = get_node(\"DragTower\")
+	if preview:
+		preview.position = new_position
+		if preview.modulate != Color(color):
+			preview.modulate = Color(color)
+"
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_fjmtb"]
 tile_data = PackedInt32Array(0, 393216, 2, 65536, 262144, 1, 1, 262144, 1, 65537, 327680, 0, 2, 327680, 0, 65538, 393216, 2)
@@ -109,44 +133,9 @@ point_count = 2
 script = ExtResource("1_wlflx")
 canvas_layer = NodePath("GameUI")
 
-[node name="GameUI" type="CanvasLayer" parent="."]
-
-[node name="CoinContainer" type="PanelContainer" parent="GameUI"]
-anchors_preset = -1
-anchor_left = 0.202
-anchor_right = 0.202
-offset_left = -20.84
-offset_top = 30.0
-offset_right = 146.16
-offset_bottom = 114.0
-grow_horizontal = 2
-size_flags_horizontal = 4
-
-[node name="HBoxContainer" type="HBoxContainer" parent="GameUI/CoinContainer"]
-layout_mode = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="GameUI/CoinContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Control" type="Control" parent="GameUI/CoinContainer/HBoxContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="CoinImage" type="TextureRect" parent="GameUI/CoinContainer/HBoxContainer/VBoxContainer"]
-layout_mode = 2
-texture = ExtResource("2_3cwok")
-
-[node name="Control2" type="Control" parent="GameUI/CoinContainer/HBoxContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="CoinAmountLabel" type="Label" parent="GameUI/CoinContainer/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Coins:"
-vertical_alignment = 1
+[node name="GameUI" type="CanvasLayer" parent="." node_paths=PackedStringArray("canvas_layer")]
+script = SubResource("GDScript_aem85")
+canvas_layer = NodePath(".")
 
 [node name="GameInfoContainer" type="PanelContainer" parent="GameUI"]
 anchors_preset = 1
@@ -176,6 +165,11 @@ tooltip_text = "This is the UI for all of the level related info"
 unique_name_in_owner = true
 layout_mode = 2
 text = "Base Life"
+
+[node name="ScoreLabel" type="Label" parent="GameUI/GameInfoContainer/MarginContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Score"
 
 [node name="WaveLabel" type="Label" parent="GameUI/GameInfoContainer/MarginContainer/GridContainer"]
 unique_name_in_owner = true
@@ -268,19 +262,9 @@ alignment = 1
 [node name="RegularTowerButton" parent="GameUI/PlaceableTowerContainer/MarginContainer/BuildTowerButtons" instance=ExtResource("3_vkmtl")]
 layout_mode = 2
 
-[node name="Control" type="Control" parent="GameUI/PlaceableTowerContainer/MarginContainer/BuildTowerButtons"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.1
-
 [node name="ShotgunTowerButton" parent="GameUI/PlaceableTowerContainer/MarginContainer/BuildTowerButtons" instance=ExtResource("3_vkmtl")]
 layout_mode = 2
 towerType = ExtResource("7_wbtf1")
-
-[node name="Control2" type="Control" parent="GameUI/PlaceableTowerContainer/MarginContainer/BuildTowerButtons"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.1
 
 [node name="MachineGunTowerButton" parent="GameUI/PlaceableTowerContainer/MarginContainer/BuildTowerButtons" instance=ExtResource("3_vkmtl")]
 layout_mode = 2
@@ -342,13 +326,14 @@ position = Vector2(23, -9)
 zoom = Vector2(3.02, 3.02)
 
 [connection signal="pressed" from="GameUI/MainMenuButton" to="GameUI/MainMenuButton" method="_on_pressed"]
+[connection signal="body_exited" from="HomeBase" to="HomeBase" method="_on_body_exited"]
 [connection signal="died_to_base" from="HomeBase" to="." method="decrement_enemies_left"]
-[connection signal="enemy_died" from="Paths/TopPath" to="." method="decrement_enemies_left"]
 [connection signal="enemy_died" from="Paths/TopPath" to="." method="on_enemy_died"]
+[connection signal="enemy_died" from="Paths/TopPath" to="." method="decrement_enemies_left"]
 [connection signal="enemy_spawned" from="Paths/TopPath" to="." method="add_to_spawned_wave"]
-[connection signal="enemy_died" from="Paths/BottomPath" to="." method="decrement_enemies_left"]
 [connection signal="enemy_died" from="Paths/BottomPath" to="." method="on_enemy_died"]
+[connection signal="enemy_died" from="Paths/BottomPath" to="." method="decrement_enemies_left"]
 [connection signal="enemy_spawned" from="Paths/BottomPath" to="." method="add_to_spawned_wave"]
-[connection signal="enemy_died" from="Paths/MiddlePath" to="." method="decrement_enemies_left"]
 [connection signal="enemy_died" from="Paths/MiddlePath" to="." method="on_enemy_died"]
+[connection signal="enemy_died" from="Paths/MiddlePath" to="." method="decrement_enemies_left"]
 [connection signal="enemy_spawned" from="Paths/MiddlePath" to="." method="add_to_spawned_wave"]

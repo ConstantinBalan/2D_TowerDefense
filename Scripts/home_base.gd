@@ -25,7 +25,3 @@ func _on_body_entered(body):
 		take_damage(5.0)
 		died_to_base.emit()
 		body.queue_free()
-
-
-func _on_body_exited(body):
-	pass # Replace with function body.

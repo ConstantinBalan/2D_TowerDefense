@@ -1,13 +1,13 @@
 extends Node2D
-@export var projectile : PackedScene
+@export var projectile_scene : PackedScene
 @export var attack_rate : float
-@export var tower_level : int
+@export var tower_level : int = 0
 @export var tower_damage : float
 @export var placed = false
 @export var tower_type_name : String
 @export var tower_cost : int
 
-
+var bullet_amount = 3
 var targets : Array
 var cur_target = null
 var can_attack = true
@@ -46,7 +46,7 @@ func _process(delta):
 
 func shoot_bullet(speed: float, damage: float):
 	if placed:
-		var projectile = projectile
+		var projectile = projectile_scene
 		var bullet = projectile.instantiate()
 		bullet.speed = speed
 		bullet.damage = damage
@@ -82,12 +82,11 @@ func _on_tower_space_area_exited(area):
 		GlobalSignals.towers_not_overlapping.emit()
 
 func recently_placed():
-	var long_timer = Timer.new()
 	await get_tree().create_timer(0.1).timeout
 	can_click_ui = true
 
-func _on_tower_ui_input_event(viewport, event, shape_idx):
-	if event is InputEventMouseButton and event.pressed and can_click_ui:
-		print("Tower should fill in info")
-		GlobalSignals.create_tower_ui.emit()
-		GlobalSignals.emit_signal("enable_tower_ui", tower_type_name, tower_cost, tower_level, tower_damage, attack_rate)
+#func _on_tower_ui_input_event(viewport, event, shape_idx):
+#	if event is InputEventMouseButton and event.pressed and can_click_ui:
+#		print("Tower should fill in info")
+#		GlobalSignals.create_tower_ui.emit()
+#		GlobalSignals.emit_signal("enable_tower_ui", tower_type_name, tower_cost, tower_level, tower_damage, attack_rate)

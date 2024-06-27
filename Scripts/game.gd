@@ -2,9 +2,9 @@ extends Node2D
 
 @onready var home_base = $HomeBase
 @onready var base_life_label = %BaseLifeLabel
-@onready var score_label = %ScoreLabel
 @onready var wave_label = %WaveLabel
 @onready var enemies_left_label = %EnemiesLeftLabel
+@onready var coin_amount_label = %CoinAmountLabel
 @onready var defense_level = $"."
 @onready var tile_map = $TileMap
 
@@ -39,9 +39,10 @@ var move_ui_tween : Tween
 func _ready():
 	GlobalSignals.place_tower.connect(initiate_build_mode)
 	GlobalSignals.create_tower_ui.connect(spawn_tower_ui)
+	GlobalSignals.delete_tower_ui.connect(remove_tower_ui)
 	GlobalSignals.towers_are_overlapping.connect(add_tower_overlapping)
 	GlobalSignals.towers_not_overlapping.connect(remove_tower_overlapping)
-	score_label.text = "Score: " + str(PlayerStats.coins)
+	coin_amount_label.text = "Coins: " + str(PlayerStats.coins)
 	wave_label.text = "Wave: " + str(waves.keys()[0])
 	enemies_left_label.text = "Enemies Left: " + str(waves.values()[0])
 	enemies_left_for_wave = waves[1]
@@ -51,7 +52,7 @@ func _ready():
 
 func _process(delta):
 	base_life_label.text = "Health left: " + str(home_base.health)
-	score_label.text = "Score: " + str(PlayerStats.coins)
+	coin_amount_label.text = "Score: " + str(PlayerStats.coins)
 	if home_base.health == 0:
 		print("game over")
 		get_tree().reload_current_scene()
@@ -69,12 +70,16 @@ func initiate_build_mode(tower_type: PackedScene):
 	set_tower_preview(tower_type, get_global_mouse_position())
 	
 func spawn_tower_ui():
-	if tower_ui:
-		tower_ui.queue_free()
+	#if tower_ui:
+	#	tower_ui.queue_free()
 	tower_ui = TowerUI.instantiate()
 	tower_ui.name = "TowerUI"
 	get_node("GameUI").add_child(tower_ui)
+	tower_ui.show()
 
+func remove_tower_ui():
+	if tower_ui:
+		tower_ui.queue_free()
 	
 
 func set_tower_preview(tower: PackedScene, mouse_pos):
@@ -88,7 +93,7 @@ func set_tower_preview(tower: PackedScene, mouse_pos):
 	control.get_global_transform()
 	towers.add_child(control)
 	tower_preview = control
-	
+
 func update_tower_preview(mouse_pos: Vector2):
 	if build_mode and tower_preview:
 		tower_preview.position = get_global_mouse_position()
@@ -97,8 +102,7 @@ func update_tower_preview(mouse_pos: Vector2):
 			tower_preview.modulate = Color(0, 1, 0, 0.5)  # Green for valid
 		else:
 			tower_preview.modulate = Color(1, 0, 0, 0.5)  # Red for invalid
-			
-		
+
 func _input(event):
 	if build_mode and event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_LEFT:
@@ -172,7 +176,7 @@ func cancel_build_mode():
 
 func on_enemy_died():
 	PlayerStats.coins += 1
-	score_label.text = "Score: " + str(PlayerStats.coins)
+	coin_amount_label.text = "Score: " + str(PlayerStats.coins)
 
 #This is to adjust the UI for the enemies left on a wave
 func decrement_enemies_left():
@@ -221,4 +225,3 @@ func spawn_ui_element():
 	await get_tree().create_timer(1).timeout
 	#timer.start()
 	insuff_funds_mess_instance.queue_free()
-

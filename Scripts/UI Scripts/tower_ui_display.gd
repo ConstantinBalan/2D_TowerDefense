@@ -12,6 +12,7 @@ extends Node
 func _ready():
 	info_window.hide()
 	GlobalSignals.enable_tower_ui.connect(show_tower_ui)
+	print("tower ui created")
 	
 	
 func show_tower_ui(tower_name: String, tower_cost: int, tower_level: int, tower_damage: float, tower_attack_rate: float):
@@ -21,7 +22,3 @@ func show_tower_ui(tower_name: String, tower_cost: int, tower_level: int, tower_
 	ui_tower_damage.text = "Tower Damage: " +str(tower_damage)
 	ui_tower_attack_rate.text = "Tower Attack Rate: " + str(tower_attack_rate)
 	info_window.show()
-
-
-func _on_close_tower_info_pressed():
-	self.queue_free()
