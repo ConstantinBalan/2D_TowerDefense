@@ -48,8 +48,13 @@ world_index = 5
 level_select_packed = ExtResource("3_goxki")
 
 [node name="PlayerIcon" parent="." instance=ExtResource("3_gcebl")]
-layout_mode = 0
 
 [node name="Camera2D" type="Camera2D" parent="PlayerIcon"]
 position = Vector2(32, 32)
 zoom = Vector2(2, 2)
+
+[node name="GemsLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0

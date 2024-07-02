@@ -30,7 +30,6 @@ offset_left = 192.0
 offset_top = 256.0
 offset_right = 256.0
 offset_bottom = 320.0
-next_scene_path = ""
 next_level_right = NodePath("../2")
 
 [node name="2" parent="." node_paths=PackedStringArray("next_level_left", "next_level_right") instance=ExtResource("2_a7ixq")]
@@ -39,7 +38,6 @@ offset_top = 72.0
 offset_right = 448.0
 offset_bottom = 136.0
 level_index = "2"
-next_scene_path = ""
 next_level_left = NodePath("../1")
 next_level_right = NodePath("../3")
 
@@ -49,7 +47,6 @@ offset_top = 256.0
 offset_right = 576.0
 offset_bottom = 320.0
 level_index = "3"
-next_scene_path = ""
 next_level_down = NodePath("../3B")
 next_level_left = NodePath("../2")
 next_level_right = NodePath("../4")
@@ -60,7 +57,6 @@ offset_top = 448.0
 offset_right = 640.0
 offset_bottom = 512.0
 level_index = "3B"
-next_scene_path = ""
 next_level_up = NodePath("../3")
 
 [node name="4" parent="." node_paths=PackedStringArray("next_level_up", "next_level_left") instance=ExtResource("2_a7ixq")]
@@ -69,7 +65,6 @@ offset_top = 256.0
 offset_right = 768.0
 offset_bottom = 320.0
 level_index = "4"
-next_scene_path = ""
 next_level_up = NodePath("../5")
 next_level_left = NodePath("../3")
 
@@ -79,11 +74,9 @@ offset_top = 64.0
 offset_right = 768.0
 offset_bottom = 128.0
 level_index = "5"
-next_scene_path = ""
 next_level_down = NodePath("../4")
 
 [node name="PlayerIcon" parent="." instance=ExtResource("4_r544k")]
-layout_mode = 0
 
 [node name="Camera2D" type="Camera2D" parent="PlayerIcon"]
 position = Vector2(32, 32)

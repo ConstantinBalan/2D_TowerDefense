@@ -14,10 +14,6 @@ radius = 39.5127
 [node name="RegularTower" type="Node2D" groups=["friendly", "regular_tower", "tower"]]
 script = ExtResource("1_vp4qx")
 projectile_scene = ExtResource("2_cem01")
-attack_rate = 0.5
-tower_damage = 5.0
-tower_type_name = "Regular Tower"
-tower_cost = 2
 
 [node name="TowerUI" type="Area2D" parent="."]
 

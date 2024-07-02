@@ -15,10 +15,10 @@ func _ready():
 	print("tower ui created")
 	
 	
-func show_tower_ui(tower_name: String, tower_cost: int, tower_level: int, tower_damage: float, tower_attack_rate: float):
-	ui_tower_name.text = str(tower_name)
-	ui_tower_cost.text = "Cost: " + str(tower_cost)
-	ui_tower_level.text = "Tower Level: " + str(tower_level)
-	ui_tower_damage.text = "Tower Damage: " +str(tower_damage)
-	ui_tower_attack_rate.text = "Tower Attack Rate: " + str(tower_attack_rate)
+func show_tower_ui(tower_info : Dictionary):
+	ui_tower_name.text = tower_info["type"]
+	ui_tower_cost.text = "Cost: " + str(tower_info["cost"])
+	ui_tower_level.text = "Tower Level: " + str(tower_info["level"])
+	ui_tower_damage.text = "Tower Damage: " +str(tower_info["damage"])
+	ui_tower_attack_rate.text = "Tower Attack Rate: " + str(tower_info["attack_rate"])
 	info_window.show()

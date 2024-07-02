@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://didfb68gd710c"]
+[gd_scene load_steps=17 format=3 uid="uid://didfb68gd710c"]
 
 [ext_resource type="Texture2D" uid="uid://brfip5pr3myj5" path="res://Assets/grass_spritesheet.png" id="1_kyryt"]
 [ext_resource type="Script" path="res://Scripts/game.gd" id="1_wlflx"]
@@ -9,8 +9,6 @@
 [ext_resource type="PackedScene" uid="uid://gu4ksp2me4jn" path="res://Scenes/weak_enemy_path.tscn" id="6_vhy6x"]
 [ext_resource type="PackedScene" uid="uid://cmk53exapcrso" path="res://Scenes/strong_enemy_path.tscn" id="7_c0sdi"]
 [ext_resource type="PackedScene" uid="uid://cqrbxh3rh0crp" path="res://Scenes/home_base.tscn" id="7_fjm51"]
-[ext_resource type="PackedScene" uid="uid://ckxn2tdxyx78e" path="res://Scenes/shotgun_tower.tscn" id="7_wbtf1"]
-[ext_resource type="PackedScene" uid="uid://bi1nbyv8ohnpw" path="res://Scenes/machinegun_tower.tscn" id="8_7k614"]
 [ext_resource type="Script" path="res://Scripts/Menu Scripts/MainMenuButton.gd" id="8_hfat4"]
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_fjmtb"]
@@ -267,6 +265,8 @@ alignment = 1
 
 [node name="RegularTowerButton" parent="GameUI/PlaceableTowerContainer/MarginContainer/BuildTowerButtons" instance=ExtResource("3_vkmtl")]
 layout_mode = 2
+towerType = "Regular"
+towerCost = 2
 
 [node name="Control" type="Control" parent="GameUI/PlaceableTowerContainer/MarginContainer/BuildTowerButtons"]
 layout_mode = 2
@@ -275,7 +275,8 @@ size_flags_stretch_ratio = 0.1
 
 [node name="ShotgunTowerButton" parent="GameUI/PlaceableTowerContainer/MarginContainer/BuildTowerButtons" instance=ExtResource("3_vkmtl")]
 layout_mode = 2
-towerType = ExtResource("7_wbtf1")
+towerType = "Shotgun"
+towerCost = 3
 
 [node name="Control2" type="Control" parent="GameUI/PlaceableTowerContainer/MarginContainer/BuildTowerButtons"]
 layout_mode = 2
@@ -284,7 +285,8 @@ size_flags_stretch_ratio = 0.1
 
 [node name="MachineGunTowerButton" parent="GameUI/PlaceableTowerContainer/MarginContainer/BuildTowerButtons" instance=ExtResource("3_vkmtl")]
 layout_mode = 2
-towerType = ExtResource("8_7k614")
+towerType = "Machine Gun"
+towerCost = 5
 
 [node name="MainMenuButton" type="Button" parent="GameUI"]
 offset_left = 32.0

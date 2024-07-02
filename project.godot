@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 GlobalSignals="*res://Scripts/Autoloaded Scripts/Global.gd"
 PlayerStats="*res://Scripts/Autoloaded Scripts/player_stats.gd"
+GameManager="*res://Scripts/Autoloaded Scripts/game_manager.gd"
 
 [display]
 

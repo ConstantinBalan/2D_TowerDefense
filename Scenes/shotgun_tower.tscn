@@ -15,9 +15,6 @@ radius = 39.5127
 script = ExtResource("1_jsi7c")
 projectile_scene = ExtResource("2_gpc37")
 attack_rate = 0.7
-tower_damage = 10.0
-tower_type_name = "Shotgun Tower"
-tower_cost = 3
 
 [node name="TowerUI" type="Area2D" parent="."]
 
