@@ -13,8 +13,6 @@ func _ready():
 	pass
 
 func _physics_process(delta):
-
-
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var horizontal_direction = Input.get_axis("MoveLeft", "MoveRight")

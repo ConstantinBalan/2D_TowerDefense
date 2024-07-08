@@ -8,6 +8,7 @@ extends Node2D
 @onready var defense_level = $"."
 @onready var tile_map = $TileMap
 @onready var towers = $Towers
+@onready var pause_menu = %PauseMenu
 @export var canvas_layer: CanvasLayer
 #-------------------------------------
 var TowerScene: PackedScene
@@ -28,7 +29,7 @@ var towers_cur_overlapping : int = 0
 #-------------------UI Stuff-------------------
 var insufficient_funds_message : PackedScene = load("res://Scenes/UI/insufficient_funds_message_box.tscn")
 var move_ui_tween : Tween
-
+var game_is_paused = false
 var level_name: String
 var level_state : LevelState
 
@@ -36,6 +37,12 @@ var level_state : LevelState
 func _ready():
 	_connect_signals()
 	_initialize_level()
+	pause_menu.hide()
+	pause_menu.resume_game.connect(_on_resume_game)
+	pause_menu.toggle_pause.connect(toggle_pause)
+
+
+
 
 func _process(delta):
 	_update_labels()
@@ -57,6 +64,13 @@ func _initialize_level():
 	_update_labels()
 	enemies_left_for_wave = waves[1]
 
+func toggle_pause():
+	get_tree().paused = !get_tree().paused
+	pause_menu.visible = get_tree().paused
+
+func _on_resume_game():
+	toggle_pause()
+	
 func _update_labels():
 	base_life_label.text = "Health left: " + str(home_base.health)
 	coin_amount_label.text = "Score: " + str(level_state.coins)
@@ -69,7 +83,7 @@ func _game_over():
 
 func initiate_build_mode(tower_data: Dictionary):
 	build_mode = true
-	TowerScene = load("res://Scenes/tower.tscn")
+	TowerScene = load("res://Scenes/Towers/tower.tscn")
 	set_tower_preview(tower_data)
 
 func _update_build_mode():

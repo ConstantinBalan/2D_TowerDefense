@@ -1,21 +1,21 @@
 [gd_scene load_steps=17 format=3 uid="uid://didfb68gd710c"]
 
-[ext_resource type="Texture2D" uid="uid://brfip5pr3myj5" path="res://Assets/grass_spritesheet.png" id="1_kyryt"]
-[ext_resource type="Script" path="res://Scripts/game.gd" id="1_wlflx"]
-[ext_resource type="Texture2D" uid="uid://ctwwi2rat0lag" path="res://Assets/coin.png" id="2_3cwok"]
-[ext_resource type="PackedScene" uid="uid://do1jb8s08qoeo" path="res://Scenes/UI/BuildTowerButton.tscn" id="3_vkmtl"]
-[ext_resource type="Theme" uid="uid://eo2yt6tnyxbn" path="res://Themes/UI_Theme.tres" id="5_0s54i"]
-[ext_resource type="Script" path="res://Scripts/SpawnOnPath.gd" id="5_1mm45"]
-[ext_resource type="PackedScene" uid="uid://gu4ksp2me4jn" path="res://Scenes/weak_enemy_path.tscn" id="6_vhy6x"]
-[ext_resource type="PackedScene" uid="uid://cmk53exapcrso" path="res://Scenes/strong_enemy_path.tscn" id="7_c0sdi"]
-[ext_resource type="PackedScene" uid="uid://cqrbxh3rh0crp" path="res://Scenes/home_base.tscn" id="7_fjm51"]
-[ext_resource type="Script" path="res://Scripts/Menu Scripts/MainMenuButton.gd" id="8_hfat4"]
+[ext_resource type="Script" path="res://Scripts/game.gd" id="1_vv1fx"]
+[ext_resource type="Texture2D" uid="uid://ctwwi2rat0lag" path="res://Assets/coin.png" id="2_81lmw"]
+[ext_resource type="Theme" uid="uid://eo2yt6tnyxbn" path="res://Themes/UI_Theme.tres" id="3_ykl4f"]
+[ext_resource type="PackedScene" uid="uid://do1jb8s08qoeo" path="res://Scenes/UI/BuildTowerButton.tscn" id="4_07sth"]
+[ext_resource type="PackedScene" uid="uid://ge5q21mo0e6p" path="res://Scenes/UI/pause_menu.tscn" id="5_ks13e"]
+[ext_resource type="Texture2D" uid="uid://brfip5pr3myj5" path="res://Assets/grass_spritesheet.png" id="6_1l28y"]
+[ext_resource type="PackedScene" uid="uid://cqrbxh3rh0crp" path="res://Scenes/home_base.tscn" id="7_w246s"]
+[ext_resource type="Script" path="res://Scripts/SpawnOnPath.gd" id="8_egdpt"]
+[ext_resource type="PackedScene" uid="uid://gu4ksp2me4jn" path="res://Scenes/Enemy_Types/EnemyPaths/weak_enemy_path.tscn" id="9_ws25o"]
+[ext_resource type="PackedScene" uid="uid://cmk53exapcrso" path="res://Scenes/Enemy_Types/EnemyPaths/strong_enemy_path.tscn" id="10_54o88"]
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_fjmtb"]
 tile_data = PackedInt32Array(0, 393216, 2, 65536, 262144, 1, 1, 262144, 1, 65537, 327680, 0, 2, 327680, 0, 65538, 393216, 2)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_llwgh"]
-texture = ExtResource("1_kyryt")
+texture = ExtResource("6_1l28y")
 0:0/0 = 0
 0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 0:0/0/physics_layer_0/angular_velocity = 0.0
@@ -103,8 +103,8 @@ _data = {
 }
 point_count = 2
 
-[node name="DefenseLevel" type="Node2D" node_paths=PackedStringArray("canvas_layer")]
-script = ExtResource("1_wlflx")
+[node name="Level1" type="Node2D" node_paths=PackedStringArray("canvas_layer")]
+script = ExtResource("1_vv1fx")
 canvas_layer = NodePath("GameUI")
 
 [node name="GameUI" type="CanvasLayer" parent="."]
@@ -133,7 +133,7 @@ size_flags_vertical = 3
 
 [node name="CoinImage" type="TextureRect" parent="GameUI/CoinContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
-texture = ExtResource("2_3cwok")
+texture = ExtResource("2_81lmw")
 
 [node name="Control2" type="Control" parent="GameUI/CoinContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
@@ -155,7 +155,7 @@ offset_top = 15.0
 offset_right = -17.0
 offset_bottom = 239.0
 grow_horizontal = 0
-theme = ExtResource("5_0s54i")
+theme = ExtResource("3_ykl4f")
 
 [node name="MarginContainer" type="MarginContainer" parent="GameUI/GameInfoContainer"]
 layout_mode = 2
@@ -199,7 +199,7 @@ offset_right = 416.0
 offset_bottom = 271.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("5_0s54i")
+theme = ExtResource("3_ykl4f")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="GameUI/QuestPanelContainer"]
 layout_mode = 2
@@ -263,7 +263,7 @@ layout_mode = 2
 layout_mode = 2
 alignment = 1
 
-[node name="RegularTowerButton" parent="GameUI/PlaceableTowerContainer/MarginContainer/BuildTowerButtons" instance=ExtResource("3_vkmtl")]
+[node name="RegularTowerButton" parent="GameUI/PlaceableTowerContainer/MarginContainer/BuildTowerButtons" instance=ExtResource("4_07sth")]
 layout_mode = 2
 towerType = "Regular"
 towerCost = 2
@@ -273,7 +273,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.1
 
-[node name="ShotgunTowerButton" parent="GameUI/PlaceableTowerContainer/MarginContainer/BuildTowerButtons" instance=ExtResource("3_vkmtl")]
+[node name="ShotgunTowerButton" parent="GameUI/PlaceableTowerContainer/MarginContainer/BuildTowerButtons" instance=ExtResource("4_07sth")]
 layout_mode = 2
 towerType = "Shotgun"
 towerCost = 3
@@ -283,18 +283,13 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.1
 
-[node name="MachineGunTowerButton" parent="GameUI/PlaceableTowerContainer/MarginContainer/BuildTowerButtons" instance=ExtResource("3_vkmtl")]
+[node name="MachineGunTowerButton" parent="GameUI/PlaceableTowerContainer/MarginContainer/BuildTowerButtons" instance=ExtResource("4_07sth")]
 layout_mode = 2
 towerType = "Machine Gun"
 towerCost = 5
 
-[node name="MainMenuButton" type="Button" parent="GameUI"]
-offset_left = 32.0
-offset_top = 31.0
-offset_right = 128.0
-offset_bottom = 110.0
-text = "Main Menu"
-script = ExtResource("8_hfat4")
+[node name="PauseMenu" parent="GameUI" instance=ExtResource("5_ks13e")]
+unique_name_in_owner = true
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_6lydd")
@@ -310,7 +305,7 @@ layer_3/name = "TowerPlacement"
 layer_3/modulate = Color(0.545098, 1, 1, 1)
 layer_3/tile_data = PackedInt32Array(131075, 0, 1, 65539, 0, 1, 65540, 0, 1, 131076, 0, 1, 131077, 0, 1, 65541, 0, 1, 65542, 0, 1, 131078, 0, 1, 131079, 0, 1, 131080, 0, 1, 131081, 0, 1, 131082, 0, 1, 131083, 0, 1, 131084, 0, 1, 131085, 0, 1, 65549, 0, 1, 65548, 0, 1, 65547, 0, 1, 65546, 0, 1, 65545, 0, 1, 65544, 0, 1, 65543, 0, 1, -262141, 0, 1, -196605, 0, 1, -196604, 0, 1, -196603, 0, 1, -262139, 0, 1, -262140, 0, 1, -262138, 0, 1, -196602, 0, 1, -196601, 0, 1, -196600, 0, 1, -196599, 0, 1, -196598, 0, 1, -196597, 0, 1, -196596, 0, 1, -196595, 0, 1, -262131, 0, 1, -262132, 0, 1, -262133, 0, 1, -262134, 0, 1, -262135, 0, 1, -262136, 0, 1, -262137, 0, 1, -327681, 0, 1, -262145, 0, 1, -196609, 0, 1, -131073, 0, 1, -131074, 0, 1, -131075, 0, 1, -131076, 0, 1, -131077, 0, 1, -131078, 0, 1, -131079, 0, 1, -131080, 0, 1, -131081, 0, 1, 327679, 0, 1, 262143, 0, 1, 196607, 0, 1, 131071, 0, 1, 131070, 0, 1, 131069, 0, 1, 131068, 0, 1, 131067, 0, 1, 131066, 0, 1, 131065, 0, 1, 131064, 0, 1, 131063, 0, 1, 196599, 0, 1, 196600, 0, 1, 196601, 0, 1, 196602, 0, 1, 196603, 0, 1, 196604, 0, 1, 196605, 0, 1, 196606, 0, 1, 262142, 0, 1, 327678, 0, 1, -327682, 0, 1, -262146, 0, 1, -196610, 0, 1, -196611, 0, 1, -196612, 0, 1, -196613, 0, 1, -196614, 0, 1, -196615, 0, 1, -196616, 0, 1, -196617, 0, 1)
 
-[node name="HomeBase" parent="." instance=ExtResource("7_fjm51")]
+[node name="HomeBase" parent="." instance=ExtResource("7_w246s")]
 position = Vector2(-207, -7)
 health = 100.0
 
@@ -318,24 +313,24 @@ health = 100.0
 
 [node name="TopPath" type="Path2D" parent="Paths"]
 curve = SubResource("Curve2D_7plqc")
-script = ExtResource("5_1mm45")
+script = ExtResource("8_egdpt")
 spawn_interval_min = 3.0
 spawn_interval_max = 5.0
-enemy_paths_to_spawn = Array[PackedScene]([ExtResource("6_vhy6x"), ExtResource("7_c0sdi")])
+enemy_paths_to_spawn = Array[PackedScene]([ExtResource("9_ws25o"), ExtResource("10_54o88")])
 
 [node name="BottomPath" type="Path2D" parent="Paths"]
 curve = SubResource("Curve2D_yidmv")
-script = ExtResource("5_1mm45")
+script = ExtResource("8_egdpt")
 spawn_interval_min = 3.0
 spawn_interval_max = 5.0
-enemy_paths_to_spawn = Array[PackedScene]([ExtResource("6_vhy6x"), ExtResource("7_c0sdi")])
+enemy_paths_to_spawn = Array[PackedScene]([ExtResource("9_ws25o"), ExtResource("10_54o88")])
 
 [node name="MiddlePath" type="Path2D" parent="Paths"]
 curve = SubResource("Curve2D_tjt71")
-script = ExtResource("5_1mm45")
+script = ExtResource("8_egdpt")
 spawn_interval_min = 3.0
 spawn_interval_max = 5.0
-enemy_paths_to_spawn = Array[PackedScene]([ExtResource("6_vhy6x"), ExtResource("7_c0sdi")])
+enemy_paths_to_spawn = Array[PackedScene]([ExtResource("9_ws25o"), ExtResource("10_54o88")])
 
 [node name="Towers" type="Node2D" parent="."]
 
@@ -343,7 +338,6 @@ enemy_paths_to_spawn = Array[PackedScene]([ExtResource("6_vhy6x"), ExtResource("
 position = Vector2(23, -9)
 zoom = Vector2(3.02, 3.02)
 
-[connection signal="pressed" from="GameUI/MainMenuButton" to="GameUI/MainMenuButton" method="_on_pressed"]
 [connection signal="died_to_base" from="HomeBase" to="." method="decrement_enemies_left"]
 [connection signal="enemy_died" from="Paths/TopPath" to="." method="decrement_enemies_left"]
 [connection signal="enemy_died" from="Paths/TopPath" to="." method="on_enemy_died"]

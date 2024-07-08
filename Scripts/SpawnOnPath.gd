@@ -25,7 +25,7 @@ func spawn_enemy():
 		enemy.get_child(0).spawned.connect(on_enemy_spawned)
 		add_child(enemy)
 	
-		var timer = get_tree().create_timer(randf_range(spawn_interval_min, spawn_interval_max))
+		var timer = get_tree().create_timer(randf_range(spawn_interval_min, spawn_interval_max), false)
 		timer.timeout.connect(spawn_enemy)
 		#active_timers.append(timer)
 

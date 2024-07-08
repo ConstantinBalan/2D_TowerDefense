@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://dvlgkt7nf66at"]
 
-[ext_resource type="Texture2D" uid="uid://rg5k6w78g134" path="res://Scenes/Idle.png" id="1_jgm3n"]
+[ext_resource type="Texture2D" uid="uid://rg5k6w78g134" path="res://Assets/Idle.png" id="1_jgm3n"]
 
 [sub_resource type="Animation" id="Animation_qaagw"]
 length = 0.8

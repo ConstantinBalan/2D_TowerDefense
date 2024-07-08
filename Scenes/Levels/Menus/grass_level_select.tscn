@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://nimifdsegjbx"]
 
-[ext_resource type="PackedScene" uid="uid://dmygyvtr2x03r" path="res://Scenes/level_icon.tscn" id="1_5tryj"]
+[ext_resource type="PackedScene" uid="uid://dmygyvtr2x03r" path="res://Scenes/UI/level_icon.tscn" id="1_5tryj"]
 [ext_resource type="Script" path="res://Scripts/Menu Scripts/level_select.gd" id="1_32qln"]
-[ext_resource type="PackedScene" uid="uid://dvlgkt7nf66at" path="res://Scenes/player_icon.tscn" id="4_50i7l"]
+[ext_resource type="PackedScene" uid="uid://dvlgkt7nf66at" path="res://Scenes/UI/player_icon.tscn" id="4_50i7l"]
 
 [node name="LevelSelect" type="Control"]
 layout_mode = 3
@@ -37,7 +37,7 @@ offset_left = 128.0
 offset_top = 320.0
 offset_right = 192.0
 offset_bottom = 384.0
-next_scene_path = "res://Scenes/Levels/defense_level.tscn"
+next_scene_path = "res://Scenes/Levels/PlayableLevels/level1.tscn"
 next_level_right = NodePath("../2")
 
 [node name="2" parent="." node_paths=PackedStringArray("next_level_up", "next_level_left", "next_level_right") instance=ExtResource("1_5tryj")]
@@ -46,7 +46,6 @@ offset_top = 384.0
 offset_right = 448.0
 offset_bottom = 448.0
 level_index = "2"
-next_scene_path = ""
 next_level_up = NodePath("../2B")
 next_level_left = NodePath("../1")
 next_level_right = NodePath("../3")
@@ -57,7 +56,6 @@ offset_top = 192.0
 offset_right = 512.0
 offset_bottom = 256.0
 level_index = "2B"
-next_scene_path = ""
 next_level_down = NodePath("../2")
 next_level_right = NodePath("../3")
 
@@ -67,7 +65,6 @@ offset_top = 384.0
 offset_right = 704.0
 offset_bottom = 448.0
 level_index = "3"
-next_scene_path = ""
 next_level_up = NodePath("../3B")
 next_level_left = NodePath("../2")
 
@@ -77,7 +74,6 @@ offset_top = 192.0
 offset_right = 768.0
 offset_bottom = 256.0
 level_index = "3B"
-next_scene_path = ""
 next_level_up = NodePath("../3C")
 next_level_down = NodePath("../3D")
 next_level_left = NodePath("../3")
@@ -88,7 +84,6 @@ offset_top = 64.0
 offset_right = 896.0
 offset_bottom = 128.0
 level_index = "3C"
-next_scene_path = ""
 next_level_left = NodePath("../3B")
 next_level_right = NodePath("../4")
 
@@ -98,7 +93,6 @@ offset_top = 320.0
 offset_right = 896.0
 offset_bottom = 384.0
 level_index = "3D"
-next_scene_path = ""
 next_level_left = NodePath("../3B")
 next_level_right = NodePath("../4")
 
@@ -108,7 +102,6 @@ offset_top = 192.0
 offset_right = 1024.0
 offset_bottom = 256.0
 level_index = "4"
-next_scene_path = ""
 next_level_left = NodePath("../3B")
 next_level_right = NodePath("../5")
 
@@ -118,11 +111,9 @@ offset_top = 192.0
 offset_right = 1216.0
 offset_bottom = 256.0
 level_index = "5"
-next_scene_path = ""
 next_level_left = NodePath("../4")
 
 [node name="PlayerIcon" parent="." instance=ExtResource("4_50i7l")]
-layout_mode = 0
 
 [node name="Camera2D" type="Camera2D" parent="PlayerIcon"]
 position = Vector2(32, 32)

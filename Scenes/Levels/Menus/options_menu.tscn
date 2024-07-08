@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bvred2ov3wq70"]
 
 [ext_resource type="FontFile" uid="uid://bijycjedvvqrg" path="res://Assets/PixelOperator8.ttf" id="1_qp0fq"]
-[ext_resource type="Script" path="res://Scripts/Menu Scripts/MainMenuButton.gd" id="2_jesou"]
+[ext_resource type="Script" path="res://Scripts/Menu Scripts/Main Menu Scripts/MainMenuButton.gd" id="2_0rbsc"]
 
 [node name="OptionsMenu" type="Node2D"]
 
@@ -154,6 +154,6 @@ offset_top = 43.0
 offset_right = 138.0
 offset_bottom = 122.0
 text = "Main Menu"
-script = ExtResource("2_jesou")
+script = ExtResource("2_0rbsc")
 
 [connection signal="pressed" from="CanvasLayer/MainMenuButton" to="CanvasLayer/MainMenuButton" method="_on_pressed"]

@@ -1,0 +1,55 @@
+[gd_scene load_steps=2 format=3 uid="uid://ge5q21mo0e6p"]
+
+[ext_resource type="Script" path="res://Scripts/Menu Scripts/Main Menu Scripts/pause_menu.gd" id="1_w6olv"]
+
+[node name="PauseMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_w6olv")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -92.0
+offset_top = -84.0
+offset_right = 88.0
+offset_bottom = 76.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Panel"]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 16.0
+offset_right = 151.0
+offset_bottom = 144.0
+
+[node name="GameIsPausedLabel" type="Label" parent="MarginContainer/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Game Is Paused"
+
+[node name="ResumeButton" type="Button" parent="MarginContainer/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Resume"
+
+[node name="OptionsButton" type="Button" parent="MarginContainer/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Options"
+
+[node name="MainMenuButton" type="Button" parent="MarginContainer/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Main Menu"
+
+[connection signal="pressed" from="MarginContainer/Panel/VBoxContainer/ResumeButton" to="." method="_on_resume_button_pressed"]
+[connection signal="pressed" from="MarginContainer/Panel/VBoxContainer/MainMenuButton" to="." method="_on_main_menu_button_pressed"]

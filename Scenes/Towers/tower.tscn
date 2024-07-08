@@ -1,26 +1,25 @@
-[gd_scene load_steps=7 format=3 uid="uid://bi1nbyv8ohnpw"]
+[gd_scene load_steps=7 format=3 uid="uid://bqc4l7e44c01l"]
 
-[ext_resource type="Script" path="res://Scripts/tower.gd" id="1_xgyg8"]
-[ext_resource type="PackedScene" uid="uid://dvlt5b7vvgqrk" path="res://Scenes/bullet.tscn" id="2_gt883"]
-[ext_resource type="Texture2D" uid="uid://c211daqbhqofq" path="res://Assets/gun.png" id="3_hn4cs"]
+[ext_resource type="Texture2D" uid="uid://c211daqbhqofq" path="res://Assets/gun.png" id="1_pthgk"]
+[ext_resource type="Script" path="res://Scripts/tower.gd" id="1_vp4qx"]
+[ext_resource type="PackedScene" uid="uid://dvlt5b7vvgqrk" path="res://Scenes/Towers/bullet.tscn" id="2_cem01"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_3dyon"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wuf0y"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_qbl6d"]
 radius = 39.5127
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_idsao"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_d57ni"]
 
-[node name="MachineGunTower" type="Node2D" groups=["friendly", "machinegun_tower", "tower"]]
-script = ExtResource("1_xgyg8")
-projectile_scene = ExtResource("2_gt883")
-attack_rate = 0.3
+[node name="RegularTower" type="Node2D" groups=["friendly", "regular_tower", "tower"]]
+script = ExtResource("1_vp4qx")
+projectile_scene = ExtResource("2_cem01")
 
 [node name="TowerUI" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TowerUI"]
 position = Vector2(-1, 1)
-shape = SubResource("RectangleShape2D_3dyon")
+shape = SubResource("RectangleShape2D_wuf0y")
 debug_color = Color(0.108011, 0.647885, 0, 0.42)
 
 [node name="Area2D" type="Area2D" parent="."]
@@ -30,18 +29,18 @@ position = Vector2(-0.5, 1)
 shape = SubResource("CircleShape2D_qbl6d")
 
 [node name="TowerSpace" type="Area2D" parent="." groups=["tower_hitbox"]]
+modulate = Color(1, 0, 1, 1)
 collision_layer = 2
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TowerSpace"]
-position = Vector2(0, 1)
-shape = SubResource("CircleShape2D_idsao")
+position = Vector2(-1, 1)
+shape = SubResource("CircleShape2D_d57ni")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-modulate = Color(0.482353, 1, 1, 1)
 position = Vector2(-3, 0)
 scale = Vector2(0.0325, 0.0333333)
-texture = ExtResource("3_hn4cs")
+texture = ExtResource("1_pthgk")
 flip_h = true
 
 [connection signal="input_event" from="TowerUI" to="." method="_on_tower_ui_input_event"]
