@@ -32,6 +32,9 @@ var move_ui_tween : Tween
 var game_is_paused = false
 var level_name: String
 var level_state : LevelState
+#------------------Local Level Variables-------
+var cur_level_wave : int = 1
+var cur_level_coins : int = 10
 
 
 func _ready():
@@ -40,7 +43,6 @@ func _ready():
 	pause_menu.hide()
 	pause_menu.resume_game.connect(_on_resume_game)
 	pause_menu.toggle_pause.connect(toggle_pause)
-
 
 
 
@@ -62,7 +64,15 @@ func _initialize_level():
 	level_name = name
 	level_state = GameManager.get_level_state(level_name)
 	_update_labels()
-	enemies_left_for_wave = waves[1]
+	cur_level_wave = level_state.current_wave
+	cur_level_coins = level_state.coins
+	for tower_data in level_state.towers:
+		spawn_tower(tower_data)
+	enemies_left_for_wave = waves[cur_level_wave]
+
+func _save_level_state():
+	print("Level " + level_name + " saved!")
+	GameManager.save_level_state(level_name, cur_level_coins, cur_level_wave, level_state.towers)
 
 func toggle_pause():
 	get_tree().paused = !get_tree().paused
@@ -73,8 +83,8 @@ func _on_resume_game():
 	
 func _update_labels():
 	base_life_label.text = "Health left: " + str(home_base.health)
-	coin_amount_label.text = "Score: " + str(level_state.coins)
-	wave_label.text = "Wave: " + str(level_state.current_wave)
+	coin_amount_label.text = "Score: " + str(cur_level_coins)
+	wave_label.text = "Wave: " + str(cur_level_wave)
 	enemies_left_label.text = "Enemies Left: " + str(enemies_left_for_wave)
 
 func _game_over():
@@ -104,9 +114,14 @@ func set_tower_preview(tower_data: Dictionary):
 	if tower_preview:
 		tower_preview.queue_free()
 	var dragable_tower = Tower.new(tower_data)
+	var tower_picture = Sprite2D.new()
+	tower_picture.texture = tower_data.tower_sprite
+	tower_picture.scale.x = 0.032
+	tower_picture.scale.y = 0.033
 	dragable_tower.set_name("NewTower")
 	var control = Control.new()
 	control.add_child(dragable_tower, true)
+	control.add_child(tower_picture, true)
 	control.set_name("TowerPreview")
 	#control.get_global_transform()
 	towers.add_child(control)
@@ -160,18 +175,32 @@ func _setup_tower(tower_instance):
 
 func place_tower():
 	var tower_data = tower_preview.get_child(0).get_info()
-	if level_state.coins >= tower_data["cost"]:
+	if cur_level_coins >= tower_data["cost"]:
 		var tower_instance = TowerScene.instantiate() as Tower
 		tower_instance._init(tower_data)
 		_setup_tower(tower_instance)
-		level_state.coins -= tower_data["cost"]
+		cur_level_coins -= tower_data["cost"]
+		var saved_tower_data = tower_data.duplicate()
+		saved_tower_data["position"] = tower_instance.position
+		level_state.towers.append(saved_tower_data)
 		tower_instance.placed = true
 		tower_instance.was_recently_placed = true
 		cancel_build_mode()
 	else:
 		spawn_ui_element()
 		print("Not enough coins to build")
-		#tower_instance.queue_free()
+		#tower_instance.queue_free()x
+
+func spawn_tower(tower_data: Dictionary):
+	var tower = load("res://Scenes/Towers/tower.tscn").instantiate() as Tower
+	tower.position = tower_data["position"]
+	tower.type = tower_data["type"]
+	tower.level = tower_data["level"]
+	tower.attack_rate = tower_data["attack_rate"]
+	tower.damage = tower_data["damage"]
+	tower.placed = true
+	$Towers.add_child(tower)
+	tower.name_label.text = str(tower_data["type"])
 
 func cancel_build_mode():
 	if tower_preview:
@@ -180,8 +209,8 @@ func cancel_build_mode():
 	tower_preview = null
 
 func on_enemy_died():
-	level_state.coins += 1
-	coin_amount_label.text = "Score: " + str(level_state.coins)
+	cur_level_coins += 1
+	coin_amount_label.text = "Score: " + str(cur_level_coins)
 
 #This is to adjust the UI for the enemies left on a wave
 func decrement_enemies_left():
@@ -191,7 +220,7 @@ func decrement_enemies_left():
 	if enemies_left_for_wave == 0:
 		print("You've killed all of the enemies")
 		GlobalSignals.emit_signal("wave_end")
-		level_state.current_wave += 1
+		cur_level_wave += 1
 		next_wave_setup()
 	
 #This listens for the enemy_spawned signal from the paths
@@ -199,22 +228,23 @@ func decrement_enemies_left():
 #the max for the wave is hit, the paths stop spawning enemies.
 func add_to_spawned_wave():
 	enemies_spawned_for_wave += 1
-	if enemies_spawned_for_wave >= waves[current_wave]:
+	if enemies_spawned_for_wave >= waves[cur_level_wave]:
 		print("All enemies for this wave have been spawned")
 		GlobalSignals.emit_signal("stop_spawning_enemies")
 
 func next_wave_setup():
-	print("Setting wave to " + str(current_wave))
+	print("Setting wave to " + str(cur_level_wave))
 	var next_wave_timer = get_tree().create_timer(5.0)
 	next_wave_timer.timeout.connect(start_next_wave)
 	
 func start_next_wave():
 	print("Next wave timer over, starting next wave")
-	wave_label.text = "Wave: " + str(level_state.current_wave)
-	enemies_left_label.text = "Enemies Left: " + str(waves[current_wave])
-	enemies_left_for_wave = waves[current_wave]
+	wave_label.text = "Wave: " + str(cur_level_wave)
+	enemies_left_label.text = "Enemies Left: " + str(waves[cur_level_wave])
+	enemies_left_for_wave = waves[cur_level_wave]
 	enemies_spawned_for_wave = 0
 	GlobalSignals.emit_signal("wave_start")
+	_save_level_state()
 	
 func spawn_ui_element():
 	var insuff_funds_mess_instance = insufficient_funds_message.instantiate()

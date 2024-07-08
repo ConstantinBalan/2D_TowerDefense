@@ -18,6 +18,9 @@ func take_damage(damage: float):
 	health_bar.value = health
 
 	if health <= 0:
-		print("enemy died")
-		died.emit()
-		queue_free()
+		die()
+		
+func die():
+	print("enemy died")
+	died.emit()
+	queue_free()

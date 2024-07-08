@@ -28,6 +28,7 @@ func _init(data: Dictionary = {}):
 	type = data.get("type", "regular")
 	level = data.get("level", 1)
 	cost = data.get("cost", 100)
+	position = Vector2(data.get("x", 0), data.get("y", 0))
 	_update_stats()
 
 func _ready():
@@ -95,10 +96,9 @@ func get_info() -> Dictionary:
 		"cost": cost,
 		"level": level,
 		"damage": damage,
-		"attack_rate": attack_rate
+		"attack_rate": attack_rate,
+		"position" : position
 	}
-
-
 
 func _on_area_2d_body_entered(body) -> void:
 	if body.is_in_group("enemy"):
@@ -128,11 +128,5 @@ func _on_tower_space_area_exited(area) -> void:
 		GlobalSignals.towers_not_overlapping.emit()
 
 func recently_placed() -> void:
-	await get_tree().create_timer(0.1).timeout
+	await get_tree().create_timer(0.1).timeout #This can be removed since we're doing a hover over the buttons to show info
 	can_click_ui = true
-
-#func _on_tower_ui_input_event(viewport, event, shape_idx):
-#	if event is InputEventMouseButton and event.pressed and can_click_ui:
-#		print("Tower should fill in info")
-#		GlobalSignals.create_tower_ui.emit()
-#		GlobalSignals.emit_signal("enable_tower_ui", tower_type_name, tower_cost, tower_level, tower_damage, attack_rate)
