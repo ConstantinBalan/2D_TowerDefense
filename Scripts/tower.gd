@@ -62,14 +62,14 @@ func _update_stats():
 			damage = 30.0 + (level - 1) * 5.0
 			attack_rate = 0.5 + (level - 1) * 0.05
 		"Machine Gun":
-			damage = 7.0 + (level - 1) * 5.0
-			attack_rate = 0.3 + (level - 1) * 0.05
+			damage = 1.0 + (level - 1) * 5.0
+			attack_rate = 0.1 + (level - 1) * 0.05
 
 func _process(delta):
 	if was_recently_placed and can_click_ui == false:
 		recently_placed()
 	if cur_target and cur_target.is_inside_tree() and can_attack:
-		shoot_bullet(38.0,damage)
+		shoot_bullet(120.0,damage)
 	#if cur_target:
 	#	_on_timer_timeout(cur_target)
 

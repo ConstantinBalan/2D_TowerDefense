@@ -336,7 +336,7 @@ enemy_paths_to_spawn = Array[PackedScene]([ExtResource("9_ws25o"), ExtResource("
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(23, -9)
-zoom = Vector2(3.02, 3.02)
+zoom = Vector2(3, 3)
 
 [connection signal="died_to_base" from="HomeBase" to="." method="decrement_enemies_left"]
 [connection signal="enemy_died" from="Paths/TopPath" to="." method="on_enemy_died"]
