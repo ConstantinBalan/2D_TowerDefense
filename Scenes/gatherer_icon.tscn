@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://bnt2l3prfuu6x"]
+
+[ext_resource type="Script" path="res://Scripts/gatherer_icon.gd" id="1_pp4wg"]
+[ext_resource type="Texture2D" uid="uid://dlladw1ket5ld" path="res://Assets/gnome.png" id="1_sylod"]
+
+[node name="TextureRect" type="TextureRect"]
+offset_right = 32.0
+offset_bottom = 32.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_sylod")
+script = ExtResource("1_pp4wg")
+
+[node name="Panel" type="Panel" parent="."]
+z_index = -1
+layout_mode = 0
+offset_right = 30.0
+offset_bottom = 32.0

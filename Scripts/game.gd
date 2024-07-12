@@ -5,11 +5,16 @@ extends Node2D
 @onready var wave_label = %WaveLabel
 @onready var enemies_left_label = %EnemiesLeftLabel
 @onready var coin_amount_label = %CoinAmountLabel
+@onready var stone_amount_label = %StoneAmountLabel
+@onready var wood_amount_label = %WoodAmountLabel
+@onready var food_amount_label = %FoodAmountLabel
+@onready var gold_amount_label = %GoldAmountLabel
 @onready var defense_level = $"."
 @onready var tile_map = $TowerDefenseTileMap
 @onready var towers = $Towers
 @onready var pause_menu = %PauseMenu
 @export var canvas_layer: CanvasLayer
+@export var resource_gen : Node2D
 #-------------------------------------
 var TowerScene: PackedScene
 var TowerSceneName : String
@@ -84,6 +89,10 @@ func _on_resume_game():
 func _update_labels():
 	base_life_label.text = "Health left: " + str(home_base.health)
 	coin_amount_label.text = "Score: " + str(cur_level_coins)
+	stone_amount_label.text = "Stone: " + str(resource_gen.resource_totals["stone"])
+	wood_amount_label.text = "Wood: " + str(resource_gen.resource_totals["wood"])
+	food_amount_label.text = "Food: " + str(resource_gen.resource_totals["food"])
+	gold_amount_label.text = "Gold: " + str(resource_gen.resource_totals["gold"])
 	wave_label.text = "Wave: " + str(cur_level_wave)
 	enemies_left_label.text = "Enemies Left: " + str(enemies_left_for_wave)
 

@@ -11,6 +11,8 @@ var carried_amount = 0
 var is_gathering : bool = false
 
 @onready var gather_progress = %GatherProgress
+@onready var anim = $AnimationPlayer
+
 var resource_generator: Node2D
 
 func _ready():
@@ -37,6 +39,7 @@ func _physics_process(delta):
 		var direction = (target_position - global_position).normalized()
 		velocity = direction * speed
 		move_and_slide()
+		anim.play("Walk")
 		#print("Gatherer position: ", global_position, " target: ", target_position)
 		if global_position.distance_to(target_position) < 5:
 			if target_cell:
@@ -44,6 +47,7 @@ func _physics_process(delta):
 			else:
 				arrive_at_home()
 	elif target_cell:
+		anim.play("Gather")
 		gather(delta)
 
 func is_available():
@@ -92,6 +96,7 @@ func collect_resource():
 	gathering_progress = 0
 	target_cell = null
 	is_gathering = false
+	anim.stop()
 	return_to_home()
 	
 func return_to_home():

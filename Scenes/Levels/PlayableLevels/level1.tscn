@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://didfb68gd710c"]
+[gd_scene load_steps=23 format=3 uid="uid://didfb68gd710c"]
 
 [ext_resource type="Script" path="res://Scripts/game.gd" id="1_vv1fx"]
 [ext_resource type="Texture2D" uid="uid://ctwwi2rat0lag" path="res://Assets/coin.png" id="2_81lmw"]
@@ -6,11 +6,28 @@
 [ext_resource type="PackedScene" uid="uid://do1jb8s08qoeo" path="res://Scenes/UI/BuildTowerButton.tscn" id="4_07sth"]
 [ext_resource type="PackedScene" uid="uid://ge5q21mo0e6p" path="res://Scenes/UI/pause_menu.tscn" id="5_ks13e"]
 [ext_resource type="Texture2D" uid="uid://brfip5pr3myj5" path="res://Assets/grass_spritesheet.png" id="6_1l28y"]
+[ext_resource type="Texture2D" uid="uid://gx3vpcn0p7d6" path="res://Assets/Resourcetilemap.png" id="6_vhkig"]
 [ext_resource type="PackedScene" uid="uid://cqrbxh3rh0crp" path="res://Scenes/home_base.tscn" id="7_w246s"]
 [ext_resource type="Script" path="res://Scripts/SpawnOnPath.gd" id="8_egdpt"]
 [ext_resource type="PackedScene" uid="uid://gu4ksp2me4jn" path="res://Scenes/Enemy_Types/EnemyPaths/weak_enemy_path.tscn" id="9_ws25o"]
 [ext_resource type="PackedScene" uid="uid://cmk53exapcrso" path="res://Scenes/Enemy_Types/EnemyPaths/strong_enemy_path.tscn" id="10_54o88"]
 [ext_resource type="PackedScene" uid="uid://i0wofou8fnhn" path="res://Scenes/ResourceGenerator.tscn" id="12_2onla"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s341g"]
+atlas = ExtResource("6_vhkig")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mkxwr"]
+atlas = ExtResource("6_vhkig")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gp0kv"]
+atlas = ExtResource("6_vhkig")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_brk7j"]
+atlas = ExtResource("6_vhkig")
+region = Rect2(128, 0, 32, 32)
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_fjmtb"]
 tile_data = PackedInt32Array(0, 393216, 2, 65536, 262144, 1, 1, 262144, 1, 65537, 327680, 0, 2, 327680, 0, 65538, 393216, 2)
@@ -104,9 +121,10 @@ _data = {
 }
 point_count = 2
 
-[node name="Level1" type="Node2D" node_paths=PackedStringArray("canvas_layer")]
+[node name="Level1" type="Node2D" node_paths=PackedStringArray("canvas_layer", "resource_gen")]
 script = ExtResource("1_vv1fx")
 canvas_layer = NodePath("GameUI")
+resource_gen = NodePath("ResourceGenerator")
 
 [node name="GameUI" type="CanvasLayer" parent="."]
 
@@ -114,9 +132,9 @@ canvas_layer = NodePath("GameUI")
 anchors_preset = -1
 anchor_left = 0.202
 anchor_right = 0.202
-offset_left = -20.84
+offset_left = 193.16
 offset_top = 30.0
-offset_right = 146.16
+offset_right = 360.16
 offset_bottom = 114.0
 grow_horizontal = 2
 size_flags_horizontal = 4
@@ -145,6 +163,158 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Coins:"
+vertical_alignment = 1
+
+[node name="StoneContainer" type="PanelContainer" parent="GameUI"]
+anchors_preset = -1
+anchor_left = 0.202
+anchor_right = 0.202
+offset_left = 384.16
+offset_top = 30.0
+offset_right = 551.16
+offset_bottom = 114.0
+grow_horizontal = 2
+size_flags_horizontal = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GameUI/StoneContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameUI/StoneContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Control" type="Control" parent="GameUI/StoneContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="StoneImage" type="TextureRect" parent="GameUI/StoneContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+texture = SubResource("AtlasTexture_s341g")
+expand_mode = 4
+
+[node name="Control2" type="Control" parent="GameUI/StoneContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="StoneAmountLabel" type="Label" parent="GameUI/StoneContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Stone:"
+vertical_alignment = 1
+
+[node name="WoodContainer" type="PanelContainer" parent="GameUI"]
+anchors_preset = -1
+anchor_left = 0.202
+anchor_right = 0.202
+offset_left = 559.16
+offset_top = 30.0
+offset_right = 726.16
+offset_bottom = 119.0
+grow_horizontal = 2
+size_flags_horizontal = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GameUI/WoodContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameUI/WoodContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Control" type="Control" parent="GameUI/WoodContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="WoodImage" type="TextureRect" parent="GameUI/WoodContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+texture = SubResource("AtlasTexture_mkxwr")
+expand_mode = 4
+
+[node name="Control2" type="Control" parent="GameUI/WoodContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="WoodAmountLabel" type="Label" parent="GameUI/WoodContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Wood:"
+vertical_alignment = 1
+
+[node name="FoodContainer" type="PanelContainer" parent="GameUI"]
+anchors_preset = -1
+anchor_left = 0.202
+anchor_right = 0.202
+offset_left = 733.16
+offset_top = 30.0
+offset_right = 900.16
+offset_bottom = 119.0
+grow_horizontal = 2
+size_flags_horizontal = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GameUI/FoodContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameUI/FoodContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Control" type="Control" parent="GameUI/FoodContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="FoodImage" type="TextureRect" parent="GameUI/FoodContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+texture = SubResource("AtlasTexture_gp0kv")
+expand_mode = 4
+
+[node name="Control2" type="Control" parent="GameUI/FoodContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="FoodAmountLabel" type="Label" parent="GameUI/FoodContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Food:"
+vertical_alignment = 1
+
+[node name="GoldContainer" type="PanelContainer" parent="GameUI"]
+anchors_preset = -1
+anchor_left = 0.202
+anchor_right = 0.202
+offset_left = 907.16
+offset_top = 30.0
+offset_right = 1074.16
+offset_bottom = 119.0
+grow_horizontal = 2
+size_flags_horizontal = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GameUI/GoldContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameUI/GoldContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Control" type="Control" parent="GameUI/GoldContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="GoldImage" type="TextureRect" parent="GameUI/GoldContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+texture = SubResource("AtlasTexture_brk7j")
+expand_mode = 4
+
+[node name="Control2" type="Control" parent="GameUI/GoldContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="GoldAmountLabel" type="Label" parent="GameUI/GoldContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Gold:"
 vertical_alignment = 1
 
 [node name="GameInfoContainer" type="PanelContainer" parent="GameUI"]
@@ -339,16 +509,16 @@ enemy_paths_to_spawn = Array[PackedScene]([ExtResource("9_ws25o"), ExtResource("
 [node name="Towers" type="Node2D" parent="."]
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(-274, -51)
+position = Vector2(-274, -84)
 zoom = Vector2(1.2, 1.2)
 
 [connection signal="died_to_base" from="HomeBase" to="." method="decrement_enemies_left"]
-[connection signal="enemy_died" from="Paths/TopPath" to="." method="decrement_enemies_left"]
 [connection signal="enemy_died" from="Paths/TopPath" to="." method="on_enemy_died"]
+[connection signal="enemy_died" from="Paths/TopPath" to="." method="decrement_enemies_left"]
 [connection signal="enemy_spawned" from="Paths/TopPath" to="." method="add_to_spawned_wave"]
-[connection signal="enemy_died" from="Paths/BottomPath" to="." method="decrement_enemies_left"]
 [connection signal="enemy_died" from="Paths/BottomPath" to="." method="on_enemy_died"]
+[connection signal="enemy_died" from="Paths/BottomPath" to="." method="decrement_enemies_left"]
 [connection signal="enemy_spawned" from="Paths/BottomPath" to="." method="add_to_spawned_wave"]
-[connection signal="enemy_died" from="Paths/MiddlePath" to="." method="decrement_enemies_left"]
 [connection signal="enemy_died" from="Paths/MiddlePath" to="." method="on_enemy_died"]
+[connection signal="enemy_died" from="Paths/MiddlePath" to="." method="decrement_enemies_left"]
 [connection signal="enemy_spawned" from="Paths/MiddlePath" to="." method="add_to_spawned_wave"]

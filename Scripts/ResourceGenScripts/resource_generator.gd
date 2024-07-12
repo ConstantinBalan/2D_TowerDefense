@@ -8,9 +8,11 @@ const RESOURCE_TYPES = ["stone", "wood", "food", "gold"]
 @export var tile_map: TileMap
 @export var gatherers_home: Node2D
 #@export var highlight_tile: Vector2i
-@export var gatherer_icon: Texture2D
+@export var gatherer_icon_texture: Texture2D
 var gatherer_icons: Array[Sprite2D] = []
-var housed_gatherers: int = 3 
+var housed_gatherers: int = 7 
+var max_icons_per_row: int = 5
+var icon_container: Container
 var ground_placed : bool = false
 #var current_highlight: Vector2i = Vector2i(-1, -1)
 var ground_tiles = {
@@ -35,7 +37,7 @@ func _ready():
 	set_process_input(true)
 	spawn_ground()
 	setup_gatherer_icons()
-	spawn_gatherers(3)
+	spawn_gatherers(housed_gatherers)
 	setup_refresh_button()
 	
 	
@@ -78,16 +80,31 @@ func refresh_resources():
 	#				tile_map.set_cell(1, cell_pos, 0, resource_tiles[resource])
 
 func setup_gatherer_icons():
-	for i in range(housed_gatherers):
-		var icon = Sprite2D.new()
-		icon.texture = gatherer_icon
-		icon.position = gatherers_home.position + Vector2(i * 20, -30)  # Adjust as needed
-		add_child(icon)
-		gatherer_icons.append(icon)
+	icon_container = Container.new()
+	icon_container.set_anchors_preset(Control.PRESET_CENTER_TOP)
+	icon_container.position = gatherers_home.position + Vector2(-80, -60)
+	icon_container.custom_minimum_size = Vector2(16, 16) 
 
+	var grid = GridContainer.new()
+	grid.columns = max_icons_per_row
+	grid.set_anchors_preset(Control.PRESET_CENTER)
+	icon_container.add_child(grid)
+	gatherers_home.add_child(icon_container)
+	update_gatherer_icons()
+	
 func update_gatherer_icons():
-	for i in range(gatherer_icons.size()):
-		gatherer_icons[i].visible = i < housed_gatherers
+	var grid = icon_container.get_child(0) as GridContainer
+	# Remove excess icons
+	while grid.get_child_count() > housed_gatherers:
+		var child = grid.get_child(grid.get_child_count() - 1)
+		grid.remove_child(child)
+		child.queue_free()
+	
+	# Add missing icons
+	while grid.get_child_count() < housed_gatherers:
+		var icon = preload("res://Scenes//gatherer_icon.tscn").instantiate()
+		#icon.texture = gatherer_icon_texture
+		grid.add_child(icon)
 
 func spawn_gatherers(num_gatherers: int):
 	for i in range(num_gatherers):
@@ -104,18 +121,17 @@ func send_gatherer_to(cell_pos):
 		
 	for gatherer in gatherers:
 		if gatherer.is_available():
-			var world_pos = to_global(tile_map.map_to_local(cell_pos))
-			gatherer.move_to(world_pos, cell_pos)
+			var world_pos = tile_map.map_to_local(cell_pos)
+			gatherer.move_to(tile_map.to_global(world_pos), cell_pos)
 			occupied_cells[cell_pos] = gatherer
 			housed_gatherers -= 1
 			update_gatherer_icons()
-			print("Sending gatherer to cell: ", cell_pos, " world position: ", world_pos)
 			break
 
 func flash_red(cell_pos):
 	var original_modulate = tile_map.modulate
 	tile_map.modulate = Color.RED
-	await get_tree().create_timer(0.2).timeout
+	await get_tree().create_timer(0.05).timeout
 	tile_map.modulate = original_modulate
 
 func add_resources(type, amount):
