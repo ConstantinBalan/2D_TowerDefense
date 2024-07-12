@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://i0wofou8fnhn"]
+[gd_scene load_steps=7 format=3 uid="uid://i0wofou8fnhn"]
 
 [ext_resource type="Script" path="res://Scripts/ResourceGenScripts/resource_generator.gd" id="1_x1bb7"]
+[ext_resource type="Texture2D" uid="uid://dlladw1ket5ld" path="res://Assets/gnome.png" id="2_oin21"]
 [ext_resource type="Texture2D" uid="uid://gx3vpcn0p7d6" path="res://Assets/Resourcetilemap.png" id="2_pvble"]
 [ext_resource type="Texture2D" uid="uid://bl02t3tbq4fxg" path="res://Assets/sadcat.png" id="3_uw2ox"]
 
@@ -24,6 +25,7 @@ sources/0 = SubResource("TileSetAtlasSource_hqckm")
 script = ExtResource("1_x1bb7")
 tile_map = NodePath("ResourceGathererTileMap")
 gatherers_home = NodePath("GatherersHome")
+gatherer_icon = ExtResource("2_oin21")
 
 [node name="ResourceGathererTileMap" type="TileMap" parent="."]
 unique_name_in_owner = true
@@ -33,6 +35,8 @@ format = 2
 layer_0/name = "Ground"
 layer_1/name = "Resources"
 layer_1/tile_data = PackedInt32Array()
+layer_2/name = "Highlight"
+layer_2/tile_data = PackedInt32Array()
 
 [node name="GatherersHome" type="Node2D" parent="."]
 unique_name_in_owner = true

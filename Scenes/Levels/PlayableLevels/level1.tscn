@@ -339,16 +339,16 @@ enemy_paths_to_spawn = Array[PackedScene]([ExtResource("9_ws25o"), ExtResource("
 [node name="Towers" type="Node2D" parent="."]
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(-519, -103)
+position = Vector2(-274, -51)
 zoom = Vector2(1.2, 1.2)
 
 [connection signal="died_to_base" from="HomeBase" to="." method="decrement_enemies_left"]
-[connection signal="enemy_died" from="Paths/TopPath" to="." method="on_enemy_died"]
 [connection signal="enemy_died" from="Paths/TopPath" to="." method="decrement_enemies_left"]
+[connection signal="enemy_died" from="Paths/TopPath" to="." method="on_enemy_died"]
 [connection signal="enemy_spawned" from="Paths/TopPath" to="." method="add_to_spawned_wave"]
-[connection signal="enemy_died" from="Paths/BottomPath" to="." method="on_enemy_died"]
 [connection signal="enemy_died" from="Paths/BottomPath" to="." method="decrement_enemies_left"]
+[connection signal="enemy_died" from="Paths/BottomPath" to="." method="on_enemy_died"]
 [connection signal="enemy_spawned" from="Paths/BottomPath" to="." method="add_to_spawned_wave"]
-[connection signal="enemy_died" from="Paths/MiddlePath" to="." method="on_enemy_died"]
 [connection signal="enemy_died" from="Paths/MiddlePath" to="." method="decrement_enemies_left"]
+[connection signal="enemy_died" from="Paths/MiddlePath" to="." method="on_enemy_died"]
 [connection signal="enemy_spawned" from="Paths/MiddlePath" to="." method="add_to_spawned_wave"]
