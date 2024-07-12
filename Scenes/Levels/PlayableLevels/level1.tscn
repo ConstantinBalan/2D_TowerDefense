@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://didfb68gd710c"]
+[gd_scene load_steps=18 format=3 uid="uid://didfb68gd710c"]
 
 [ext_resource type="Script" path="res://Scripts/game.gd" id="1_vv1fx"]
 [ext_resource type="Texture2D" uid="uid://ctwwi2rat0lag" path="res://Assets/coin.png" id="2_81lmw"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" path="res://Scripts/SpawnOnPath.gd" id="8_egdpt"]
 [ext_resource type="PackedScene" uid="uid://gu4ksp2me4jn" path="res://Scenes/Enemy_Types/EnemyPaths/weak_enemy_path.tscn" id="9_ws25o"]
 [ext_resource type="PackedScene" uid="uid://cmk53exapcrso" path="res://Scenes/Enemy_Types/EnemyPaths/strong_enemy_path.tscn" id="10_54o88"]
+[ext_resource type="PackedScene" uid="uid://i0wofou8fnhn" path="res://Scenes/ResourceGenerator.tscn" id="12_2onla"]
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_fjmtb"]
 tile_data = PackedInt32Array(0, 393216, 2, 65536, 262144, 1, 1, 262144, 1, 65537, 327680, 0, 2, 327680, 0, 65538, 393216, 2)
@@ -291,7 +292,10 @@ towerCost = 5
 [node name="PauseMenu" parent="GameUI" instance=ExtResource("5_ks13e")]
 unique_name_in_owner = true
 
-[node name="TileMap" type="TileMap" parent="."]
+[node name="ResourceGenerator" parent="." instance=ExtResource("12_2onla")]
+position = Vector2(-738, -347)
+
+[node name="TowerDefenseTileMap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_6lydd")
 format = 2
 layer_0/name = "Ground"
@@ -335,8 +339,8 @@ enemy_paths_to_spawn = Array[PackedScene]([ExtResource("9_ws25o"), ExtResource("
 [node name="Towers" type="Node2D" parent="."]
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(23, -9)
-zoom = Vector2(3, 3)
+position = Vector2(-519, -103)
+zoom = Vector2(1.2, 1.2)
 
 [connection signal="died_to_base" from="HomeBase" to="." method="decrement_enemies_left"]
 [connection signal="enemy_died" from="Paths/TopPath" to="." method="on_enemy_died"]

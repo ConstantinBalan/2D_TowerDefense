@@ -6,7 +6,7 @@ extends Node2D
 @onready var enemies_left_label = %EnemiesLeftLabel
 @onready var coin_amount_label = %CoinAmountLabel
 @onready var defense_level = $"."
-@onready var tile_map = $TileMap
+@onready var tile_map = $TowerDefenseTileMap
 @onready var towers = $Towers
 @onready var pause_menu = %PauseMenu
 @export var canvas_layer: CanvasLayer
@@ -15,7 +15,7 @@ var TowerScene: PackedScene
 var TowerSceneName : String
 var TowerUI : PackedScene = preload("res://Scenes/UI/tower_info_popup.tscn")
 var tower_ui
-var waves : Dictionary = {1: 10, 2: 20, 3: 30, 4: 40, 5: 50}
+var waves : Dictionary = {1: 10, 2: 20, 3: 30, 4: 40, 5: 50, 6: 60, 7: 70}
 var current_wave : int = 1
 var enemies_spawned_for_wave : int = 0
 var enemies_left_for_wave : int
