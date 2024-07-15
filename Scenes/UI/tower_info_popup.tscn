@@ -1,8 +1,21 @@
-[gd_scene load_steps=4 format=3 uid="uid://c1cy766or8oyw"]
+[gd_scene load_steps=8 format=3 uid="uid://c1cy766or8oyw"]
 
 [ext_resource type="Texture2D" uid="uid://c211daqbhqofq" path="res://Assets/gun.png" id="1_ol4h1"]
 [ext_resource type="Texture2D" uid="uid://jnojgxmho324" path="res://Assets/CancelButton.png" id="2_8hnuq"]
 [ext_resource type="Script" path="res://Scripts/UI Scripts/tower_ui_display.gd" id="2_cxhsh"]
+[ext_resource type="Texture2D" uid="uid://gx3vpcn0p7d6" path="res://Assets/Resourcetilemap.png" id="4_nt8wa"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i0p2e"]
+atlas = ExtResource("4_nt8wa")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yv3og"]
+atlas = ExtResource("4_nt8wa")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4dsry"]
+atlas = ExtResource("4_nt8wa")
+region = Rect2(128, 0, 32, 32)
 
 [node name="TowerInfo" type="Control"]
 layout_mode = 3
@@ -58,17 +71,55 @@ layout_mode = 2
 unique_name_in_owner = true
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
-size_flags_horizontal = 10
+size_flags_horizontal = 3
 size_flags_vertical = 4
 texture = ExtResource("1_ol4h1")
 expand_mode = 3
 stretch_mode = 5
 
-[node name="TowerCost" type="Label" parent="PanelContainer/VBoxContainer/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+
+[node name="WoodContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="WoodCostPhoto" type="TextureRect" parent="PanelContainer/VBoxContainer/HBoxContainer/VBoxContainer/WoodContainer"]
+layout_mode = 2
+texture = SubResource("AtlasTexture_i0p2e")
+
+[node name="TowerWoodCost" type="Label" parent="PanelContainer/VBoxContainer/HBoxContainer/VBoxContainer/WoodContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 6
-text = "Cost:"
+size_flags_horizontal = 3
+text = "Wood:"
+
+[node name="StoneContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="StoneCostPhoto" type="TextureRect" parent="PanelContainer/VBoxContainer/HBoxContainer/VBoxContainer/StoneContainer"]
+layout_mode = 2
+texture = SubResource("AtlasTexture_yv3og")
+
+[node name="TowerStoneCost" type="Label" parent="PanelContainer/VBoxContainer/HBoxContainer/VBoxContainer/StoneContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Stone:"
+
+[node name="GoldContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="GoldCostPhoto" type="TextureRect" parent="PanelContainer/VBoxContainer/HBoxContainer/VBoxContainer/GoldContainer"]
+layout_mode = 2
+texture = SubResource("AtlasTexture_4dsry")
+
+[node name="TowerGoldCost" type="Label" parent="PanelContainer/VBoxContainer/HBoxContainer/VBoxContainer/GoldContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Gold:"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2

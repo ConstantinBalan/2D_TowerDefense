@@ -10,7 +10,9 @@ extends Node2D
 @export var damage : float
 @export var placed = false
 @export var type : String
-@export var cost : int
+@export var wood_cost : int
+@export var stone_cost : int
+@export var gold_cost : int
 @export var name_label : Label 
 #---------------------------
 
@@ -27,7 +29,9 @@ const PIXEL_OPERATOR_8 = preload("res://Assets/PixelOperator8.ttf")
 func _init(data: Dictionary = {}):
 	type = data.get("type", "regular")
 	level = data.get("level", 1)
-	cost = data.get("cost", 100)
+	wood_cost = data.get("woodCost", 100)
+	stone_cost = data.get("stoneCost", 100)
+	gold_cost = data.get("goldCost", 100)
 	position = Vector2(data.get("x", 0), data.get("y", 0))
 	_update_stats()
 
@@ -93,7 +97,9 @@ func shoot_bullet(speed: float, damage: float) -> void:
 func get_info() -> Dictionary:
 	return {
 		"type": type,
-		"cost": cost,
+		"wood_cost" : wood_cost,
+		"stone_cost" : stone_cost,
+		"gold_cost" : gold_cost,
 		"level": level,
 		"damage": damage,
 		"attack_rate": attack_rate,

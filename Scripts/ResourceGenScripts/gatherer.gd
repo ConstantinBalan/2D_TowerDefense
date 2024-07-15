@@ -10,12 +10,15 @@ var carried_resource = null
 var carried_amount = 0
 var is_gathering : bool = false
 
+@onready var carried_resource_icon = %CarriedResourceIcon
 @onready var gather_progress = %GatherProgress
 @onready var anim = $AnimationPlayer
 
+@onready var resource_sprite_map = preload("res://Assets/Resourcetilemap.png")
 var resource_generator: Node2D
 
 func _ready():
+	carried_resource_icon.visible = false
 	gather_progress.visible = false
 	visible = false
 	resource_generator = get_tree().get_first_node_in_group("resource_generator")
@@ -68,6 +71,7 @@ func arrive_at_home():
 	target_position = null
 	target_cell = null
 	is_gathering = false
+	carried_resource_icon.visible = false
 	visible = false
 	resource_generator.housed_gatherers += 1
 	resource_generator.update_gatherer_icons()
@@ -87,17 +91,62 @@ func collect_resource():
 		if current_coords == resource_generator.resource_tiles[type]:
 			resource_type = type
 			break
+	match resource_type:
+		"food":
+			play_food_gathered_animation(resource_generator.tile_map.map_to_local(target_cell))
+			set_carried_resource_icon("food", 3, 0)
+		"wood":
+			set_carried_resource_icon("wood", 2, 0)
+		"stone":
+			set_carried_resource_icon("stone",1, 0)
+		"gold":
+			set_carried_resource_icon("gold",4, 0)
 	if resource_type != "empty":
 		print("Collected ", resource_type)
 		carried_resource = resource_type
 		carried_amount = 10  # You can adjust this or make it random
 		resource_generator.tile_map.erase_cell(1, target_cell)
+		
 	gather_progress.visible = false
 	gathering_progress = 0
 	target_cell = null
 	is_gathering = false
 	anim.stop()
 	return_to_home()
+	
+func play_food_gathered_animation(position):
+	var food_gathered = resource_generator.gathered_food.instantiate()
+	resource_generator.add_child(food_gathered)
+	food_gathered.position = position
+	food_gathered.get_node("AnimationPlayer").play("Food_Collected")
+	
+	# Optional: Remove the node after the animation finishes
+	await food_gathered.get_node("AnimationPlayer").animation_finished
+	food_gathered.queue_free()
+	
+func set_carried_resource_icon(resourceType: String, x: int , y: int):
+	match resourceType:
+		"food":
+			carried_resource_icon.texture = resource_sprite_map
+			carried_resource_icon.region_enabled = true
+			var rect = Rect2(x * 32, y * 32, 32, 32)
+			carried_resource_icon.region_rect = rect
+		"wood":
+			carried_resource_icon.texture = resource_sprite_map
+			carried_resource_icon.region_enabled = true
+			var rect = Rect2(x * 32, y * 32, 32, 32)
+			carried_resource_icon.region_rect = rect
+		"stone":
+			carried_resource_icon.texture = resource_sprite_map
+			carried_resource_icon.region_enabled = true
+			var rect = Rect2(x * 32, y * 32, 32, 32)
+			carried_resource_icon.region_rect = rect
+		"gold":
+			carried_resource_icon.texture = resource_sprite_map
+			carried_resource_icon.region_enabled = true
+			var rect = Rect2(x * 32, y * 32, 32, 32)
+			carried_resource_icon.region_rect = rect
+	carried_resource_icon.visible = true
 	
 func return_to_home():
 	move_to(home_position, null)

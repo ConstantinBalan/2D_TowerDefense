@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://didfb68gd710c"]
+[gd_scene load_steps=29 format=3 uid="uid://didfb68gd710c"]
 
 [ext_resource type="Script" path="res://Scripts/game.gd" id="1_vv1fx"]
 [ext_resource type="Texture2D" uid="uid://ctwwi2rat0lag" path="res://Assets/coin.png" id="2_81lmw"]
@@ -12,9 +12,12 @@
 [ext_resource type="Texture2D" uid="uid://gx3vpcn0p7d6" path="res://Assets/Resourcetilemap.png" id="6_vhkig"]
 [ext_resource type="PackedScene" uid="uid://cqrbxh3rh0crp" path="res://Scenes/home_base.tscn" id="7_w246s"]
 [ext_resource type="Script" path="res://Scripts/SpawnOnPath.gd" id="8_egdpt"]
+[ext_resource type="Texture2D" uid="uid://c211daqbhqofq" path="res://Assets/gun.png" id="9_k7fqf"]
 [ext_resource type="PackedScene" uid="uid://gu4ksp2me4jn" path="res://Scenes/Enemy_Types/EnemyPaths/weak_enemy_path.tscn" id="9_ws25o"]
 [ext_resource type="PackedScene" uid="uid://cmk53exapcrso" path="res://Scenes/Enemy_Types/EnemyPaths/strong_enemy_path.tscn" id="10_54o88"]
+[ext_resource type="Texture2D" uid="uid://bap3sf523kd4d" path="res://Assets/nextwavebutton.png" id="10_bss5k"]
 [ext_resource type="PackedScene" uid="uid://i0wofou8fnhn" path="res://Scenes/ResourceGenerator.tscn" id="12_2onla"]
+[ext_resource type="PackedScene" uid="uid://bvbihvym677gu" path="res://Scenes/grass.tscn" id="16_eb78c"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_s341g"]
 atlas = ExtResource("6_vhkig")
@@ -556,7 +559,9 @@ alignment = 1
 [node name="RegularTowerButton" parent="GameUI/PlaceableTowerContainer/MarginContainer/BuildTowerButtons" instance=ExtResource("4_07sth")]
 layout_mode = 2
 towerType = "Regular"
-towerCost = 2
+woodCost = 20
+stoneCost = 10
+towerSprite = ExtResource("9_k7fqf")
 
 [node name="Control" type="Control" parent="GameUI/PlaceableTowerContainer/MarginContainer/BuildTowerButtons"]
 layout_mode = 2
@@ -566,7 +571,9 @@ size_flags_stretch_ratio = 0.1
 [node name="ShotgunTowerButton" parent="GameUI/PlaceableTowerContainer/MarginContainer/BuildTowerButtons" instance=ExtResource("4_07sth")]
 layout_mode = 2
 towerType = "Shotgun"
-towerCost = 3
+stoneCost = 20
+goldCost = 20
+towerSprite = ExtResource("9_k7fqf")
 
 [node name="Control2" type="Control" parent="GameUI/PlaceableTowerContainer/MarginContainer/BuildTowerButtons"]
 layout_mode = 2
@@ -576,10 +583,30 @@ size_flags_stretch_ratio = 0.1
 [node name="MachineGunTowerButton" parent="GameUI/PlaceableTowerContainer/MarginContainer/BuildTowerButtons" instance=ExtResource("4_07sth")]
 layout_mode = 2
 towerType = "Machine Gun"
-towerCost = 5
+stoneCost = 20
+goldCost = 40
+towerSprite = ExtResource("9_k7fqf")
 
 [node name="PauseMenu" parent="GameUI" instance=ExtResource("5_ks13e")]
 unique_name_in_owner = true
+
+[node name="NextWaveButton" type="Button" parent="GameUI"]
+unique_name_in_owner = true
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -232.0
+offset_top = -208.0
+offset_right = -80.0
+offset_bottom = -56.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Next Wave"
+icon = ExtResource("10_bss5k")
+icon_alignment = 1
+expand_icon = true
 
 [node name="ResourceGenerator" parent="." instance=ExtResource("12_2onla")]
 position = Vector2(-738, -347)
@@ -631,6 +658,72 @@ enemy_paths_to_spawn = Array[PackedScene]([ExtResource("9_ws25o"), ExtResource("
 position = Vector2(-168, -80)
 zoom = Vector2(1.2, 1.2)
 
+[node name="Grass" type="Node" parent="."]
+
+[node name="Grass" parent="Grass" instance=ExtResource("16_eb78c")]
+position = Vector2(-192, -128)
+
+[node name="Grass2" parent="Grass" instance=ExtResource("16_eb78c")]
+position = Vector2(-120, -104)
+
+[node name="Grass3" parent="Grass" instance=ExtResource("16_eb78c")]
+position = Vector2(-32, -136)
+
+[node name="Grass4" parent="Grass" instance=ExtResource("16_eb78c")]
+position = Vector2(144, -136)
+
+[node name="Grass5" parent="Grass" instance=ExtResource("16_eb78c")]
+position = Vector2(-80, 72)
+
+[node name="Grass6" parent="Grass" instance=ExtResource("16_eb78c")]
+position = Vector2(-168, 80)
+
+[node name="Grass7" parent="Grass" instance=ExtResource("16_eb78c")]
+position = Vector2(16, 112)
+
+[node name="Grass8" parent="Grass" instance=ExtResource("16_eb78c")]
+position = Vector2(176, 104)
+
+[node name="Grass9" parent="Grass" instance=ExtResource("16_eb78c")]
+position = Vector2(240, -40)
+
+[node name="Grass10" parent="Grass" instance=ExtResource("16_eb78c")]
+position = Vector2(264, 56)
+
+[node name="Grass11" parent="Grass" instance=ExtResource("16_eb78c")]
+position = Vector2(-120, 104)
+
+[node name="Grass12" parent="Grass" instance=ExtResource("16_eb78c")]
+position = Vector2(-64, -96)
+
+[node name="Grass13" parent="Grass" instance=ExtResource("16_eb78c")]
+position = Vector2(48, -128)
+
+[node name="Grass14" parent="Grass" instance=ExtResource("16_eb78c")]
+position = Vector2(88, -152)
+
+[node name="Grass15" parent="Grass" instance=ExtResource("16_eb78c")]
+position = Vector2(-136, -144)
+
+[node name="Grass16" parent="Grass" instance=ExtResource("16_eb78c")]
+position = Vector2(-136, 56)
+
+[node name="Grass17" parent="Grass" instance=ExtResource("16_eb78c")]
+position = Vector2(64, 96)
+
+[node name="Grass18" parent="Grass" instance=ExtResource("16_eb78c")]
+position = Vector2(112, 104)
+
+[node name="Grass19" parent="Grass" instance=ExtResource("16_eb78c")]
+position = Vector2(264, 0)
+
+[node name="Grass20" parent="Grass" instance=ExtResource("16_eb78c")]
+position = Vector2(248, -112)
+
+[node name="Grass21" parent="Grass" instance=ExtResource("16_eb78c")]
+position = Vector2(208, -152)
+
+[connection signal="pressed" from="GameUI/NextWaveButton" to="." method="start_next_wave"]
 [connection signal="died_to_base" from="HomeBase" to="." method="decrement_enemies_left"]
 [connection signal="enemy_died" from="Paths/TopPath" to="." method="decrement_enemies_left"]
 [connection signal="enemy_died" from="Paths/TopPath" to="." method="on_enemy_died"]

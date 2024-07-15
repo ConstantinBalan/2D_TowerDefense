@@ -16,6 +16,7 @@ extends Node2D
 @onready var tile_map = $TowerDefenseTileMap
 @onready var towers = $Towers
 @onready var pause_menu = %PauseMenu
+@onready var next_wave_button = %NextWaveButton
 @export var canvas_layer: CanvasLayer
 @export var resource_gen : Node2D
 #-------------------------------------
@@ -46,6 +47,7 @@ var cur_level_coins : int = 10
 
 
 func _ready():
+	print(OS.get_user_data_dir())
 	_connect_signals()
 	_initialize_level()
 	pause_menu.hide()
@@ -71,6 +73,7 @@ func _connect_signals():
 func _initialize_level():
 	level_name = name
 	level_state = GameManager.get_level_state(level_name)
+	next_wave_button.hide()
 	_update_labels()
 	cur_level_wave = level_state.current_wave
 	cur_level_coins = level_state.coins
@@ -187,11 +190,14 @@ func _setup_tower(tower_instance):
 
 func place_tower():
 	var tower_data = tower_preview.get_child(0).get_info()
-	if cur_level_coins >= tower_data["cost"]:
+	if check_if_sufficient_funds(tower_data):
+		resource_gen.resource_totals["wood"] -= tower_data["wood_cost"]
+		resource_gen.resource_totals["stone"] -= tower_data["stone_cost"]
+		resource_gen.resource_totals["gold"] -= tower_data["gold_cost"]
 		var tower_instance = TowerScene.instantiate() as Tower
 		tower_instance._init(tower_data)
 		_setup_tower(tower_instance)
-		cur_level_coins -= tower_data["cost"]
+		#cur_level_coins -= tower_data["cost"]
 		var saved_tower_data = tower_data.duplicate()
 		saved_tower_data["position"] = tower_instance.position
 		level_state.towers.append(saved_tower_data)
@@ -203,6 +209,16 @@ func place_tower():
 		print("Not enough coins to build")
 		#tower_instance.queue_free()x
 
+func check_if_sufficient_funds(tower_data) -> bool:
+	var funds_met : bool
+	if resource_gen.resource_totals["wood"] >= tower_data["wood_cost"] \
+	and resource_gen.resource_totals["stone"] >= tower_data["stone_cost"] \
+	and resource_gen.resource_totals["gold"] >= tower_data["gold_cost"]:
+		funds_met = true
+	else:
+		funds_met = false
+	return funds_met
+	
 func spawn_tower(tower_data: Dictionary):
 	var tower = load("res://Scenes/Towers/tower.tscn").instantiate() as Tower
 	tower.position = tower_data["position"]
@@ -233,7 +249,7 @@ func decrement_enemies_left():
 		print("You've killed all of the enemies")
 		GlobalSignals.emit_signal("wave_end")
 		cur_level_wave += 1
-		next_wave_setup()
+		next_wave_button.show()
 	
 #This listens for the enemy_spawned signal from the paths
 #and then adds to the total spawned for that wave. After
@@ -244,13 +260,10 @@ func add_to_spawned_wave():
 		print("All enemies for this wave have been spawned")
 		GlobalSignals.emit_signal("stop_spawning_enemies")
 
-func next_wave_setup():
-	print("Setting wave to " + str(cur_level_wave))
-	var next_wave_timer = get_tree().create_timer(5.0)
-	next_wave_timer.timeout.connect(start_next_wave)
 	
 func start_next_wave():
 	print("Next wave timer over, starting next wave")
+	next_wave_button.hide()
 	wave_label.text = "Wave: " + str(cur_level_wave)
 	enemies_left_label.text = "Enemies Left: " + str(waves[cur_level_wave])
 	enemies_left_for_wave = waves[cur_level_wave]

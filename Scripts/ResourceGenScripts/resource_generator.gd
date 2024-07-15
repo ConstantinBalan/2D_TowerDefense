@@ -9,6 +9,7 @@ const RESOURCE_TYPES = ["stone", "wood", "food", "gold"]
 @export var gatherers_home: Node2D
 #@export var highlight_tile: Vector2i
 @export var gatherer_icon_texture: Texture2D
+@export var gathered_food : PackedScene
 var gatherer_icons: Array[Sprite2D] = []
 var housed_gatherers: int = 7 
 var max_icons_per_row: int = 5

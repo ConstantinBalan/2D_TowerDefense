@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://8su8tjstnt2i"]
+[gd_scene load_steps=10 format=3 uid="uid://8su8tjstnt2i"]
 
 [ext_resource type="Script" path="res://Scripts/ResourceGenScripts/gatherer.gd" id="1_f8sym"]
 [ext_resource type="Texture2D" uid="uid://dlladw1ket5ld" path="res://Assets/gnome.png" id="1_hxfeq"]
+[ext_resource type="Texture2D" uid="uid://gx3vpcn0p7d6" path="res://Assets/Resourcetilemap.png" id="3_5p60r"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6nft6"]
 radius = 8.0
@@ -13,7 +14,7 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/path = NodePath("Gnome:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -25,7 +26,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D:scale")
+tracks/1/path = NodePath("Gnome:scale")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -40,7 +41,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:scale")
+tracks/0/path = NodePath("Gnome:scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -52,7 +53,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D:position")
+tracks/1/path = NodePath("Gnome:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -69,7 +70,7 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:scale")
+tracks/0/path = NodePath("Gnome:scale")
 tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -86,8 +87,13 @@ _data = {
 "Walk": SubResource("Animation_7web8")
 }
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_qh5ep"]
+atlas = ExtResource("3_5p60r")
+region = Rect2(32, 0, 32, 32)
+
 [node name="Gatherer" type="CharacterBody2D"]
 top_level = true
+motion_mode = 1
 script = ExtResource("1_f8sym")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -96,19 +102,27 @@ position = Vector2(-1, 0)
 shape = SubResource("CapsuleShape2D_6nft6")
 disabled = true
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Gnome" type="Sprite2D" parent="."]
 texture = ExtResource("1_hxfeq")
 
 [node name="GatherProgress" type="ProgressBar" parent="."]
 unique_name_in_owner = true
-offset_left = -40.0
-offset_top = -45.0
-offset_right = 40.0
-offset_bottom = -18.0
+self_modulate = Color(0, 1, 0, 1)
+offset_left = -16.0
+offset_top = -24.0
+offset_right = 16.0
+offset_bottom = -19.0
 rounded = true
 fill_mode = 1
+show_percentage = false
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_qghqr")
 }
+
+[node name="CarriedResourceIcon" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-1, -23)
+scale = Vector2(0.4375, 0.5)
+texture = SubResource("AtlasTexture_qh5ep")

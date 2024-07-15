@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://i0wofou8fnhn"]
+[gd_scene load_steps=7 format=3 uid="uid://i0wofou8fnhn"]
 
 [ext_resource type="Script" path="res://Scripts/ResourceGenScripts/resource_generator.gd" id="1_x1bb7"]
+[ext_resource type="PackedScene" uid="uid://d20chiu20fgct" path="res://Scenes/food_gathered.tscn" id="2_3a1nq"]
 [ext_resource type="Texture2D" uid="uid://gx3vpcn0p7d6" path="res://Assets/Resourcetilemap.png" id="2_pvble"]
 [ext_resource type="Texture2D" uid="uid://v27t05gfxewo" path="res://Assets/gatherer_house.png" id="3_dli1c"]
 
@@ -24,6 +25,7 @@ sources/0 = SubResource("TileSetAtlasSource_hqckm")
 script = ExtResource("1_x1bb7")
 tile_map = NodePath("ResourceGathererTileMap")
 gatherers_home = NodePath("GatherersHome")
+gathered_food = ExtResource("2_3a1nq")
 
 [node name="ResourceGathererTileMap" type="TileMap" parent="."]
 unique_name_in_owner = true
