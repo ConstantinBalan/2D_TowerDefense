@@ -83,7 +83,7 @@ func setup_gatherer_icons():
 	icon_container = Container.new()
 	icon_container.set_anchors_preset(Control.PRESET_CENTER_TOP)
 	icon_container.position = gatherers_home.position + Vector2(-80, -60)
-	icon_container.custom_minimum_size = Vector2(16, 16) 
+	icon_container.custom_minimum_size = Vector2(16, 16)
 
 	var grid = GridContainer.new()
 	grid.columns = max_icons_per_row

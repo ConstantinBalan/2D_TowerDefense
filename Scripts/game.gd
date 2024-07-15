@@ -5,6 +5,9 @@ extends Node2D
 @onready var wave_label = %WaveLabel
 @onready var enemies_left_label = %EnemiesLeftLabel
 @onready var coin_amount_label = %CoinAmountLabel
+@onready var wave_amount_label = %WaveAmountLabel
+@onready var enemies_left_amount_label = %EnemiesLeftAmountLabel
+@onready var life_amount_label = %LifeAmountLabel
 @onready var stone_amount_label = %StoneAmountLabel
 @onready var wood_amount_label = %WoodAmountLabel
 @onready var food_amount_label = %FoodAmountLabel
@@ -87,14 +90,14 @@ func _on_resume_game():
 	toggle_pause()
 	
 func _update_labels():
-	base_life_label.text = "Health left: " + str(home_base.health)
+	life_amount_label.text = "Life: " + str(home_base.health)
 	coin_amount_label.text = "Score: " + str(cur_level_coins)
 	stone_amount_label.text = "Stone: " + str(resource_gen.resource_totals["stone"])
 	wood_amount_label.text = "Wood: " + str(resource_gen.resource_totals["wood"])
 	food_amount_label.text = "Food: " + str(resource_gen.resource_totals["food"])
 	gold_amount_label.text = "Gold: " + str(resource_gen.resource_totals["gold"])
-	wave_label.text = "Wave: " + str(cur_level_wave)
-	enemies_left_label.text = "Enemies Left: " + str(enemies_left_for_wave)
+	wave_amount_label.text = "Wave: " + str(cur_level_wave)
+	enemies_left_amount_label.text = "Enemies Left: " + str(enemies_left_for_wave)
 
 func _game_over():
 	print("game over")
