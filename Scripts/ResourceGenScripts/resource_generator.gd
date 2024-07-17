@@ -34,8 +34,11 @@ var resource_tiles = {
 }
 var gatherers: Array[Gatherer] = []
 var occupied_cells: Dictionary = {}
+var level_name
 
 func _ready():
+	level_name = get_tree().get_first_node_in_group("level").name
+	print(level_name)
 	set_process_input(true)
 	spawn_ground()
 	setup_gatherer_icons()
@@ -66,14 +69,30 @@ func spawn_ground():
 			await get_tree().create_timer(0.0001).timeout 
 	ground_placed = true
 	if ground_placed:
-		spawn_resources()
+		load_resources()
 
 func spawn_resources():
+	var resource_save_data = {}
 	for y in range(GRID_WIDTH):
 		for x in range(GRID_HEIGHT):
 			if randf() < 0.2:  # 20% chance to spawn a resource
 				var resource = RESOURCE_TYPES[randi() % RESOURCE_TYPES.size()]
 				tile_map.set_cell(1, Vector2i(x, y), 0, resource_tiles[resource])
+				resource_save_data["%d,%d" % [x, y]] = resource
+	GameManager.save_resource_data(level_name, resource_save_data)
+
+func load_resources():
+	var level_state = GameManager.get_level_state(level_name)
+	
+	if level_state.spawned_resource_data.is_empty():
+		spawn_resources()
+	else:
+		for pos_str in level_state.spawned_resource_data:
+			var pos = pos_str.split(",")
+			var x = int(pos[0])
+			var y = int(pos[1])
+			var resource = level_state.spawned_resource_data[pos_str]
+			tile_map.set_cell(1, Vector2i(x, y), 0, resource_tiles[resource])
 
 func remove_resources(tilemap: TileMap ,layer: int):
 	tilemap.clear_layer(layer)

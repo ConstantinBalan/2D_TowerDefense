@@ -37,5 +37,10 @@ func save_level_state(level_name: String, coins: int, wave: int, towers: Array[D
 	level_state.towers = towers
 	save_game()
 
+func save_resource_data(level_name: String, resource_data: Dictionary) -> void:
+	var level_state = game_state.get_or_create_level_state(level_name)
+	level_state.spawned_resource_data = resource_data
+	save_game()
+
 func get_level_state(level_name: String) -> LevelState:
 	return game_state.get_or_create_level_state(level_name)

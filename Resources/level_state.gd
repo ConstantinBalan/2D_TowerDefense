@@ -4,6 +4,7 @@ class_name LevelState
 @export var coins: int = 10
 @export var current_wave: int = 1
 @export var towers: Array[Dictionary] = []
+@export var spawned_resource_data : Dictionary = {}
 
 func save(path: String) -> void:
 	ResourceSaver.save(self, path)

@@ -127,7 +127,7 @@ _data = {
 }
 point_count = 2
 
-[node name="Level1" type="Node2D" node_paths=PackedStringArray("canvas_layer", "resource_gen")]
+[node name="Level1" type="Node2D" node_paths=PackedStringArray("canvas_layer", "resource_gen") groups=["level"]]
 script = ExtResource("1_vv1fx")
 canvas_layer = NodePath("GameUI")
 resource_gen = NodePath("ResourceGenerator")
