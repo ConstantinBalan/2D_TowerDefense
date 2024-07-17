@@ -1,3 +1,4 @@
+class_name ResourceGenerator
 extends Node2D
 
 const GRID_WIDTH = 15
@@ -7,23 +8,23 @@ const RESOURCE_TYPES = ["stone", "wood", "food", "gold"]
 
 @export var tile_map: TileMap
 @export var gatherers_home: Node2D
-#@export var highlight_tile: Vector2i
+@export var gatherer_scene: PackedScene
 @export var gatherer_icon_texture: Texture2D
 @export var gathered_food : PackedScene
 var gatherer_icons: Array[Sprite2D] = []
 var housed_gatherers: int = 7 
-var max_icons_per_row: int = 5
 var icon_container: Container
 var ground_placed : bool = false
+var refresh_button : Button
 #var current_highlight: Vector2i = Vector2i(-1, -1)
-var ground_tiles = {
-	EMPTY_TYPE: [Vector2i(0, 1), Vector2i(1, 1), Vector2i(2, 1), Vector2i(3, 1)]
-}
 var resource_totals = {
 	"stone": 0,
 	"wood": 0,
 	"food": 0,
 	"gold": 0
+}
+var ground_tiles = {
+	EMPTY_TYPE: [Vector2i(0, 1), Vector2i(1, 1), Vector2i(2, 1), Vector2i(3, 1)]
 }
 var resource_tiles = {
 	"stone": Vector2i(1, 0),
@@ -31,7 +32,7 @@ var resource_tiles = {
 	"food": Vector2i(3, 0),
 	"gold": Vector2i(4, 0)
 }
-var gatherers = []
+var gatherers: Array[Gatherer] = []
 var occupied_cells: Dictionary = {}
 
 func _ready():
@@ -40,16 +41,21 @@ func _ready():
 	setup_gatherer_icons()
 	spawn_gatherers(housed_gatherers)
 	setup_refresh_button()
-	
+
+func _process(delta):
+	if occupied_cells.is_empty():
+		refresh_button.disabled = false
+	else:
+		refresh_button.disabled = true
 	
 func _unhandled_input(event):
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		var click_position = get_global_mouse_position()
 		var map_pos = tile_map.local_to_map(tile_map.to_local(click_position))
-		print("Clicked at global position: ", click_position)
-		print("Converted to map position: ", map_pos)
+		#print("Clicked at global position: ", click_position)
+		#print("Converted to map position: ", map_pos)
 		if tile_map.get_cell_source_id(1, map_pos) != -1:
-			print("Valid cell clicked")  # Debug print
+			#print("Valid cell clicked")  # Debug print
 			send_gatherer_to(map_pos)
 				
 func spawn_ground():
@@ -57,7 +63,7 @@ func spawn_ground():
 		for x in range(GRID_HEIGHT):
 			var ground_tile = ground_tiles[EMPTY_TYPE][randi() % ground_tiles[EMPTY_TYPE].size()]
 			tile_map.set_cell(0, Vector2i(x, y), 0, ground_tile)
-			await get_tree().create_timer(0.001).timeout 
+			await get_tree().create_timer(0.0001).timeout 
 	ground_placed = true
 	if ground_placed:
 		spawn_resources()
@@ -69,18 +75,16 @@ func spawn_resources():
 				var resource = RESOURCE_TYPES[randi() % RESOURCE_TYPES.size()]
 				tile_map.set_cell(1, Vector2i(x, y), 0, resource_tiles[resource])
 
+func remove_resources(tilemap: TileMap ,layer: int):
+	tilemap.clear_layer(layer)
+
 func refresh_resources():
-	#spawn_ground()
+	remove_resources(tile_map, 1)
+	occupied_cells.clear()
 	spawn_resources()
-	#for x in range(GRID_WIDTH):
-	#	for y in range(GRID_HEIGHT):
-	#		var cell_pos = Vector2i(x, y)
-	#		if tile_map.get_cell_source_id(1, cell_pos) == -1:# If no resource here
-	#			if randf() < 0.3:  # 30% chance to spawn a resource
-	#				var resource = RESOURCE_TYPES[randi() % RESOURCE_TYPES.size()]
-	#				tile_map.set_cell(1, cell_pos, 0, resource_tiles[resource])
 
 func setup_gatherer_icons():
+	var max_icons_per_row: int = 5
 	icon_container = Container.new()
 	icon_container.set_anchors_preset(Control.PRESET_CENTER_TOP)
 	icon_container.position = gatherers_home.position + Vector2(-80, -60)
@@ -109,7 +113,7 @@ func update_gatherer_icons():
 
 func spawn_gatherers(num_gatherers: int):
 	for i in range(num_gatherers):
-		var gatherer = preload("res://Scenes//gatherer.tscn").instantiate()
+		var gatherer = gatherer_scene.instantiate()
 		gatherer.position = gatherers_home.global_position
 		gatherer.home_position = gatherers_home.position
 		gatherers_home.add_child(gatherer)
@@ -122,14 +126,17 @@ func send_gatherer_to(cell_pos):
 		
 	for gatherer in gatherers:
 		if gatherer.is_available():
-			var world_pos = tile_map.map_to_local(cell_pos)
-			gatherer.move_to(tile_map.to_global(world_pos), cell_pos)
+			var world_pos = tile_map.to_global(tile_map.map_to_local(cell_pos))
+			#print("Sending gatherer to world_pos:", world_pos, "cell_pos:", cell_pos)
+			gatherer.move_to(world_pos, cell_pos)
 			occupied_cells[cell_pos] = gatherer
 			housed_gatherers -= 1
 			update_gatherer_icons()
+			#print("Occupied cells after sending:", occupied_cells)
 			break
 
 func flash_red(cell_pos):
+	print(occupied_cells)
 	var original_modulate = tile_map.modulate
 	tile_map.modulate = Color.RED
 	await get_tree().create_timer(0.05).timeout
@@ -141,7 +148,7 @@ func add_resources(type, amount):
 
 
 func setup_refresh_button():
-	var refresh_button = Button.new()
+	refresh_button = Button.new()
 	refresh_button.text = "Refresh"
 	refresh_button.icon = load("res://Assets/refresh.png")
 	refresh_button.position = Vector2(375, -50)

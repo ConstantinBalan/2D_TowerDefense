@@ -38,10 +38,10 @@ func on_enemy_spawned():
 	enemy_spawned.emit()
 	
 func spawner_stop():
-	print("End of wave triggered, stop spawning enemies.")
+	#print("End of wave triggered, stop spawning enemies.")
 	continue_spawning = false
 	
 func spawner_start():
-	print("Start of wave triggered, start spawning enemies.")
+	#print("Start of wave triggered, start spawning enemies.")
 	continue_spawning = true
 	spawn_enemy()

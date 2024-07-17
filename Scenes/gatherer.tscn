@@ -91,10 +91,14 @@ _data = {
 atlas = ExtResource("3_5p60r")
 region = Rect2(32, 0, 32, 32)
 
-[node name="Gatherer" type="CharacterBody2D"]
+[node name="Gatherer" type="CharacterBody2D" node_paths=PackedStringArray("carried_resource_icon", "gather_progress", "anim")]
 top_level = true
 motion_mode = 1
 script = ExtResource("1_f8sym")
+carried_resource_icon = NodePath("CarriedResourceIcon")
+gather_progress = NodePath("GatherProgress")
+anim = NodePath("AnimationPlayer")
+resource_sprite_map = ExtResource("3_5p60r")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
