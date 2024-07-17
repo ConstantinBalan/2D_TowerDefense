@@ -17,6 +17,7 @@ material = SubResource("ShaderMaterial_uj6c1")
 texture = ExtResource("2_1u5v3")
 
 [node name="Sprite2D2" type="Sprite2D" parent="."]
+visible = false
 material = SubResource("ShaderMaterial_6s78y")
 position = Vector2(56, 0)
 texture = ExtResource("2_1u5v3")

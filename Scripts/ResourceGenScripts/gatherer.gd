@@ -16,11 +16,13 @@ var is_gathering : bool = false
 
 @onready var resource_sprite_map = preload("res://Assets/Resourcetilemap.png")
 var resource_generator: Node2D
+@onready var gold_particles = %GoldParticles
 
 func _ready():
 	carried_resource_icon.visible = false
 	gather_progress.visible = false
 	visible = false
+	gold_particles.visible = false
 	resource_generator = get_tree().get_first_node_in_group("resource_generator")
 	if not resource_generator:
 		push_error("ResourceGenerator not found!")
@@ -81,8 +83,11 @@ func arrive_at_home():
 func gather(delta):
 	gathering_progress += gathering_speed * delta
 	gather_progress.value = gathering_progress
+	gold_particles.visible = true
 	if gathering_progress >= 100:
+		gold_particles.visible = false
 		collect_resource()
+
 
 func collect_resource():
 	var current_coords = resource_generator.tile_map.get_cell_atlas_coords(1, target_cell)

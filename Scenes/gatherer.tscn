@@ -1,8 +1,31 @@
-[gd_scene load_steps=10 format=3 uid="uid://8su8tjstnt2i"]
+[gd_scene load_steps=15 format=3 uid="uid://8su8tjstnt2i"]
 
 [ext_resource type="Script" path="res://Scripts/ResourceGenScripts/gatherer.gd" id="1_f8sym"]
 [ext_resource type="Texture2D" uid="uid://dlladw1ket5ld" path="res://Assets/gnome.png" id="1_hxfeq"]
+[ext_resource type="Texture2D" uid="uid://dnb810ngj6qk4" path="res://Assets/particles.png" id="3_3k4qj"]
 [ext_resource type="Texture2D" uid="uid://gx3vpcn0p7d6" path="res://Assets/Resourcetilemap.png" id="3_5p60r"]
+
+[sub_resource type="Curve" id="Curve_v1m7a"]
+_data = [Vector2(0.163235, 0.446123), 0.0, 0.0, 0, 0, Vector2(0.607353, 0.84704), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_v30s2"]
+curve_x = SubResource("Curve_v1m7a")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_jqvls"]
+lifetime_randomness = 0.5
+particle_flag_align_y = true
+particle_flag_disable_z = true
+directional_velocity_min = -20.0
+directional_velocity_max = 20.0
+directional_velocity_curve = SubResource("CurveXYZTexture_v30s2")
+radial_velocity_min = 20.0
+radial_velocity_max = 80.0
+gravity = Vector3(0, 15, 0)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xjg0q"]
+atlas = ExtResource("3_3k4qj")
+region = Rect2(0, 0, 32, 32)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6nft6"]
 radius = 8.0
@@ -95,6 +118,12 @@ region = Rect2(32, 0, 32, 32)
 top_level = true
 motion_mode = 1
 script = ExtResource("1_f8sym")
+
+[node name="GoldParticles" type="GPUParticles2D" parent="."]
+unique_name_in_owner = true
+amount = 12
+process_material = SubResource("ParticleProcessMaterial_jqvls")
+texture = SubResource("AtlasTexture_xjg0q")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
