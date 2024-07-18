@@ -44,6 +44,10 @@ var level_state : LevelState
 #------------------Local Level Variables-------
 var cur_level_wave : int = 1
 var cur_level_coins : int = 10
+var cur_level_wood : int = 0
+var cur_level_stone : int = 0
+var cur_level_gold : int = 0
+var cur_level_food : int = 0
 
 
 func _ready():

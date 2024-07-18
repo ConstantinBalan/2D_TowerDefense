@@ -34,11 +34,14 @@ var resource_tiles = {
 }
 var gatherers: Array[Gatherer] = []
 var occupied_cells: Dictionary = {}
+var resource_save_data = {}
 var level_name
+var level_state
 
 func _ready():
 	level_name = get_tree().get_first_node_in_group("level").name
-	print(level_name)
+	level_state = GameManager.get_level_state(level_name) as LevelState
+	resource_totals = level_state.gathered_resources
 	set_process_input(true)
 	spawn_ground()
 	setup_gatherer_icons()
@@ -54,7 +57,7 @@ func _process(delta):
 func _unhandled_input(event):
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		var click_position = get_global_mouse_position()
-		var map_pos = tile_map.local_to_map(tile_map.to_local(click_position))
+		var map_pos : Vector2i = tile_map.local_to_map(tile_map.to_local(click_position))
 		#print("Clicked at global position: ", click_position)
 		#print("Converted to map position: ", map_pos)
 		if tile_map.get_cell_source_id(1, map_pos) != -1:
@@ -72,21 +75,20 @@ func spawn_ground():
 		load_resources()
 
 func spawn_resources():
-	var resource_save_data = {}
 	for y in range(GRID_WIDTH):
 		for x in range(GRID_HEIGHT):
 			if randf() < 0.2:  # 20% chance to spawn a resource
 				var resource = RESOURCE_TYPES[randi() % RESOURCE_TYPES.size()]
 				tile_map.set_cell(1, Vector2i(x, y), 0, resource_tiles[resource])
 				resource_save_data["%d,%d" % [x, y]] = resource
+	print("this is what's being saved" + str(resource_save_data))
 	GameManager.save_resource_data(level_name, resource_save_data)
 
 func load_resources():
-	var level_state = GameManager.get_level_state(level_name)
-	
 	if level_state.spawned_resource_data.is_empty():
 		spawn_resources()
 	else:
+		resource_save_data = level_state.spawned_resource_data
 		for pos_str in level_state.spawned_resource_data:
 			var pos = pos_str.split(",")
 			var x = int(pos[0])
@@ -100,7 +102,19 @@ func remove_resources(tilemap: TileMap ,layer: int):
 func refresh_resources():
 	remove_resources(tile_map, 1)
 	occupied_cells.clear()
+	print(resource_save_data)
+	resource_save_data.clear()
+	print(resource_save_data)
 	spawn_resources()
+
+func remove_resource_from_save(cell_to_remove: Vector2i):
+	#I'm doing this in a really stupid ass way
+	print(resource_save_data)
+	var cell_string = "%d,%d" % [cell_to_remove.x, cell_to_remove.y]
+	print("cell_string:" + cell_string)
+	resource_save_data.erase(cell_string)
+	GameManager.save_resource_data(level_name, resource_save_data)
+	print(resource_save_data)
 
 func setup_gatherer_icons():
 	var max_icons_per_row: int = 5
@@ -135,6 +149,7 @@ func spawn_gatherers(num_gatherers: int):
 		var gatherer = gatherer_scene.instantiate()
 		gatherer.position = gatherers_home.global_position
 		gatherer.home_position = gatherers_home.position
+		gatherer.connect("remove_saved_resource", remove_resource_from_save)
 		gatherers_home.add_child(gatherer)
 		gatherers.append(gatherer)
 		
@@ -164,6 +179,7 @@ func flash_red(cell_pos):
 func add_resources(type, amount):
 	resource_totals[type] += amount
 	print("Total ", type, ": ", resource_totals[type])
+	GameManager.save_gathered_resource_data(level_name, resource_totals)
 
 
 func setup_refresh_button():

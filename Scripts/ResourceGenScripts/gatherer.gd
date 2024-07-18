@@ -24,6 +24,9 @@ var state : int = STATE.IDLE
 @export var anim: AnimationPlayer
 @export var resource_sprite_map: CompressedTexture2D
 var resource_generator: ResourceGenerator
+var level_name : String
+
+signal remove_saved_resource(resource_pos: Vector2i)
 
 func _ready():
 	carried_resource_icon.visible = false
@@ -32,6 +35,9 @@ func _ready():
 	resource_generator = get_tree().get_first_node_in_group("resource_generator")
 	if not resource_generator:
 		push_error("ResourceGenerator not found!")
+	level_name = get_tree().get_first_node_in_group("level").name
+	if level_name == null:
+		push_error("Could not get level name for gatherer")
 	home_position = resource_generator.gatherers_home.global_position
 	
 func _physics_process(delta):
@@ -86,7 +92,7 @@ func arrive_at_home():
 	#position = resource_generator.gatherers_home.global_position
 	if cell_to_remove != null:
 		resource_generator.occupied_cells.erase(cell_to_remove)
-		#print(resource_generator.occupied_cells)
+		emit_signal("remove_saved_resource", cell_to_remove)
 		cell_to_remove = null
 	if carried_resource:
 		resource_generator.add_resources(carried_resource, carried_amount)
@@ -102,7 +108,6 @@ func arrive_at_home():
 	state = STATE.IDLE
 
 
-
 func gather(delta):
 	print("Were now gathering")
 	gathering_progress += gathering_speed * delta
@@ -111,7 +116,7 @@ func gather(delta):
 		collect_resource()
 
 func collect_resource():
-	print("Starting resource collection at cell:", target_cell)
+	print("Finished resource collection at cell:", target_cell)
 	var current_coords = resource_generator.tile_map.get_cell_atlas_coords(1, target_cell)
 	var resource_type = "empty"
 	for type in resource_generator.RESOURCE_TYPES:
@@ -142,6 +147,7 @@ func collect_resource():
 	anim.stop()
 	state = STATE.RETURNING_HOME
 	return_to_home()
+	
 func play_food_gathered_animation(position):
 	var food_gathered = resource_generator.gathered_food.instantiate()
 	resource_generator.add_child(food_gathered)
