@@ -21,6 +21,12 @@ func unlock_level(level_name: String) -> void:
 		game_state.unlocked_levels.append(level_name)
 		game_state.get_or_create_level_state(level_name)
 		save_game()
+		
+func unlock_world(world_name: String) -> void:
+	if world_name not in game_state.unlocked_worlds:
+		game_state.unlocked_worlds.append(world_name)
+		print("Saving " + str(world_name))
+		save_game()
 
 func upgrade_tower(tower_type: String, level: int) -> void:
 	game_state.tower_levels[tower_type] = level
