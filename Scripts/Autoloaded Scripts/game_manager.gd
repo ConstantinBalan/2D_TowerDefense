@@ -2,6 +2,7 @@ extends Node
 
 var game_state: GameState
 const SAVE_PATH = "user://game_state.tres"
+var level_difficulty: String
 
 func _ready() -> void:
 	load_game()

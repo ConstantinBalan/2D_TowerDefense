@@ -1,0 +1,107 @@
+[gd_scene load_steps=3 format=3 uid="uid://ce2aw33blff6d"]
+
+[ext_resource type="Script" path="res://Scripts/UI Scripts/level_select_difficulty.gd" id="1_4wwo0"]
+[ext_resource type="Texture2D" uid="uid://jnojgxmho324" path="res://Assets/CancelButton.png" id="2_0v4u7"]
+
+[node name="LevelSelectDifficulty" type="Control"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -128.0
+offset_top = -84.0
+offset_right = -125.8
+offset_bottom = -78.6799
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("1_4wwo0")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_left = -141.0
+offset_top = -98.0
+offset_right = 408.0
+offset_bottom = 288.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="LevelNamePreview" type="Label" parent="Panel/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_font_sizes/font_size = 32
+text = "Grass Level 1"
+horizontal_alignment = 1
+
+[node name="CloseUIButton" type="Button" parent="Panel/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/icon_max_width = 40
+icon = ExtResource("2_0v4u7")
+icon_alignment = 1
+
+[node name="LevelImageMargins" type="MarginContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 3.0
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 10
+
+[node name="LevelImage" type="TextureRect" parent="Panel/VBoxContainer/LevelImageMargins"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 3.0
+expand_mode = 2
+
+[node name="DifficultyButtons" type="HBoxContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Spacer" type="Control" parent="Panel/VBoxContainer/DifficultyButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.3
+
+[node name="EasyButton" type="Button" parent="Panel/VBoxContainer/DifficultyButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Easy"
+icon_alignment = 1
+
+[node name="MediumButton" type="Button" parent="Panel/VBoxContainer/DifficultyButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Medium"
+
+[node name="HardButton" type="Button" parent="Panel/VBoxContainer/DifficultyButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Hard"
+
+[node name="Spacer2" type="Control" parent="Panel/VBoxContainer/DifficultyButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.3

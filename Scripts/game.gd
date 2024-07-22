@@ -24,6 +24,7 @@ var TowerScene: PackedScene
 var TowerSceneName : String
 var TowerUI : PackedScene = preload("res://Scenes/UI/tower_info_popup.tscn")
 var tower_ui
+var level_diff : String = ""
 var waves : Dictionary = {1: 10, 2: 20, 3: 30, 4: 40, 5: 50, 6: 60, 7: 70}
 var current_wave : int = 1
 var enemies_spawned_for_wave : int = 0
@@ -76,6 +77,8 @@ func _connect_signals():
 
 func _initialize_level():
 	level_name = name
+	level_diff = GameManager.level_difficulty
+	print("Level difficulty is: " + level_diff)
 	level_state = GameManager.get_level_state(level_name)
 	next_wave_button.hide()
 	_update_labels()

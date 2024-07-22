@@ -11,7 +11,7 @@ radius = 39.5127
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_d57ni"]
 
-[node name="RegularTower" type="Node2D" groups=["friendly", "regular_tower", "tower"]]
+[node name="RegularTower" type="Node2D" groups=["regular_tower", "tower"]]
 script = ExtResource("1_vp4qx")
 projectile_scene = ExtResource("2_cem01")
 

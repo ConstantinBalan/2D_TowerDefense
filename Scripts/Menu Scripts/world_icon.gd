@@ -16,6 +16,6 @@ func _ready():
 	if world_preview:
 		world_image.texture = world_preview
 		
-func _process(delta) -> void:
+func _process(_delta) -> void:
 	if Engine.is_editor_hint():
 		$Label.text = "World " + str(world_index)

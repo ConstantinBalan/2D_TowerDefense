@@ -4,6 +4,7 @@ extends Control
 @export var playerIcon : Node2D
 @export var gemLabel : Label
 var current_world : int = 0
+var current_world_name : String = "world_name"
 var move_tween : Tween
 
 func _ready():
@@ -13,6 +14,17 @@ func _ready():
 	print(worlds)
 
 func _input(event):
+	match current_world:
+		0:
+			current_world_name = "Grass World"
+		1:
+			current_world_name = "Desert World"
+		2:
+			current_world_name = "Beach World"
+		3:
+			current_world_name = "Forest World"
+		4:
+			current_world_name = "Mountain World"
 	if move_tween and move_tween.is_running():
 		return
 	if event.is_action_pressed("MoveLeft") and current_world > 0:
@@ -26,6 +38,7 @@ func _input(event):
 	if event.is_action_pressed("ui_accept"):
 		if worlds[current_world].level_select_scene and worlds[current_world].world_name in GameManager.game_state.unlocked_worlds:
 			worlds[current_world].level_select_scene.parent_world_select = self
+			worlds[current_world].level_select_scene.curr_world = current_world_name
 			get_tree().get_root().add_child(worlds[current_world].level_select_scene)
 			get_tree().current_scene = worlds[current_world].level_select_scene
 			get_tree().get_root().remove_child(self)

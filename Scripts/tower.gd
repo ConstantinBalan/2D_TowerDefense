@@ -39,7 +39,7 @@ func _ready():
 	_setup_name_label()
 	_setup_sprite()
 
-func _setup_name_label():
+func _setup_name_label() -> void:
 	var label_pos = Vector2(-50, -30)
 	name_label = Label.new()
 	name_label.uppercase = true
@@ -51,13 +51,13 @@ func _setup_name_label():
 	name_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	add_child(name_label)
 
-func _setup_sprite():
+func _setup_sprite() -> void:
 	sprite = Sprite2D.new()
 	sprite.texture = tower_sprite
 	add_child(sprite)
 
 
-func _update_stats():
+func _update_stats() -> void:
 	match type:
 		"Regular":
 			damage = 10.0 + (level - 1) * 2.0

@@ -1,8 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://nimifdsegjbx"]
+[gd_scene load_steps=7 format=3 uid="uid://nimifdsegjbx"]
 
 [ext_resource type="PackedScene" uid="uid://dmygyvtr2x03r" path="res://Scenes/UI/level_icon.tscn" id="1_5tryj"]
 [ext_resource type="Script" path="res://Scripts/Menu Scripts/level_select.gd" id="1_32qln"]
+[ext_resource type="PackedScene" uid="uid://ce2aw33blff6d" path="res://Scenes/UI/level_select_difficulty.tscn" id="2_7e33b"]
+[ext_resource type="Texture2D" uid="uid://pkcfdcgu8dem" path="res://Assets/GrassLevelIcons/GrassLevel1.jpg" id="3_ash8c"]
 [ext_resource type="PackedScene" uid="uid://dvlgkt7nf66at" path="res://Scenes/UI/player_icon.tscn" id="4_50i7l"]
+[ext_resource type="Texture2D" uid="uid://15fub6hd5juu" path="res://Assets/GrassLevelIcons/GrassLevel2.png" id="4_qq2ww"]
 
 [node name="LevelSelect" type="Control"]
 layout_mode = 3
@@ -12,6 +15,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_32qln")
+level_select_difficulty_ui = ExtResource("2_7e33b")
+
+[node name="LevelSelectUI" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
 
 [node name="Line2D" type="Line2D" parent="."]
 position = Vector2(192, 352)
@@ -37,6 +44,7 @@ offset_left = 128.0
 offset_top = 320.0
 offset_right = 192.0
 offset_bottom = 384.0
+level_image_preview = ExtResource("3_ash8c")
 next_scene_path = "res://Scenes/Levels/PlayableLevels/level1.tscn"
 next_level_right = NodePath("../2")
 
@@ -46,6 +54,7 @@ offset_top = 384.0
 offset_right = 448.0
 offset_bottom = 448.0
 level_index = "2"
+level_image_preview = ExtResource("4_qq2ww")
 next_level_up = NodePath("../2B")
 next_level_left = NodePath("../1")
 next_level_right = NodePath("../3")
