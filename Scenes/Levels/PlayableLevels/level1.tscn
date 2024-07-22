@@ -1,15 +1,39 @@
-[gd_scene load_steps=17 format=3 uid="uid://didfb68gd710c"]
+[gd_scene load_steps=29 format=3 uid="uid://didfb68gd710c"]
 
 [ext_resource type="Script" path="res://Scripts/game.gd" id="1_vv1fx"]
 [ext_resource type="Texture2D" uid="uid://ctwwi2rat0lag" path="res://Assets/coin.png" id="2_81lmw"]
+[ext_resource type="Texture2D" uid="uid://cwe2dfoiocykc" path="res://Assets/heart.png" id="3_2i8sw"]
 [ext_resource type="Theme" uid="uid://eo2yt6tnyxbn" path="res://Themes/UI_Theme.tres" id="3_ykl4f"]
 [ext_resource type="PackedScene" uid="uid://do1jb8s08qoeo" path="res://Scenes/UI/BuildTowerButton.tscn" id="4_07sth"]
+[ext_resource type="Texture2D" uid="uid://cdb2r7kly8gfq" path="res://Assets/sword.png" id="4_lj0tw"]
 [ext_resource type="PackedScene" uid="uid://ge5q21mo0e6p" path="res://Scenes/UI/pause_menu.tscn" id="5_ks13e"]
+[ext_resource type="Texture2D" uid="uid://uy2cnuntuyhm" path="res://Assets/enemies.png" id="5_yr2kl"]
 [ext_resource type="Texture2D" uid="uid://brfip5pr3myj5" path="res://Assets/grass_spritesheet.png" id="6_1l28y"]
+[ext_resource type="Texture2D" uid="uid://gx3vpcn0p7d6" path="res://Assets/Resourcetilemap.png" id="6_vhkig"]
 [ext_resource type="PackedScene" uid="uid://cqrbxh3rh0crp" path="res://Scenes/home_base.tscn" id="7_w246s"]
 [ext_resource type="Script" path="res://Scripts/SpawnOnPath.gd" id="8_egdpt"]
+[ext_resource type="Texture2D" uid="uid://c211daqbhqofq" path="res://Assets/gun.png" id="9_k7fqf"]
 [ext_resource type="PackedScene" uid="uid://gu4ksp2me4jn" path="res://Scenes/Enemy_Types/EnemyPaths/weak_enemy_path.tscn" id="9_ws25o"]
 [ext_resource type="PackedScene" uid="uid://cmk53exapcrso" path="res://Scenes/Enemy_Types/EnemyPaths/strong_enemy_path.tscn" id="10_54o88"]
+[ext_resource type="Texture2D" uid="uid://bap3sf523kd4d" path="res://Assets/nextwavebutton.png" id="10_bss5k"]
+[ext_resource type="PackedScene" uid="uid://i0wofou8fnhn" path="res://Scenes/ResourceGenerator.tscn" id="12_2onla"]
+[ext_resource type="PackedScene" uid="uid://bvbihvym677gu" path="res://Scenes/grass.tscn" id="16_eb78c"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s341g"]
+atlas = ExtResource("6_vhkig")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mkxwr"]
+atlas = ExtResource("6_vhkig")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gp0kv"]
+atlas = ExtResource("6_vhkig")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_brk7j"]
+atlas = ExtResource("6_vhkig")
+region = Rect2(128, 0, 32, 32)
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_fjmtb"]
 tile_data = PackedInt32Array(0, 393216, 2, 65536, 262144, 1, 1, 262144, 1, 65537, 327680, 0, 2, 327680, 0, 65538, 393216, 2)
@@ -103,20 +127,59 @@ _data = {
 }
 point_count = 2
 
-[node name="Level1" type="Node2D" node_paths=PackedStringArray("canvas_layer")]
+[node name="Level1" type="Node2D" node_paths=PackedStringArray("canvas_layer", "resource_gen") groups=["level"]]
 script = ExtResource("1_vv1fx")
 canvas_layer = NodePath("GameUI")
+resource_gen = NodePath("ResourceGenerator")
 
 [node name="GameUI" type="CanvasLayer" parent="."]
+
+[node name="LifeContainer" type="PanelContainer" parent="GameUI"]
+anchors_preset = -1
+anchor_left = 0.202
+anchor_right = 0.202
+offset_left = 188.16
+offset_top = 32.0
+offset_right = 348.16
+offset_bottom = 120.0
+grow_horizontal = 2
+size_flags_horizontal = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GameUI/LifeContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameUI/LifeContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Control" type="Control" parent="GameUI/LifeContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="LifeImage" type="TextureRect" parent="GameUI/LifeContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+texture = ExtResource("3_2i8sw")
+expand_mode = 4
+
+[node name="Control2" type="Control" parent="GameUI/LifeContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="LifeAmountLabel" type="Label" parent="GameUI/LifeContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Life:"
+vertical_alignment = 1
 
 [node name="CoinContainer" type="PanelContainer" parent="GameUI"]
 anchors_preset = -1
 anchor_left = 0.202
 anchor_right = 0.202
-offset_left = -20.84
-offset_top = 30.0
-offset_right = 146.16
-offset_bottom = 114.0
+offset_left = 380.16
+offset_top = 32.0
+offset_right = 548.16
+offset_bottom = 120.0
 grow_horizontal = 2
 size_flags_horizontal = 4
 
@@ -146,7 +209,237 @@ size_flags_horizontal = 3
 text = "Coins:"
 vertical_alignment = 1
 
+[node name="WaveContainer" type="PanelContainer" parent="GameUI"]
+anchors_preset = -1
+anchor_left = 0.202
+anchor_right = 0.202
+offset_left = 572.16
+offset_top = 32.0
+offset_right = 732.16
+offset_bottom = 120.0
+grow_horizontal = 2
+size_flags_horizontal = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GameUI/WaveContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameUI/WaveContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Control" type="Control" parent="GameUI/WaveContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="WaveImage" type="TextureRect" parent="GameUI/WaveContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+texture = ExtResource("4_lj0tw")
+expand_mode = 4
+
+[node name="Control2" type="Control" parent="GameUI/WaveContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="WaveAmountLabel" type="Label" parent="GameUI/WaveContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Waves:"
+vertical_alignment = 1
+
+[node name="EnemiesLeftContainer" type="PanelContainer" parent="GameUI"]
+anchors_preset = -1
+anchor_left = 0.202
+anchor_right = 0.202
+offset_left = 764.16
+offset_top = 32.0
+offset_right = 924.16
+offset_bottom = 120.0
+grow_horizontal = 2
+size_flags_horizontal = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GameUI/EnemiesLeftContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameUI/EnemiesLeftContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Control" type="Control" parent="GameUI/EnemiesLeftContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="EnemiesLeftImage" type="TextureRect" parent="GameUI/EnemiesLeftContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+texture = ExtResource("5_yr2kl")
+expand_mode = 4
+
+[node name="Control2" type="Control" parent="GameUI/EnemiesLeftContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="EnemiesLeftAmountLabel" type="Label" parent="GameUI/EnemiesLeftContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Enemies
+Left:"
+vertical_alignment = 1
+
+[node name="StoneContainer" type="PanelContainer" parent="GameUI"]
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 64.0
+offset_top = -220.0
+offset_right = 231.0
+offset_bottom = -131.0
+grow_vertical = 2
+size_flags_horizontal = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GameUI/StoneContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameUI/StoneContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Control" type="Control" parent="GameUI/StoneContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="StoneImage" type="TextureRect" parent="GameUI/StoneContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+texture = SubResource("AtlasTexture_s341g")
+expand_mode = 4
+
+[node name="Control2" type="Control" parent="GameUI/StoneContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="StoneAmountLabel" type="Label" parent="GameUI/StoneContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Stone:"
+vertical_alignment = 1
+
+[node name="WoodContainer" type="PanelContainer" parent="GameUI"]
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 64.0
+offset_top = -92.0
+offset_right = 231.0
+offset_bottom = -3.0
+grow_vertical = 2
+size_flags_horizontal = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GameUI/WoodContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameUI/WoodContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Control" type="Control" parent="GameUI/WoodContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="WoodImage" type="TextureRect" parent="GameUI/WoodContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+texture = SubResource("AtlasTexture_mkxwr")
+expand_mode = 4
+
+[node name="Control2" type="Control" parent="GameUI/WoodContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="WoodAmountLabel" type="Label" parent="GameUI/WoodContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Wood:"
+vertical_alignment = 1
+
+[node name="FoodContainer" type="PanelContainer" parent="GameUI"]
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 64.0
+offset_top = 36.0
+offset_right = 231.0
+offset_bottom = 125.0
+grow_vertical = 2
+size_flags_horizontal = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GameUI/FoodContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameUI/FoodContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Control" type="Control" parent="GameUI/FoodContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="FoodImage" type="TextureRect" parent="GameUI/FoodContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+texture = SubResource("AtlasTexture_gp0kv")
+expand_mode = 4
+
+[node name="Control2" type="Control" parent="GameUI/FoodContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="FoodAmountLabel" type="Label" parent="GameUI/FoodContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Food:"
+vertical_alignment = 1
+
+[node name="GoldContainer" type="PanelContainer" parent="GameUI"]
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 64.0
+offset_top = 164.0
+offset_right = 231.0
+offset_bottom = 253.0
+grow_vertical = 2
+size_flags_horizontal = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GameUI/GoldContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameUI/GoldContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Control" type="Control" parent="GameUI/GoldContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="GoldImage" type="TextureRect" parent="GameUI/GoldContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+texture = SubResource("AtlasTexture_brk7j")
+expand_mode = 4
+
+[node name="Control2" type="Control" parent="GameUI/GoldContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="GoldAmountLabel" type="Label" parent="GameUI/GoldContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Gold:"
+vertical_alignment = 1
+
 [node name="GameInfoContainer" type="PanelContainer" parent="GameUI"]
+visible = false
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -266,7 +559,9 @@ alignment = 1
 [node name="RegularTowerButton" parent="GameUI/PlaceableTowerContainer/MarginContainer/BuildTowerButtons" instance=ExtResource("4_07sth")]
 layout_mode = 2
 towerType = "Regular"
-towerCost = 2
+woodCost = 20
+stoneCost = 10
+towerSprite = ExtResource("9_k7fqf")
 
 [node name="Control" type="Control" parent="GameUI/PlaceableTowerContainer/MarginContainer/BuildTowerButtons"]
 layout_mode = 2
@@ -276,7 +571,9 @@ size_flags_stretch_ratio = 0.1
 [node name="ShotgunTowerButton" parent="GameUI/PlaceableTowerContainer/MarginContainer/BuildTowerButtons" instance=ExtResource("4_07sth")]
 layout_mode = 2
 towerType = "Shotgun"
-towerCost = 3
+stoneCost = 20
+goldCost = 20
+towerSprite = ExtResource("9_k7fqf")
 
 [node name="Control2" type="Control" parent="GameUI/PlaceableTowerContainer/MarginContainer/BuildTowerButtons"]
 layout_mode = 2
@@ -286,12 +583,35 @@ size_flags_stretch_ratio = 0.1
 [node name="MachineGunTowerButton" parent="GameUI/PlaceableTowerContainer/MarginContainer/BuildTowerButtons" instance=ExtResource("4_07sth")]
 layout_mode = 2
 towerType = "Machine Gun"
-towerCost = 5
+stoneCost = 20
+goldCost = 40
+towerSprite = ExtResource("9_k7fqf")
 
 [node name="PauseMenu" parent="GameUI" instance=ExtResource("5_ks13e")]
 unique_name_in_owner = true
 
-[node name="TileMap" type="TileMap" parent="."]
+[node name="NextWaveButton" type="Button" parent="GameUI"]
+unique_name_in_owner = true
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -232.0
+offset_top = -208.0
+offset_right = -80.0
+offset_bottom = -56.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Next Wave"
+icon = ExtResource("10_bss5k")
+icon_alignment = 1
+expand_icon = true
+
+[node name="ResourceGenerator" parent="." instance=ExtResource("12_2onla")]
+position = Vector2(-738, -347)
+
+[node name="TowerDefenseTileMap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_6lydd")
 format = 2
 layer_0/name = "Ground"
@@ -335,16 +655,82 @@ enemy_paths_to_spawn = Array[PackedScene]([ExtResource("9_ws25o"), ExtResource("
 [node name="Towers" type="Node2D" parent="."]
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(23, -9)
-zoom = Vector2(3, 3)
+position = Vector2(-168, -80)
+zoom = Vector2(1.2, 1.2)
 
+[node name="Grass" type="Node" parent="."]
+
+[node name="Grass" parent="Grass" instance=ExtResource("16_eb78c")]
+position = Vector2(-192, -128)
+
+[node name="Grass2" parent="Grass" instance=ExtResource("16_eb78c")]
+position = Vector2(-120, -104)
+
+[node name="Grass3" parent="Grass" instance=ExtResource("16_eb78c")]
+position = Vector2(-32, -136)
+
+[node name="Grass4" parent="Grass" instance=ExtResource("16_eb78c")]
+position = Vector2(144, -136)
+
+[node name="Grass5" parent="Grass" instance=ExtResource("16_eb78c")]
+position = Vector2(-80, 72)
+
+[node name="Grass6" parent="Grass" instance=ExtResource("16_eb78c")]
+position = Vector2(-168, 80)
+
+[node name="Grass7" parent="Grass" instance=ExtResource("16_eb78c")]
+position = Vector2(16, 112)
+
+[node name="Grass8" parent="Grass" instance=ExtResource("16_eb78c")]
+position = Vector2(176, 104)
+
+[node name="Grass9" parent="Grass" instance=ExtResource("16_eb78c")]
+position = Vector2(240, -40)
+
+[node name="Grass10" parent="Grass" instance=ExtResource("16_eb78c")]
+position = Vector2(264, 56)
+
+[node name="Grass11" parent="Grass" instance=ExtResource("16_eb78c")]
+position = Vector2(-120, 104)
+
+[node name="Grass12" parent="Grass" instance=ExtResource("16_eb78c")]
+position = Vector2(-64, -96)
+
+[node name="Grass13" parent="Grass" instance=ExtResource("16_eb78c")]
+position = Vector2(48, -128)
+
+[node name="Grass14" parent="Grass" instance=ExtResource("16_eb78c")]
+position = Vector2(88, -152)
+
+[node name="Grass15" parent="Grass" instance=ExtResource("16_eb78c")]
+position = Vector2(-136, -144)
+
+[node name="Grass16" parent="Grass" instance=ExtResource("16_eb78c")]
+position = Vector2(-136, 56)
+
+[node name="Grass17" parent="Grass" instance=ExtResource("16_eb78c")]
+position = Vector2(64, 96)
+
+[node name="Grass18" parent="Grass" instance=ExtResource("16_eb78c")]
+position = Vector2(112, 104)
+
+[node name="Grass19" parent="Grass" instance=ExtResource("16_eb78c")]
+position = Vector2(264, 0)
+
+[node name="Grass20" parent="Grass" instance=ExtResource("16_eb78c")]
+position = Vector2(248, -112)
+
+[node name="Grass21" parent="Grass" instance=ExtResource("16_eb78c")]
+position = Vector2(208, -152)
+
+[connection signal="pressed" from="GameUI/NextWaveButton" to="." method="start_next_wave"]
 [connection signal="died_to_base" from="HomeBase" to="." method="decrement_enemies_left"]
-[connection signal="enemy_died" from="Paths/TopPath" to="." method="on_enemy_died"]
 [connection signal="enemy_died" from="Paths/TopPath" to="." method="decrement_enemies_left"]
+[connection signal="enemy_died" from="Paths/TopPath" to="." method="on_enemy_died"]
 [connection signal="enemy_spawned" from="Paths/TopPath" to="." method="add_to_spawned_wave"]
-[connection signal="enemy_died" from="Paths/BottomPath" to="." method="on_enemy_died"]
 [connection signal="enemy_died" from="Paths/BottomPath" to="." method="decrement_enemies_left"]
+[connection signal="enemy_died" from="Paths/BottomPath" to="." method="on_enemy_died"]
 [connection signal="enemy_spawned" from="Paths/BottomPath" to="." method="add_to_spawned_wave"]
-[connection signal="enemy_died" from="Paths/MiddlePath" to="." method="on_enemy_died"]
 [connection signal="enemy_died" from="Paths/MiddlePath" to="." method="decrement_enemies_left"]
+[connection signal="enemy_died" from="Paths/MiddlePath" to="." method="on_enemy_died"]
 [connection signal="enemy_spawned" from="Paths/MiddlePath" to="." method="add_to_spawned_wave"]

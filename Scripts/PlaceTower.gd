@@ -1,7 +1,10 @@
 extends Button
 
 @export var towerType : String
-@export var towerCost : int
+@export var woodCost : int
+@export var stoneCost : int
+@export var goldCost : int
+@export var towerSprite : CompressedTexture2D
 
 var tower_instance : Tower
 var tower_data : Dictionary
@@ -10,8 +13,10 @@ func _ready():
 	tower_data = {
 	"type": towerType,
 	"level": 1,
-	"cost": towerCost,
-	"tower_sprite": load("res://Assets/gun.png")  # Make sure this path is correct
+	"woodCost": woodCost,
+	"stoneCost": stoneCost,
+	"goldCost": goldCost,
+	"tower_sprite": towerSprite  # Make sure this path is correct
 	}
 	pressed.connect(_on_button_pressed)
 	mouse_entered.connect(_on_mouse_entered)

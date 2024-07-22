@@ -2,11 +2,11 @@ extends Resource
 class_name GameState
 
 @export var gems: int = 0
+@export var unlocked_worlds: Array[String] = ["Grass World"]
 @export var unlocked_levels: Array[String] = []
 @export var tower_levels: Dictionary = {}
 @export var garden_decorations: Array[Dictionary] = []
 @export var level_states: Dictionary = {}
-var save_path = "user://playersave.save"
 
 func save(path: String) -> void:
 	ResourceSaver.save(self, path)

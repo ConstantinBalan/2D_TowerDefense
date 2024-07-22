@@ -16,7 +16,7 @@ func _physics_process(delta):
 		var direction = (target.global_position - global_position).normalized()
 		global_position += direction * speed * delta
 	else:
-		print("bullet was still in air when enemy died")
+		#print("bullet was still in air when enemy died")
 		queue_free()
 	
 

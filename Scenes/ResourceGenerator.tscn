@@ -1,0 +1,49 @@
+[gd_scene load_steps=8 format=3 uid="uid://i0wofou8fnhn"]
+
+[ext_resource type="Script" path="res://Scripts/ResourceGenScripts/resource_generator.gd" id="1_x1bb7"]
+[ext_resource type="PackedScene" uid="uid://d20chiu20fgct" path="res://Scenes/food_gathered.tscn" id="2_3a1nq"]
+[ext_resource type="PackedScene" uid="uid://8su8tjstnt2i" path="res://Scenes/gatherer.tscn" id="2_4wllx"]
+[ext_resource type="Texture2D" uid="uid://gx3vpcn0p7d6" path="res://Assets/Resourcetilemap.png" id="2_pvble"]
+[ext_resource type="Texture2D" uid="uid://v27t05gfxewo" path="res://Assets/gatherer_house.png" id="3_dli1c"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hqckm"]
+texture = ExtResource("2_pvble")
+texture_region_size = Vector2i(32, 32)
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_sq25o"]
+tile_size = Vector2i(32, 32)
+sources/0 = SubResource("TileSetAtlasSource_hqckm")
+
+[node name="ResourceGenerator" type="Node2D" node_paths=PackedStringArray("tile_map", "gatherers_home") groups=["resource_generator"]]
+script = ExtResource("1_x1bb7")
+tile_map = NodePath("ResourceGathererTileMap")
+gatherers_home = NodePath("GatherersHome")
+gatherer_scene = ExtResource("2_4wllx")
+gathered_food = ExtResource("2_3a1nq")
+
+[node name="ResourceGathererTileMap" type="TileMap" parent="."]
+unique_name_in_owner = true
+tile_set = SubResource("TileSet_sq25o")
+rendering_quadrant_size = 32
+format = 2
+layer_0/name = "Ground"
+layer_1/name = "Resources"
+layer_1/tile_data = PackedInt32Array()
+layer_2/name = "Highlight"
+layer_2/tile_data = PackedInt32Array()
+
+[node name="GatherersHome" type="Node2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -60)
+
+[node name="Sprite2D" type="Sprite2D" parent="GatherersHome"]
+scale = Vector2(1.91935, 2.08065)
+texture = ExtResource("3_dli1c")

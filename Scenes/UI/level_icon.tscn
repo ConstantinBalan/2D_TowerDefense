@@ -1,14 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://dmygyvtr2x03r"]
+[gd_scene load_steps=2 format=3 uid="uid://dmygyvtr2x03r"]
 
 [ext_resource type="Script" path="res://Scripts/Menu Scripts/level_icon.gd" id="1_2hko5"]
-
-[sub_resource type="Gradient" id="Gradient_p1e51"]
-offsets = PackedFloat32Array(0)
-colors = PackedColorArray(0, 0, 0, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_6jhgt"]
-gradient = SubResource("Gradient_p1e51")
-fill_from = Vector2(1, 0)
 
 [node name="LevelIcon" type="Control"]
 layout_mode = 3
@@ -25,8 +17,8 @@ offset_right = 40.0
 offset_bottom = -1.0
 text = "Level 1"
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="LevelImage" type="TextureRect" parent="."]
 layout_mode = 0
 offset_right = 64.0
 offset_bottom = 64.0
-texture = SubResource("GradientTexture2D_6jhgt")
+expand_mode = 1

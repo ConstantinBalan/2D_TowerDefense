@@ -1,0 +1,22 @@
+[gd_scene load_steps=6 format=3 uid="uid://bvbihvym677gu"]
+
+[ext_resource type="Shader" uid="uid://bvfgim5fd1t42" path="res://Scripts/Shaders/ResourceDestroy.tres" id="1_byak5"]
+[ext_resource type="Texture2D" uid="uid://c4k8cn1qsg1h1" path="res://Assets/Grass.png" id="2_1u5v3"]
+[ext_resource type="Shader" path="res://Scripts/Shaders/grass.gdshader" id="3_jmjea"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_uj6c1"]
+shader = ExtResource("1_byak5")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6s78y"]
+shader = ExtResource("3_jmjea")
+
+[node name="Grass" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_uj6c1")
+texture = ExtResource("2_1u5v3")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_6s78y")
+position = Vector2(56, 0)
+texture = ExtResource("2_1u5v3")

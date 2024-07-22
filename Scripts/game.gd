@@ -5,17 +5,27 @@ extends Node2D
 @onready var wave_label = %WaveLabel
 @onready var enemies_left_label = %EnemiesLeftLabel
 @onready var coin_amount_label = %CoinAmountLabel
+@onready var wave_amount_label = %WaveAmountLabel
+@onready var enemies_left_amount_label = %EnemiesLeftAmountLabel
+@onready var life_amount_label = %LifeAmountLabel
+@onready var stone_amount_label = %StoneAmountLabel
+@onready var wood_amount_label = %WoodAmountLabel
+@onready var food_amount_label = %FoodAmountLabel
+@onready var gold_amount_label = %GoldAmountLabel
 @onready var defense_level = $"."
-@onready var tile_map = $TileMap
+@onready var tile_map = $TowerDefenseTileMap
 @onready var towers = $Towers
 @onready var pause_menu = %PauseMenu
+@onready var next_wave_button = %NextWaveButton
 @export var canvas_layer: CanvasLayer
+@export var resource_gen : Node2D
 #-------------------------------------
 var TowerScene: PackedScene
 var TowerSceneName : String
 var TowerUI : PackedScene = preload("res://Scenes/UI/tower_info_popup.tscn")
 var tower_ui
-var waves : Dictionary = {1: 10, 2: 20, 3: 30, 4: 40, 5: 50}
+var level_diff : String = ""
+var waves : Dictionary = {1: 10, 2: 20, 3: 30, 4: 40, 5: 50, 6: 60, 7: 70}
 var current_wave : int = 1
 var enemies_spawned_for_wave : int = 0
 var enemies_left_for_wave : int
@@ -35,9 +45,14 @@ var level_state : LevelState
 #------------------Local Level Variables-------
 var cur_level_wave : int = 1
 var cur_level_coins : int = 10
+var cur_level_wood : int = 0
+var cur_level_stone : int = 0
+var cur_level_gold : int = 0
+var cur_level_food : int = 0
 
 
 func _ready():
+	print(OS.get_user_data_dir())
 	_connect_signals()
 	_initialize_level()
 	pause_menu.hide()
@@ -62,7 +77,10 @@ func _connect_signals():
 
 func _initialize_level():
 	level_name = name
+	level_diff = GameManager.level_difficulty
+	print("Level difficulty is: " + level_diff)
 	level_state = GameManager.get_level_state(level_name)
+	next_wave_button.hide()
 	_update_labels()
 	cur_level_wave = level_state.current_wave
 	cur_level_coins = level_state.coins
@@ -82,10 +100,14 @@ func _on_resume_game():
 	toggle_pause()
 	
 func _update_labels():
-	base_life_label.text = "Health left: " + str(home_base.health)
+	life_amount_label.text = "Life: " + str(home_base.health)
 	coin_amount_label.text = "Score: " + str(cur_level_coins)
-	wave_label.text = "Wave: " + str(cur_level_wave)
-	enemies_left_label.text = "Enemies Left: " + str(enemies_left_for_wave)
+	stone_amount_label.text = "Stone: " + str(resource_gen.resource_totals["stone"])
+	wood_amount_label.text = "Wood: " + str(resource_gen.resource_totals["wood"])
+	food_amount_label.text = "Food: " + str(resource_gen.resource_totals["food"])
+	gold_amount_label.text = "Gold: " + str(resource_gen.resource_totals["gold"])
+	wave_amount_label.text = "Wave: " + str(cur_level_wave)
+	enemies_left_amount_label.text = "Enemies Left: " + str(enemies_left_for_wave)
 
 func _game_over():
 	print("game over")
@@ -104,7 +126,6 @@ func spawn_tower_ui():
 	tower_ui = TowerUI.instantiate()
 	tower_ui.name = "TowerUI"
 	$GameUI.add_child(tower_ui)
-	tower_ui.show()
 
 func remove_tower_ui():
 	if tower_ui:
@@ -175,11 +196,14 @@ func _setup_tower(tower_instance):
 
 func place_tower():
 	var tower_data = tower_preview.get_child(0).get_info()
-	if cur_level_coins >= tower_data["cost"]:
+	if check_if_sufficient_funds(tower_data):
+		resource_gen.resource_totals["wood"] -= tower_data["wood_cost"]
+		resource_gen.resource_totals["stone"] -= tower_data["stone_cost"]
+		resource_gen.resource_totals["gold"] -= tower_data["gold_cost"]
 		var tower_instance = TowerScene.instantiate() as Tower
 		tower_instance._init(tower_data)
 		_setup_tower(tower_instance)
-		cur_level_coins -= tower_data["cost"]
+		#cur_level_coins -= tower_data["cost"]
 		var saved_tower_data = tower_data.duplicate()
 		saved_tower_data["position"] = tower_instance.position
 		level_state.towers.append(saved_tower_data)
@@ -191,6 +215,16 @@ func place_tower():
 		print("Not enough coins to build")
 		#tower_instance.queue_free()x
 
+func check_if_sufficient_funds(tower_data) -> bool:
+	var funds_met : bool
+	if resource_gen.resource_totals["wood"] >= tower_data["wood_cost"] \
+	and resource_gen.resource_totals["stone"] >= tower_data["stone_cost"] \
+	and resource_gen.resource_totals["gold"] >= tower_data["gold_cost"]:
+		funds_met = true
+	else:
+		funds_met = false
+	return funds_met
+	
 func spawn_tower(tower_data: Dictionary):
 	var tower = load("res://Scenes/Towers/tower.tscn").instantiate() as Tower
 	tower.position = tower_data["position"]
@@ -221,7 +255,7 @@ func decrement_enemies_left():
 		print("You've killed all of the enemies")
 		GlobalSignals.emit_signal("wave_end")
 		cur_level_wave += 1
-		next_wave_setup()
+		next_wave_button.show()
 	
 #This listens for the enemy_spawned signal from the paths
 #and then adds to the total spawned for that wave. After
@@ -232,13 +266,10 @@ func add_to_spawned_wave():
 		print("All enemies for this wave have been spawned")
 		GlobalSignals.emit_signal("stop_spawning_enemies")
 
-func next_wave_setup():
-	print("Setting wave to " + str(cur_level_wave))
-	var next_wave_timer = get_tree().create_timer(5.0)
-	next_wave_timer.timeout.connect(start_next_wave)
 	
 func start_next_wave():
 	print("Next wave timer over, starting next wave")
+	next_wave_button.hide()
 	wave_label.text = "Wave: " + str(cur_level_wave)
 	enemies_left_label.text = "Enemies Left: " + str(waves[cur_level_wave])
 	enemies_left_for_wave = waves[cur_level_wave]

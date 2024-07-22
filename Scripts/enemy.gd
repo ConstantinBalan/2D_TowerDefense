@@ -21,6 +21,6 @@ func take_damage(damage: float):
 		die()
 		
 func die():
-	print("enemy died")
+	#print("enemy died")
 	died.emit()
 	queue_free()
