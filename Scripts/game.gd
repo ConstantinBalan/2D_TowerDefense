@@ -126,7 +126,6 @@ func spawn_tower_ui():
 	tower_ui = TowerUI.instantiate()
 	tower_ui.name = "TowerUI"
 	$GameUI.add_child(tower_ui)
-	tower_ui.show()
 
 func remove_tower_ui():
 	if tower_ui:
