@@ -82,7 +82,7 @@ func upgrade_tower() -> void:
 	_update_stats()
 
 func shoot_bullet(speed: float, damage: float) -> void:
-	if placed:
+	if placed == true:
 		var projectile = projectile_scene
 		var bullet = projectile.instantiate()
 		bullet.speed = speed
@@ -136,3 +136,5 @@ func _on_tower_space_area_exited(area) -> void:
 func recently_placed() -> void:
 	await get_tree().create_timer(0.1).timeout #This can be removed since we're doing a hover over the buttons to show info
 	can_click_ui = true
+	placed = true
+	

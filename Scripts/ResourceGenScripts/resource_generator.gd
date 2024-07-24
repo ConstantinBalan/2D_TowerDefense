@@ -5,7 +5,7 @@ const GRID_WIDTH = 15
 const GRID_HEIGHT = 15
 const EMPTY_TYPE = "empty"
 const RESOURCE_TYPES = ["stone", "wood", "food", "gold"]
-
+@export var DroppingResource : Array[PackedScene]
 @export var tile_map: TileMap
 @export var gatherers_home: Node2D
 @export var gatherer_scene: PackedScene
@@ -75,26 +75,87 @@ func spawn_ground():
 		load_resources()
 
 func spawn_resources():
+	var animation_promises = []
 	for y in range(GRID_WIDTH):
 		for x in range(GRID_HEIGHT):
 			if randf() < 0.2:  # 20% chance to spawn a resource
 				var resource = RESOURCE_TYPES[randi() % RESOURCE_TYPES.size()]
-				tile_map.set_cell(1, Vector2i(x, y), 0, resource_tiles[resource])
-				resource_save_data["%d,%d" % [x, y]] = resource
+				animation_promises.append(await drop_resources(x, y, resource))
+	
+	await Promise.all(animation_promises)
 	print("this is what's being saved" + str(resource_save_data))
 	GameManager.save_resource_data(level_name, resource_save_data)
+
+func drop_resources(x: int, y: int, resource: String):
+	var resource_arr_val: int
+	match resource:
+		"stone": resource_arr_val = 0
+		"wood": resource_arr_val = 1
+		"food": resource_arr_val = 2
+		"gold": resource_arr_val = 3
+	var dropping_resource = DroppingResource[resource_arr_val].instantiate()
+	dropping_resource.position = tile_map.map_to_local(Vector2i(x, y))
+	add_child(dropping_resource)
+	
+	var animation_player = dropping_resource.get_node("AnimationPlayer")
+	animation_player.play("drop")
+	
+	var promise = Promise.new()
+	animation_player.connect("animation_finished", func(_anim_name):
+		tile_map.set_cell(1, Vector2i(x, y), 0, resource_tiles[resource])
+		resource_save_data["%d,%d" % [x, y]] = resource
+		dropping_resource.queue_free()
+		promise.resolve()
+	)
+	
+	return promise
+
 
 func load_resources():
 	if level_state.spawned_resource_data.is_empty():
 		spawn_resources()
 	else:
+		var animation_promises = []
 		resource_save_data = level_state.spawned_resource_data
 		for pos_str in level_state.spawned_resource_data:
 			var pos = pos_str.split(",")
 			var x = int(pos[0])
 			var y = int(pos[1])
 			var resource = level_state.spawned_resource_data[pos_str]
-			tile_map.set_cell(1, Vector2i(x, y), 0, resource_tiles[resource])
+			animation_promises.append(drop_resources(x, y, resource))
+		
+		await Promise.all(animation_promises)
+
+class Promise:
+	var _resolved = false
+	var _callback = null
+
+	func resolve():
+		_resolved = true
+		if _callback:
+			_callback.call()
+
+	func then(callback):
+		_callback = callback
+		if _resolved:
+			_callback.call()
+
+	static func all(promises: Array):
+		var remaining = promises.size()
+		if remaining == 0:
+			return
+
+		var promise = Promise.new()
+		
+		for p in promises:
+			p.then(func():
+				remaining -= 1
+				if remaining == 0:
+					promise.resolve()
+			)
+		
+		return promise
+
 
 func remove_resources(tilemap: TileMap ,layer: int):
 	tilemap.clear_layer(layer)

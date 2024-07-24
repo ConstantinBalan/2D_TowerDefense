@@ -1,10 +1,14 @@
-[gd_scene load_steps=8 format=3 uid="uid://i0wofou8fnhn"]
+[gd_scene load_steps=12 format=3 uid="uid://i0wofou8fnhn"]
 
 [ext_resource type="Script" path="res://Scripts/ResourceGenScripts/resource_generator.gd" id="1_x1bb7"]
 [ext_resource type="PackedScene" uid="uid://d20chiu20fgct" path="res://Scenes/food_gathered.tscn" id="2_3a1nq"]
 [ext_resource type="PackedScene" uid="uid://8su8tjstnt2i" path="res://Scenes/gatherer.tscn" id="2_4wllx"]
+[ext_resource type="PackedScene" uid="uid://p4awitjrfknx" path="res://Scenes/Animations/Resources/stone_resource_drop.tscn" id="2_iqhy2"]
 [ext_resource type="Texture2D" uid="uid://gx3vpcn0p7d6" path="res://Assets/Resourcetilemap.png" id="2_pvble"]
 [ext_resource type="Texture2D" uid="uid://v27t05gfxewo" path="res://Assets/gatherer_house.png" id="3_dli1c"]
+[ext_resource type="PackedScene" uid="uid://dkt7lpiftgemk" path="res://Scenes/Animations/Resources/wood_resource_drop.tscn" id="3_wkajc"]
+[ext_resource type="PackedScene" uid="uid://d16mmpfwmxe8b" path="res://Scenes/Animations/Resources/food_resource_drop.tscn" id="4_eah5d"]
+[ext_resource type="PackedScene" uid="uid://b543vrxxyf4ii" path="res://Scenes/Animations/Resources/gold_resource_drop.tscn" id="5_32414"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hqckm"]
 texture = ExtResource("2_pvble")
@@ -24,6 +28,7 @@ sources/0 = SubResource("TileSetAtlasSource_hqckm")
 
 [node name="ResourceGenerator" type="Node2D" node_paths=PackedStringArray("tile_map", "gatherers_home") groups=["resource_generator"]]
 script = ExtResource("1_x1bb7")
+DroppingResource = Array[PackedScene]([ExtResource("2_iqhy2"), ExtResource("3_wkajc"), ExtResource("4_eah5d"), ExtResource("5_32414")])
 tile_map = NodePath("ResourceGathererTileMap")
 gatherers_home = NodePath("GatherersHome")
 gatherer_scene = ExtResource("2_4wllx")

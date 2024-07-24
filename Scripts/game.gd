@@ -132,19 +132,14 @@ func remove_tower_ui():
 		tower_ui.queue_free()	
 
 func set_tower_preview(tower_data: Dictionary):
-	if tower_preview:
+	if tower_preview != null:
 		tower_preview.queue_free()
-	var dragable_tower = Tower.new(tower_data)
-	var tower_picture = Sprite2D.new()
-	tower_picture.texture = tower_data.tower_sprite
-	tower_picture.scale.x = 0.032
-	tower_picture.scale.y = 0.033
+	var dragable_tower = TowerScene.instantiate() as Tower
+	dragable_tower._init(tower_data)
 	dragable_tower.set_name("NewTower")
 	var control = Control.new()
 	control.add_child(dragable_tower, true)
-	control.add_child(tower_picture, true)
 	control.set_name("TowerPreview")
-	#control.get_global_transform()
 	towers.add_child(control)
 	tower_preview = control
 
@@ -207,7 +202,6 @@ func place_tower():
 		var saved_tower_data = tower_data.duplicate()
 		saved_tower_data["position"] = tower_instance.position
 		level_state.towers.append(saved_tower_data)
-		tower_instance.placed = true
 		tower_instance.was_recently_placed = true
 		cancel_build_mode()
 	else:
