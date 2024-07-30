@@ -5,9 +5,13 @@ var target_position = null
 var target_cell = null
 var cell_to_remove = null
 var home_position = Vector2.ZERO
-var speed = 150
+#---------Gatherer Stats---------
+var walking_speed : float = 150
+var gathering_speed :float = 25
+var luck : int = 1
+var strength_in_numbers : int = 0
+#--------------------------------
 var gathering_progress = 0
-var gathering_speed = 50
 var carried_resource = null
 var carried_amount: int = 0
 var is_gathering: bool = false
@@ -25,10 +29,43 @@ var state : int = STATE.IDLE
 @export var resource_sprite_map: CompressedTexture2D
 var resource_generator: ResourceGenerator
 var level_name : String
+@onready var strength_in_numbers_area = %StrengthInNumbersArea
+@onready var strength_in_numbers_label = %StrengthInNumbersLabel
 
 signal remove_saved_resource(resource_pos: Vector2i)
 
 func _ready():
+	setup_gatherer()
+	
+func _process(delta):
+	update_strength_in_numbers_label()
+
+func _physics_process(delta):
+	if target_position != null:
+		walking_to_cell()
+	elif state == STATE.GATHERING:
+		gather(delta)
+	if state == STATE.GATHERING:
+		var overlapping_gatherers = check_overlapping_areas()
+		strength_in_numbers = overlapping_gatherers
+
+func move_to(world_pos, cell):
+	if state == STATE.GATHERING: #Won't go to another cell if the gatherer is already out
+		return
+	gathering_progress = 0
+	#is_gathering = true
+	target_position = world_pos #This is the relative global position
+	target_cell = cell #This is the actual x,y cell on the grid
+	visible = true
+	strength_in_numbers = 0
+	if cell == null:
+		state = STATE.RETURNING_HOME
+		#print("Moving home. world_pos: " + str(world_pos) + "cell: null")
+	else:
+		state = STATE.MOVING_TO_RESOURCE
+		#print("Moving to resource. world_pos:", world_pos, "cell:", cell)
+
+func setup_gatherer():
 	carried_resource_icon.visible = false
 	gather_progress.visible = false
 	visible = false
@@ -39,41 +76,6 @@ func _ready():
 	if level_name == null:
 		push_error("Could not get level name for gatherer")
 	home_position = resource_generator.gatherers_home.global_position
-	
-func _physics_process(delta):
-	if target_position != null:
-		var direction = (target_position - global_position).normalized()
-		velocity = direction * speed
-		move_and_slide()
-		anim.play("Walk")
-		#print("Gatherer position: ", global_position, " target: ", target_position)
-		if global_position.distance_to(target_position) < 5:
-			if state == STATE.MOVING_TO_RESOURCE:
-				arrive_at_cell()
-			elif  STATE.RETURNING_HOME:
-				arrive_at_home()
-			else:
-				print("Unexpected state:", state)
-	elif state == STATE.GATHERING:
-		anim.play("Gather")
-		gather(delta)
-
-func move_to(world_pos, cell):
-	if is_gathering: #Won't go to another cell if the gatherer is already out
-		return
-	is_gathering = true
-	target_position = world_pos
-	target_cell = cell
-	visible = true
-	gathering_progress = 0
-	
-	if cell == null:
-		state = STATE.RETURNING_HOME
-		#print("Moving home. world_pos: " + str(world_pos) + "cell: null")
-	else:
-		state = STATE.MOVING_TO_RESOURCE
-		#print("Moving to resource. world_pos:", world_pos, "cell:", cell)
-
 
 func is_available():
 	return state == STATE.IDLE
@@ -86,10 +88,20 @@ func arrive_at_cell():
 	state = STATE.GATHERING
 	#print("Gatherer arrived at cell:", target_cell)
 
+func walking_to_cell():
+	var direction = (target_position - global_position).normalized()
+	velocity = direction * walking_speed
+	move_and_slide()
+	anim.play("Walk")
+	if global_position.distance_to(target_position) < 5:
+		if state == STATE.MOVING_TO_RESOURCE:
+			arrive_at_cell()
+		elif  STATE.RETURNING_HOME:
+			arrive_at_home()
+		else:
+			print("Unexpected state:", state)
 
 func arrive_at_home():
-	#print("Were back home")
-	#position = resource_generator.gatherers_home.global_position
 	if cell_to_remove != null:
 		resource_generator.occupied_cells.erase(cell_to_remove)
 		emit_signal("remove_saved_resource", cell_to_remove)
@@ -100,22 +112,53 @@ func arrive_at_home():
 		carried_amount = 0
 	target_position = null
 	target_cell = null
-	is_gathering = false
+	#is_gathering = false
 	carried_resource_icon.visible = false
 	visible = false
 	resource_generator.housed_gatherers += 1
 	resource_generator.update_gatherer_icons()
+	strength_in_numbers = 0
 	state = STATE.IDLE
 
 
+func strength_in_numbers_add(area):
+	if area.is_in_group("gatherer_sig") and state != STATE.IDLE:
+		print("Gnome has entered, WE ARE STRONG")
+		strength_in_numbers += 1
+		print(strength_in_numbers)
+
+func strength_in_numbers_remove(area):
+	if area.is_in_group("gatherer_sig"):
+		print("Gnome has left, WE ARE WEAK")
+		strength_in_numbers = max(0, strength_in_numbers - 1)  # Prevent negative values
+		print(strength_in_numbers)
+
+func check_overlapping_areas():
+	var overlapping_areas = strength_in_numbers_area.get_overlapping_areas()
+	var cur_gatherers_in_area = 0
+	if len(overlapping_areas) == 0:
+		return cur_gatherers_in_area
+	for area in overlapping_areas:
+		if area.is_in_group("gatherer_sig") and area != strength_in_numbers_area:
+			cur_gatherers_in_area += 1
+	return cur_gatherers_in_area
+
+func update_strength_in_numbers_label():
+	if strength_in_numbers == 0:
+		strength_in_numbers_label.text = ""
+	else:
+		strength_in_numbers_label.text = str(strength_in_numbers)
+
 func gather(delta):
-	print("Were now gathering")
-	gathering_progress += gathering_speed * delta
+	anim.play("Gather")
+	var bonus = 1 + (strength_in_numbers * 0.1)  # 10% bonus per additional gatherer
+	gathering_progress += gathering_speed * delta * bonus
+	#print(gathering_progress)
 	gather_progress.value = gathering_progress
 	if gathering_progress >= 100:
-		collect_resource()
+		resource_collected()
 
-func collect_resource():
+func resource_collected():
 	print("Finished resource collection at cell:", target_cell)
 	var current_coords = resource_generator.tile_map.get_cell_atlas_coords(1, target_cell)
 	var resource_type = "empty"
@@ -123,16 +166,7 @@ func collect_resource():
 		if current_coords == resource_generator.resource_tiles[type]:
 			resource_type = type
 			break
-	match resource_type:
-		"food":
-			play_food_gathered_animation(resource_generator.tile_map.map_to_local(target_cell))
-			set_carried_resource_icon("food", 3, 0)
-		"wood":
-			set_carried_resource_icon("wood", 2, 0)
-		"stone":
-			set_carried_resource_icon("stone",1, 0)
-		"gold":
-			set_carried_resource_icon("gold",4, 0)
+	play_resource_anims_and_ui(resource_type)
 	if resource_type != "empty":
 		print("Collected ", resource_type)
 		carried_resource = resource_type
@@ -143,10 +177,22 @@ func collect_resource():
 	target_cell = null
 	gather_progress.visible = false
 	gathering_progress = 0
-	is_gathering = false
+	#is_gathering = false
 	anim.stop()
 	state = STATE.RETURNING_HOME
 	return_to_home()
+	
+func play_resource_anims_and_ui(resource_type: String):
+	match resource_type:
+		"food":
+			play_food_gathered_animation(resource_generator.tile_map.map_to_local(target_cell))
+			set_carried_resource_icon("food", 3, 0)
+		"wood":
+			set_carried_resource_icon("wood", 2, 0)
+		"stone":
+			set_carried_resource_icon("stone",1, 0)
+		"gold":
+			set_carried_resource_icon("gold",4, 0)
 	
 func play_food_gathered_animation(position):
 	var food_gathered = resource_generator.gathered_food.instantiate()
@@ -183,5 +229,6 @@ func set_carried_resource_icon(resourceType: String, x: int , y: int):
 	carried_resource_icon.visible = true
 	
 func return_to_home():
+	strength_in_numbers = 0
 	move_to(home_position, null)
 

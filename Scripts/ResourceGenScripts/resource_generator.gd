@@ -5,6 +5,11 @@ const GRID_WIDTH = 15
 const GRID_HEIGHT = 15
 const EMPTY_TYPE = "empty"
 const RESOURCE_TYPES = ["stone", "wood", "food", "gold"]
+enum RESOURCE_DROP_STATE {
+	IDLE,
+	DROPPING
+}
+var resource_spawn_state : int
 @export var DroppingResource : Array[PackedScene]
 @export var tile_map: TileMap
 @export var gatherers_home: Node2D
@@ -39,6 +44,7 @@ var level_name
 var level_state
 
 func _ready():
+	resource_spawn_state = RESOURCE_DROP_STATE.IDLE
 	level_name = get_tree().get_first_node_in_group("level").name
 	level_state = GameManager.get_level_state(level_name) as LevelState
 	resource_totals = level_state.gathered_resources
@@ -49,7 +55,7 @@ func _ready():
 	setup_refresh_button()
 
 func _process(delta):
-	if occupied_cells.is_empty():
+	if occupied_cells.is_empty() and ground_placed == true and resource_spawn_state == RESOURCE_DROP_STATE.IDLE:
 		refresh_button.disabled = false
 	else:
 		refresh_button.disabled = true
@@ -58,10 +64,7 @@ func _unhandled_input(event):
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		var click_position = get_global_mouse_position()
 		var map_pos : Vector2i = tile_map.local_to_map(tile_map.to_local(click_position))
-		#print("Clicked at global position: ", click_position)
-		#print("Converted to map position: ", map_pos)
 		if tile_map.get_cell_source_id(1, map_pos) != -1:
-			#print("Valid cell clicked")  # Debug print
 			send_gatherer_to(map_pos)
 				
 func spawn_ground():
@@ -75,16 +78,19 @@ func spawn_ground():
 		load_resources()
 
 func spawn_resources():
+	resource_spawn_state = RESOURCE_DROP_STATE.DROPPING
 	var animation_promises = []
 	for y in range(GRID_WIDTH):
 		for x in range(GRID_HEIGHT):
 			if randf() < 0.2:  # 20% chance to spawn a resource
 				var resource = RESOURCE_TYPES[randi() % RESOURCE_TYPES.size()]
 				animation_promises.append(await drop_resources(x, y, resource))
-	
+				resource_save_data["%d,%d" % [x, y]] = resource
 	await Promise.all(animation_promises)
-	print("this is what's being saved" + str(resource_save_data))
 	GameManager.save_resource_data(level_name, resource_save_data)
+	await get_tree().create_timer(1).timeout 
+	resource_spawn_state = RESOURCE_DROP_STATE.IDLE
+	#print("this is what's being saved" + str(resource_save_data))
 
 func drop_resources(x: int, y: int, resource: String):
 	var resource_arr_val: int
@@ -110,11 +116,11 @@ func drop_resources(x: int, y: int, resource: String):
 	
 	return promise
 
-
 func load_resources():
 	if level_state.spawned_resource_data.is_empty():
 		spawn_resources()
 	else:
+		resource_spawn_state = RESOURCE_DROP_STATE.DROPPING
 		var animation_promises = []
 		resource_save_data = level_state.spawned_resource_data
 		for pos_str in level_state.spawned_resource_data:
@@ -125,6 +131,8 @@ func load_resources():
 			animation_promises.append(drop_resources(x, y, resource))
 		
 		await Promise.all(animation_promises)
+		await get_tree().create_timer(1).timeout 
+		resource_spawn_state = RESOURCE_DROP_STATE.IDLE
 
 class Promise:
 	var _resolved = false
@@ -156,26 +164,25 @@ class Promise:
 		
 		return promise
 
-
 func remove_resources(tilemap: TileMap ,layer: int):
 	tilemap.clear_layer(layer)
 
 func refresh_resources():
 	remove_resources(tile_map, 1)
 	occupied_cells.clear()
-	print(resource_save_data)
+	#print(resource_save_data)
 	resource_save_data.clear()
-	print(resource_save_data)
+	#print(resource_save_data)
 	spawn_resources()
 
 func remove_resource_from_save(cell_to_remove: Vector2i):
 	#I'm doing this in a really stupid ass way
-	print(resource_save_data)
+	#print(resource_save_data)
 	var cell_string = "%d,%d" % [cell_to_remove.x, cell_to_remove.y]
-	print("cell_string:" + cell_string)
+	#print("cell_string:" + cell_string)
 	resource_save_data.erase(cell_string)
 	GameManager.save_resource_data(level_name, resource_save_data)
-	print(resource_save_data)
+	#print(resource_save_data)
 
 func setup_gatherer_icons():
 	var max_icons_per_row: int = 5

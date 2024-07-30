@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://8su8tjstnt2i"]
+[gd_scene load_steps=11 format=3 uid="uid://8su8tjstnt2i"]
 
 [ext_resource type="Script" path="res://Scripts/ResourceGenScripts/gatherer.gd" id="1_f8sym"]
 [ext_resource type="Texture2D" uid="uid://dlladw1ket5ld" path="res://Assets/gnome.png" id="1_hxfeq"]
@@ -91,7 +91,10 @@ _data = {
 atlas = ExtResource("3_5p60r")
 region = Rect2(32, 0, 32, 32)
 
-[node name="Gatherer" type="CharacterBody2D" node_paths=PackedStringArray("carried_resource_icon", "gather_progress", "anim")]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7wtcq"]
+size = Vector2(90, 80)
+
+[node name="Gatherer" type="CharacterBody2D" node_paths=PackedStringArray("carried_resource_icon", "gather_progress", "anim") groups=["gatherer"]]
 top_level = true
 motion_mode = 1
 script = ExtResource("1_f8sym")
@@ -130,3 +133,23 @@ unique_name_in_owner = true
 position = Vector2(-1, -23)
 scale = Vector2(0.4375, 0.5)
 texture = SubResource("AtlasTexture_qh5ep")
+
+[node name="StrengthInNumbersArea" type="Area2D" parent="." groups=["gatherer_sig"]]
+unique_name_in_owner = true
+collision_layer = 4
+collision_mask = 4
+
+[node name="StrengthInNumbersCollision" type="CollisionShape2D" parent="StrengthInNumbersArea"]
+unique_name_in_owner = true
+position = Vector2(-1, 1)
+shape = SubResource("RectangleShape2D_7wtcq")
+
+[node name="StrengthInNumbersLabel" type="Label" parent="."]
+unique_name_in_owner = true
+offset_left = -19.0
+offset_top = -51.0
+offset_right = 21.0
+offset_bottom = -28.0
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+horizontal_alignment = 1
