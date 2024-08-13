@@ -1,11 +1,13 @@
-[gd_scene load_steps=5 format=3 uid="uid://c53mng1novn1e"]
+[gd_scene load_steps=6 format=3 uid="uid://c53mng1novn1e"]
 
+[ext_resource type="Script" path="res://Scripts/rand_weight_picker.gd" id="1_nli24"]
 [ext_resource type="FontFile" uid="uid://bijycjedvvqrg" path="res://Assets/PixelOperator8.ttf" id="1_oeuff"]
 [ext_resource type="Script" path="res://Scripts/Menu Scripts/Main Menu Scripts/StartGame.gd" id="2_hhmr2"]
 [ext_resource type="Script" path="res://Scripts/Menu Scripts/Main Menu Scripts/Options.gd" id="3_80d7i"]
 [ext_resource type="Script" path="res://Scripts/Menu Scripts/Main Menu Scripts/Quit.gd" id="4_7tphv"]
 
 [node name="MainMenu" type="Node2D"]
+script = ExtResource("1_nli24")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
